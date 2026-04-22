@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saha Satış - AYKASOFT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -21,6 +22,7 @@
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --tl: #c9242e;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,20 +32,12 @@
             background: var(--light);
             color: var(--text);
             min-height: 100vh;
+            max-width: 480px;
+            margin: 0 auto;
         }
 
         h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; font-weight: 700; }
 
-        /* Mobile Container */
-        .mobile-container {
-            max-width: 480px;
-            margin: 0 auto;
-            background: var(--white);
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* Header */
         .header {
             background: var(--dark);
             color: white;
@@ -57,12 +51,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
         }
 
         .logo-icon {
@@ -105,7 +93,6 @@
             opacity: 0.7;
         }
 
-        /* Stats Bar */
         .stats-bar {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -115,31 +102,16 @@
             border-top: 1px solid rgba(255,255,255,0.1);
         }
 
-        .stat-item {
-            text-align: center;
-        }
+        .stat-item { text-align: center; }
+        .stat-value { font-family: 'Outfit'; font-size: 1.25rem; font-weight: 700; }
+        .stat-label { font-size: 0.7rem; opacity: 0.7; }
 
-        .stat-value {
-            font-family: 'Outfit';
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
-        .stat-label {
-            font-size: 0.7rem;
-            opacity: 0.7;
-        }
-
-        /* Tab Bar */
         .tab-bar {
             display: flex;
             background: white;
             padding: 0.5rem;
             gap: 0.5rem;
             border-bottom: 1px solid var(--light-secondary);
-            position: sticky;
-            top: 110px;
-            z-index: 100;
         }
 
         .tab {
@@ -151,6 +123,8 @@
             font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.2s;
+            border: none;
+            background: none;
         }
 
         .tab.active {
@@ -158,13 +132,11 @@
             color: white;
         }
 
-        /* Content */
         .content {
             padding: 1rem;
-            padding-bottom: 100px;
+            padding-bottom: 80px;
         }
 
-        /* Search */
         .search-box {
             position: relative;
             margin-bottom: 1rem;
@@ -193,7 +165,6 @@
             opacity: 0.5;
         }
 
-        /* Quick Actions */
         .quick-actions {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -227,7 +198,6 @@
             color: var(--text);
         }
 
-        /* Customer Card */
         .customer-card {
             background: white;
             border: 1px solid var(--light-secondary);
@@ -279,9 +249,6 @@
         }
 
         .customer-info {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.5rem;
             font-size: 0.85rem;
             color: var(--text-light);
         }
@@ -308,7 +275,6 @@
         .balance-value.positive { color: var(--success); }
         .balance-value.negative { color: var(--danger); }
 
-        /* Product Card */
         .product-card {
             background: white;
             border: 1px solid var(--light-secondary);
@@ -337,9 +303,7 @@
             font-size: 1.5rem;
         }
 
-        .product-info {
-            flex: 1;
-        }
+        .product-info { flex: 1; }
 
         .product-name {
             font-weight: 600;
@@ -354,7 +318,7 @@
         .product-price {
             font-family: 'Outfit';
             font-weight: 700;
-            color: var(--primary);
+            color: var(--tl);
             font-size: 1.1rem;
         }
 
@@ -363,7 +327,6 @@
             color: var(--success);
         }
 
-        /* Add Button */
         .add-btn {
             position: fixed;
             bottom: 80px;
@@ -380,9 +343,9 @@
             box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
             cursor: pointer;
             z-index: 100;
+            border: none;
         }
 
-        /* Bottom Nav */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -394,6 +357,8 @@
             padding: 0.75rem;
             border-top: 1px solid var(--light-secondary);
             z-index: 100;
+            max-width: 480px;
+            margin: 0 auto;
         }
 
         .nav-item {
@@ -415,102 +380,6 @@
             font-size: 1.25rem;
         }
 
-        /* Cart Badge */
-        .cart-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: var(--danger);
-            color: white;
-            font-size: 0.7rem;
-            font-weight: 700;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Order Card */
-        .order-card {
-            background: white;
-            border: 1px solid var(--light-secondary);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-
-        .order-id {
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .order-date {
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
-
-        .order-customer {
-            font-size: 0.9rem;
-            color: var(--text);
-            margin-bottom: 0.5rem;
-        }
-
-        .order-items {
-            font-size: 0.85rem;
-            color: var(--text-light);
-        }
-
-        .order-total {
-            margin-top: 0.5rem;
-            padding-top: 0.5rem;
-            border-top: 1px solid var(--light-secondary);
-            display: flex;
-            justify-content: space-between;
-            font-weight: 700;
-        }
-
-        .order-status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .order-status.beklemede {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-        }
-
-        .order-status.tamamlandi {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        /* Map placeholder */
-        .map-container {
-            height: 300px;
-            background: var(--light-secondary);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-        }
-
-        .map-placeholder {
-            text-align: center;
-            color: var(--text-light);
-        }
-
-        /* Modal */
         .modal {
             position: fixed;
             inset: 0;
@@ -518,18 +387,18 @@
             display: none;
             align-items: flex-end;
             z-index: 200;
+            max-width: 480px;
+            margin: 0 auto;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        .modal.active {
-            display: flex;
-        }
+        .modal.active { display: flex; }
 
         .modal-content {
             background: white;
             border-radius: 20px 20px 0 0;
             width: 100%;
-            max-width: 480px;
-            margin: 0 auto;
             padding: 1.5rem;
             animation: slideUp 0.3s;
         }
@@ -559,45 +428,21 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            border: none;
         }
 
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            border: 1px solid var(--light-secondary);
-            border-radius: 10px;
-            font-size: 1rem;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
+        .form-group { margin-bottom: 1rem; }
+        .form-label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        .form-input { width: 100%; padding: 0.875rem 1rem; border: 1px solid var(--light-secondary); border-radius: 10px; font-size: 1rem; }
 
         .product-qty {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            justify-content: space-between;
             padding: 1rem;
             background: var(--light);
             border-radius: 12px;
             margin: 1rem 0;
-        }
-
-        .qty-controls {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
         }
 
         .qty-btn {
@@ -617,8 +462,6 @@
         .qty-value {
             font-size: 1.25rem;
             font-weight: 700;
-            min-width: 30px;
-            text-align: center;
         }
 
         .modal-total {
@@ -651,304 +494,214 @@
     </style>
 </head>
 <body>
-    <div class="mobile-container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-top">
-                <div class="header-left">
-                    <div class="logo-icon">A</div>
-                    <span style="font-weight: 700;">AYKASOFT</span>
-                </div>
-                <div class="user-info">
-                    <div>
-                        <div class="user-name">Ahmet Yılmaz</div>
-                        <div class="user-role">Plasiyer</div>
-                    </div>
-                    <div class="user-avatar">AY</div>
-                </div>
+    <header class="header">
+        <div class="header-top">
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+                <div class="logo-icon">₺</div>
+                <span style="font-weight:700;">AYKASOFT</span>
             </div>
-            
-            <div class="stats-bar">
-                <div class="stat-item">
-                    <div class="stat-value" style="color: var(--success);">₺24.500</div>
-                    <div class="stat-label">Bugün Satış</div>
+            <div class="user-info">
+                <div>
+                    <div class="user-name">Ahmet Yılmaz</div>
+                    <div class="user-role">Plasiyer</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value">8</div>
-                    <div class="stat-label">Ziyaret</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" style="color: var(--warning);">3</div>
-                    <div class="stat-label">Bekleyen</div>
-                </div>
+                <div class="user-avatar">AY</div>
             </div>
-        </header>
-
-        <!-- Tabs -->
-        <div class="tab-bar">
-            <div class="tab active" data-tab="musteriler">Müşteriler</div>
-            <div class="tab" data-tab="urunler">Ürünler</div>
-            <div class="tab" data-tab="siparisler">Siparişler</div>
-            <div class="tab" data-tab="konum">Konum</div>
         </div>
+        
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" style="color: var(--success);">₺ 24.500</div>
+                <div class="stat-label">Bugün Satış</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">8</div>
+                <div class="stat-label">Ziyaret</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" style="color: var(--warning);">3</div>
+                <div class="stat-label">Bekleyen</div>
+            </div>
+        </div>
+    </header>
 
-        <!-- Content -->
-        <div class="content" id="tabContent">
-            <!-- Müşteriler -->
-            <div class="tab-pane" id="musteriler">
-                <div class="search-box">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" class="search-input" placeholder="Müşteri ara...">
+    <div class="tab-bar">
+        <button class="tab active" onclick="switchTab('musteriler')">Müşteriler</button>
+        <button class="tab" onclick="switchTab('urunler')">Ürünler</button>
+        <button class="tab" onclick="switchTab('siparisler')">Siparişler</button>
+    </div>
+
+    <div class="content" id="tabContent">
+        <div class="tab-pane" id="musteriler">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Müşteri ara...">
+            </div>
+
+            <div class="customer-card" onclick="selectCustomer('Mehmet Kaya')">
+                <div class="customer-header">
+                    <div class="customer-name">Mehmet Kaya</div>
+                    <span class="customer-status status-borclu">Borçlu</span>
                 </div>
-
-                <div class="customer-card" onclick="selectCustomer('Mehmet Kaya')">
-                    <div class="customer-header">
-                        <div class="customer-name">Mehmet Kaya</div>
-                        <span class="customer-status status-borclu">Borçlu</span>
-                    </div>
-                    <div class="customer-info">
-                        <div>📍 Fatih Mah. No:15</div>
-                        <div>📞 0532 123 4567</div>
-                    </div>
-                    <div class="customer-balance">
-                        <span class="balance-label">Bakiye:</span>
-                        <span class="balance-value negative">-₺12.500</span>
-                    </div>
+                <div class="customer-info">
+                    <div>📍 Fatih Mah. No:15</div>
+                    <div>📞 0532 123 4567</div>
                 </div>
-
-                <div class="customer-card" onclick="selectCustomer('Ayşe Ltd.')">
-                    <div class="customer-header">
-                        <div class="customer-name">Ayşe Ltd. Şti.</div>
-                        <span class="customer-status status-alacak">Alacaklı</span>
-                    </div>
-                    <div class="customer-info">
-                        <div>📍 Mecidiyeköy No:22</div>
-                        <div>📞 0212 234 5678</div>
-                    </div>
-                    <div class="customer-balance">
-                        <span class="balance-label">Bakiye:</span>
-                        <span class="balance-value positive">+₺8.500</span>
-                    </div>
-                </div>
-
-                <div class="customer-card" onclick="selectCustomer('Hasan A.')">
-                    <div class="customer-header">
-                        <div class="customer-name">Hasan A.</div>
-                        <span class="customer-status status-bakiye">Bakiye</span>
-                    </div>
-                    <div class="customer-info">
-                        <div>📍 Kadıköy No:8</div>
-                        <div>📞 0535 890 1234</div>
-                    </div>
-                    <div class="customer-balance">
-                        <span class="balance-label">Bakiye:</span>
-                        <span class="balance-value">₺2.000</span>
-                    </div>
-                </div>
-
-                <div class="customer-card" onclick="selectCustomer('Ali Ticaret')">
-                    <div class="customer-header">
-                        <div class="customer-name">Ali Ticaret</div>
-                        <span class="customer-status status-bakiye">Bakiye</span>
-                    </div>
-                    <div class="customer-info">
-                        <div>📍 Üsküdar No:33</div>
-                        <div>📞 0533 456 7890</div>
-                    </div>
-                    <div class="customer-balance">
-                        <span class="balance-label">Bakiye:</span>
-                        <span class="balance-value">₺5.750</span>
-                    </div>
+                <div class="customer-balance">
+                    <span class="balance-label">Bakiye:</span>
+                    <span class="balance-value negative">-₺ 12.500</span>
                 </div>
             </div>
 
-            <!-- Ürünler -->
-            <div class="tab-pane" id="urunler" style="display:none;">
-                <div class="search-box">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" class="search-input" placeholder="Ürün ara...">
+            <div class="customer-card" onclick="selectCustomer('Ayşe Ltd.')">
+                <div class="customer-header">
+                    <div class="customer-name">Ayşe Ltd. Şti.</div>
+                    <span class="customer-status status-alacak">Alacaklı</span>
                 </div>
-
-                <div class="product-card" onclick="openProductModal('Klavye', 450)">
-                    <div class="product-image">⌨️</div>
-                    <div class="product-info">
-                        <div class="product-name">Klavye</div>
-                        <div class="product-barcode">869123456001</div>
-                    </div>
-                    <div>
-                        <div class="product-price">₺450</div>
-                        <div class="product-stock">Stok: 25</div>
-                    </div>
+                <div class="customer-info">
+                    <div>📍 Mecidiyeköy No:22</div>
+                    <div>📞 0212 234 5678</div>
                 </div>
-
-                <div class="product-card" onclick="openProductModal('Mouse', 280)">
-                    <div class="product-image">🖱️</div>
-                    <div class="product-info">
-                        <div class="product-name">Mouse</div>
-                        <div class="product-barcode">869123456002</div>
-                    </div>
-                    <div>
-                        <div class="product-price">₺280</div>
-                        <div class="product-stock">Stok: 30</div>
-                    </div>
-                </div>
-
-                <div class="product-card" onclick="openProductModal('Monitor', 2100)">
-                    <div class="product-image">🖥️</div>
-                    <div class="product-info">
-                        <div class="product-name">Monitor</div>
-                        <div class="product-barcode">869123456003</div>
-                    </div>
-                    <div>
-                        <div class="product-price">₺2.100</div>
-                        <div class="product-stock">Stok: 12</div>
-                    </div>
-                </div>
-
-                <div class="product-card" onclick="openProductModal('SSD 500GB', 890)">
-                    <div class="product-image">💾</div>
-                    <div class="product-info">
-                        <div class="product-name">SSD 500GB</div>
-                        <div class="product-barcode">869123456004</div>
-                    </div>
-                    <div>
-                        <div class="product-price">₺890</div>
-                        <div class="product-stock">Stok: 18</div>
-                    </div>
-                </div>
-
-                <div class="product-card" onclick="openProductModal('Kulaklık', 350)">
-                    <div class="product-image">🎧</div>
-                    <div class="product-info">
-                        <div class="product-name">Kulaklık</div>
-                        <div class="product-barcode">869123456005</div>
-                    </div>
-                    <div>
-                        <div class="product-price">₺350</div>
-                        <div class="product-stock">Stok: 22</div>
-                    </div>
+                <div class="customer-balance">
+                    <span class="balance-label">Bakiye:</span>
+                    <span class="balance-value positive">+₺ 8.500</span>
                 </div>
             </div>
 
-            <!-- Siparişler -->
-            <div class="tab-pane" id="siparisler" style="display:none;">
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="order-id">#S-1024</div>
-                        <div class="order-status beklemede">Beklemede</div>
-                    </div>
-                    <div class="order-customer">Mehmet Kaya</div>
-                    <div class="order-items">Klavye x2, Mouse x1</div>
-                    <div class="order-total">
-                        <span>Toplam</span>
-                        <span>₺1.180</span>
-                    </div>
+            <div class="customer-card" onclick="selectCustomer('Hasan A.')">
+                <div class="customer-header">
+                    <div class="customer-name">Hasan A.</div>
+                    <span class="customer-status status-bakiye">Bakiye</span>
                 </div>
-
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="order-id">#S-1023</div>
-                        <div class="order-status tamamlandi">Tamamlandı</div>
-                    </div>
-                    <div class="order-customer">Ayşe Ltd. Şti.</div>
-                    <div class="order-items">Monitor x1</div>
-                    <div class="order-total">
-                        <span>Toplam</span>
-                        <span>₺2.100</span>
-                    </div>
+                <div class="customer-info">
+                    <div>📍 Kadıköy No:8</div>
+                    <div>📞 0535 890 1234</div>
                 </div>
-
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="order-id">#S-1022</div>
-                        <div class="order-status tamamlandi">Tamamlandı</div>
-                    </div>
-                    <div class="order-customer">Hasan A.</div>
-                    <div class="order-items">Kulaklık x2, USB Hub x1</div>
-                    <div class="order-total">
-                        <span>Toplam</span>
-                        <span>₺950</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Konum -->
-            <div class="tab-pane" id="konum" style="display:none;">
-                <div class="map-container">
-                    <div class="map-placeholder">
-                        <div style="font-size: 3rem;">📍</div>
-                        <div>Harita Yükleniyor...</div>
-                    </div>
-                </div>
-
-                <div class="customer-card">
-                    <div class="customer-header">
-                        <div class="customer-name">Mehmet Kaya</div>
-                        <span class="customer-status status-borclu">Borçlu</span>
-                    </div>
-                    <div class="customer-info">
-                        <div>📍 Fatih Mah. No:15, Şişli</div>
-                        <div>📞 0532 123 4567</div>
-                    </div>
-                    <button class="btn btn-primary" style="width:100%; margin-top:1rem; padding:0.75rem;">
-                        🧭 Y Tarifele
-                    </button>
+                <div class="customer-balance">
+                    <span class="balance-label">Bakiye:</span>
+                    <span class="balance-value">₺ 2.000</span>
                 </div>
             </div>
         </div>
 
-        <!-- Add Button -->
-        <div class="add-btn" onclick="openModal()">+</div>
+        <div class="tab-pane" id="urunler" style="display:none;">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Ürün ara...">
+            </div>
 
-        <!-- Bottom Nav -->
-        <nav class="bottom-nav">
-            <a class="nav-item active" onclick="switchTab('musteriler')">
-                <span class="nav-icon">👥</span>
-                <span>Müşteri</span>
-            </a>
-            <a class="nav-item" onclick="switchTab('urunler')">
-                <span class="nav-icon">📦</span>
-                <span>Ürün</span>
-            </a>
-            <a class="nav-item" onclick="switchTab('siparisler')">
-                <span class="nav-icon">📋</span>
-                <span>Sipariş</span>
-            </a>
-            <a class="nav-item" onclick="switchTab('konum')">
-                <span class="nav-icon">📍</span>
-                <span>Konum</span>
-            </a>
-        </nav>
-
-        <!-- Product Modal -->
-        <div class="modal" id="productModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title" id="modalProductName">Ürün Adı</div>
-                    <div class="modal-close" onclick="closeModal()">✕</div>
+            <div class="product-card" onclick="openProductModal('Klavye', 450)">
+                <div class="product-image">⌨️</div>
+                <div class="product-info">
+                    <div class="product-name">Klavye</div>
+                    <div class="product-barcode">869123456001</div>
                 </div>
-
-                <div class="product-qty">
-                    <div>
-                        <div style="font-size: 0.8rem; color: var(--text-light);">Fiyat</div>
-                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);" id="modalProductPrice">₺0</div>
-                    </div>
-                    <div class="qty-controls">
-                        <button class="qty-btn" onclick="changeModalQty(-1)">-</button>
-                        <div class="qty-value" id="modalQty">1</div>
-                        <button class="qty-btn" onclick="changeModalQty(1)">+</button>
-                    </div>
+                <div>
+                    <div class="product-price">₺ 450</div>
+                    <div class="product-stock">Stok: 25</div>
                 </div>
+            </div>
 
-                <div class="modal-total">
-                    <span>Toplam</span>
-                    <span id="modalTotal">₺0</span>
+            <div class="product-card" onclick="openProductModal('Mouse', 280)">
+                <div class="product-image">🖱️</div>
+                <div class="product-info">
+                    <div class="product-name">Mouse</div>
+                    <div class="product-barcode">869123456002</div>
                 </div>
+                <div>
+                    <div class="product-price">₺ 280</div>
+                    <div class="product-stock">Stok: 30</div>
+                </div>
+            </div>
 
-                <div class="modal-actions">
-                    <button class="btn btn-primary" onclick="addToOrder()">Sepete Ekle</button>
-                    <button class="btn btn-success" onclick="directSale()">Anlık Satış</button>
+            <div class="product-card" onclick="openProductModal('Monitor', 2100)">
+                <div class="product-image">🖥️</div>
+                <div class="product-info">
+                    <div class="product-name">Monitor</div>
+                    <div class="product-barcode">869123456003</div>
                 </div>
+                <div>
+                    <div class="product-price">₺ 2.100</div>
+                    <div class="product-stock">Stok: 12</div>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="openProductModal('SSD 500GB', 890)">
+                <div class="product-image">💾</div>
+                <div class="product-info">
+                    <div class="product-name">SSD 500GB</div>
+                    <div class="product-barcode">869123456004</div>
+                </div>
+                <div>
+                    <div class="product-price">₺ 890</div>
+                    <div class="product-stock">Stok: 18</div>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="openProductModal('Kulaklık', 350)">
+                <div class="product-image">🎧</div>
+                <div class="product-info">
+                    <div class="product-name">Kulaklık</div>
+                    <div class="product-barcode">869123456005</div>
+                </div>
+                <div>
+                    <div class="product-price">₺ 350</div>
+                    <div class="product-stock">Stok: 22</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="siparisler" style="display:none;">
+            <div style="text-align:center;color:var(--text-light);padding:2rem;">
+                📋 Aktif siparişiniz bulunmamaktadır.
+            </div>
+        </div>
+    </div>
+
+    <button class="add-btn" onclick="openProductModal('Ürün Seçin', 0)">+</button>
+
+    <nav class="bottom-nav">
+        <a class="nav-item active" onclick="switchTab('musteriler')">
+            <span class="nav-icon">👥</span>
+            <span>Müşteri</span>
+        </a>
+        <a class="nav-item" onclick="switchTab('urunler')">
+            <span class="nav-icon">📦</span>
+            <span>Ürün</span>
+        </a>
+        <a class="nav-item" onclick="switchTab('siparisler')">
+            <span class="nav-icon">📋</span>
+            <span>Sipariş</span>
+        </a>
+    </nav>
+
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalProductName">Ürün Adı</div>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+
+            <div class="product-qty">
+                <div>
+                    <div style="font-size:0.8rem;color:var(--text-light);">Fiyat</div>
+                    <div style="font-size:1.5rem;font-weight:700;color:var(--tl);" id="modalProductPrice">₺ 0</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <button class="qty-btn" onclick="changeModalQty(-1)">-</button>
+                    <div class="qty-value" id="modalQty">1</div>
+                    <button class="qty-btn" onclick="changeModalQty(1)">+</button>
+                </div>
+            </div>
+
+            <div class="modal-total">
+                <span>Toplam</span>
+                <span id="modalTotal">₺ 0</span>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="addToOrder()">Sepete Ekle</button>
+                <button class="btn btn-success" onclick="directSale()">Anlık Satış</button>
             </div>
         </div>
     </div>
@@ -958,41 +711,32 @@
         let selectedProduct = null;
         let productPrice = 0;
         let qty = 1;
-        let orderItems = [];
-
-        // Tab switching
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabId = tab.dataset.tab;
-                switchTab(tabId);
-            });
-        });
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
-
             document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+            
+            const tabButton = Array.from(document.querySelectorAll('.tab')).find(t => t.textContent.toLowerCase().includes(tabId.replace('musteriler', 'müşteriler').replace('urunler', 'ürünler').replace('siparisler', 'siparişler')));
+            if (tabButton) tabButton.classList.add('active');
+            
             document.getElementById(tabId).style.display = 'block';
         }
 
-        // Select customer
         function selectCustomer(name) {
             selectedCustomer = name;
             openProductModal('Ürün Seçin', 0);
         }
 
-        // Product modal
         function openProductModal(name, price) {
             selectedProduct = name;
             productPrice = price;
             qty = 1;
             
             document.getElementById('modalProductName').textContent = name;
-            document.getElementById('modalProductPrice').textContent = price > 0 ? `₺${price}` : 'Seçiniz';
-            document.getElementById('modalProductPrice').style.color = price > 0 ? 'var(--primary)' : 'var(--text-light)';
+            document.getElementById('modalProductPrice').textContent = price > 0 ? `₺ ${price.toLocaleString()}` : 'Seçiniz';
+            document.getElementById('modalProductPrice').style.color = price > 0 ? 'var(--tl)' : 'var(--text-light)';
             document.getElementById('modalQty').textContent = qty;
-            document.getElementById('modalTotal').textContent = price > 0 ? `₺${price}` : '₺0';
+            document.getElementById('modalTotal').textContent = price > 0 ? `₺ ${price}` : '₺ 0';
             document.getElementById('productModal').classList.add('active');
         }
 
@@ -1004,7 +748,7 @@
             qty += delta;
             if (qty < 1) qty = 1;
             document.getElementById('modalQty').textContent = qty;
-            document.getElementById('modalTotal').textContent = `₺${productPrice * qty}`;
+            document.getElementById('modalTotal').textContent = `₺ ${(productPrice * qty).toLocaleString()}`;
         }
 
         function addToOrder() {
@@ -1017,7 +761,6 @@
                 return;
             }
             
-            orderItems.push({ name: selectedProduct, price: productPrice, qty: qty });
             alert(`✅ ${selectedProduct} x${qty} sepete eklendi!\n\nMüşteri: ${selectedCustomer}`);
             closeModal();
         }
@@ -1032,12 +775,8 @@
                 return;
             }
             
-            alert(`💰 Anlık Satış!\n\nMüşteri: ${selectedCustomer}\nÜrün: ${selectedProduct} x${qty}\nToplam: ₺${productPrice * qty}`);
+            alert(`💰 Anlık Satış!\n\nMüşteri: ${selectedCustomer}\nÜrün: ${selectedProduct} x${qty}\nToplam: ₺ ${(productPrice * qty).toLocaleString()}`);
             closeModal();
-        }
-
-        function openModal() {
-            openProductModal('Ürün Seçin', 0);
         }
     </script>
 </body>

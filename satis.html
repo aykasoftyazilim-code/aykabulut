@@ -21,6 +21,7 @@
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --tl: #c9242e;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,7 +35,6 @@
 
         h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; font-weight: 700; }
 
-        /* Sidebar */
         .sidebar {
             position: fixed;
             left: 0;
@@ -82,6 +82,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+            overflow-y: auto;
         }
 
         .nav-item {
@@ -94,6 +95,7 @@
             border-radius: 10px;
             font-weight: 500;
             transition: all 0.2s;
+            cursor: pointer;
         }
 
         .nav-item:hover, .nav-item.active {
@@ -113,26 +115,25 @@
             margin: 1rem 0;
         }
 
-        /* Main Content */
         .main {
             margin-left: 260px;
-            padding: 2rem;
+            padding: 1.5rem;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .header h1 {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             color: var(--dark);
         }
 
         .btn {
-            padding: 0.75rem 1.5rem;
+            padding: 0.625rem 1.25rem;
             border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
@@ -142,40 +143,22 @@
             gap: 0.5rem;
             transition: all 0.2s;
             text-decoration: none;
+            font-size: 0.9rem;
         }
 
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
+        .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-dark); }
+        .btn-ghost { background: white; color: var(--text); border: 1px solid var(--light-secondary); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
 
-        .btn-ghost {
-            background: white;
-            color: var(--text);
-            border: 1px solid var(--light-secondary);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        /* POS Layout */
         .pos-layout {
             display: grid;
             grid-template-columns: 1fr 380px;
             gap: 1.5rem;
-            height: calc(100vh - 200px);
+            height: calc(100vh - 180px);
         }
 
-        /* Products Grid */
         .products-section {
             background: white;
             border-radius: 16px;
@@ -198,11 +181,6 @@
             color: var(--dark);
         }
 
-        .search-bar {
-            display: flex;
-            gap: 0.5rem;
-        }
-
         .search-input {
             padding: 0.625rem 1rem;
             border: 1px solid var(--light-secondary);
@@ -214,6 +192,32 @@
         .search-input:focus {
             outline: none;
             border-color: var(--primary);
+        }
+
+        .categories {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--light-secondary);
+            overflow-x: auto;
+        }
+
+        .category {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            background: var(--light);
+            color: var(--text);
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .category:hover, .category.active {
+            background: var(--primary);
+            color: white;
         }
 
         .products-grid {
@@ -262,7 +266,7 @@
             font-family: 'Outfit';
             font-size: 1.25rem;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--tl);
         }
 
         .product-stock {
@@ -271,17 +275,35 @@
             margin-top: 0.25rem;
         }
 
-        .product-stock.low {
-            color: var(--danger);
-        }
+        .product-stock.low { color: var(--danger); }
 
-        /* Cart Panel */
         .cart-panel {
             background: white;
             border-radius: 16px;
             border: 1px solid var(--light-secondary);
             display: flex;
             flex-direction: column;
+        }
+
+        .barcode-input-container {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--light-secondary);
+        }
+
+        .barcode-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            font-size: 1.25rem;
+            text-align: center;
+            font-family: 'DM Sans';
+            letter-spacing: 2px;
+        }
+
+        .barcode-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
         }
 
         .cart-header {
@@ -311,9 +333,7 @@
             margin-bottom: 0.5rem;
         }
 
-        .cart-item-info {
-            flex: 1;
-        }
+        .cart-item-info { flex: 1; }
 
         .cart-item-name {
             font-weight: 600;
@@ -347,10 +367,6 @@
             border-color: var(--primary);
         }
 
-        .cart-item-price {
-            text-align: right;
-        }
-
         .cart-item-total {
             font-family: 'Outfit';
             font-weight: 700;
@@ -376,14 +392,8 @@
             margin-bottom: 0.5rem;
         }
 
-        .cart-row-label {
-            color: var(--text-light);
-        }
-
-        .cart-row-value {
-            font-family: 'Outfit';
-            font-weight: 600;
-        }
+        .cart-row-label { color: var(--text-light); }
+        .cart-row-value { font-weight: 600; }
 
         .cart-total {
             display: flex;
@@ -403,7 +413,7 @@
             font-family: 'Outfit';
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--tl);
         }
 
         .cart-actions {
@@ -420,52 +430,10 @@
             font-size: 1rem;
         }
 
-        /* Barcode Input */
-        .barcode-input-container {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--light-secondary);
-        }
-
-        .barcode-input {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            border: 2px solid var(--primary);
-            border-radius: 10px;
-            font-size: 1.25rem;
+        .empty-cart {
             text-align: center;
-            font-family: 'DM Sans';
-            letter-spacing: 2px;
-        }
-
-        .barcode-input:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-        }
-
-        /* Categories */
-        .categories {
-            display: flex;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-bottom: 1px solid var(--light-secondary);
-            overflow-x: auto;
-        }
-
-        .category {
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            white-space: nowrap;
-            cursor: pointer;
-            background: var(--light);
-            color: var(--text);
-            transition: all 0.2s;
-        }
-
-        .category:hover, .category.active {
-            background: var(--primary);
-            color: white;
+            color: var(--text-light);
+            padding: 2rem;
         }
 
         @media (max-width: 1200px) {
@@ -476,20 +444,14 @@
             .pos-layout { grid-template-columns: 1fr; }
             .products-grid { grid-template-columns: repeat(3, 1fr); }
         }
-
-        @media (max-width: 768px) {
-            .products-grid { grid-template-columns: repeat(2, 1fr); }
-        }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo">
-            <div class="logo-icon">A</div>
+            <div class="logo-icon">₺</div>
             <div class="logo-text">AYKA<span>SOFT</span></div>
         </div>
-        
         <nav class="nav-menu">
             <a href="index.html" class="nav-item">
                 <span class="nav-icon">🏠</span>
@@ -528,7 +490,6 @@
         </nav>
     </aside>
 
-    <!-- Main Content -->
     <main class="main">
         <header class="header">
             <h1>Barkodlu Satış</h1>
@@ -539,30 +500,23 @@
         </header>
 
         <div class="pos-layout">
-            <!-- Products -->
             <div class="products-section">
                 <div class="products-header">
                     <h3 class="products-title">Ürünler</h3>
-                    <div class="search-bar">
-                        <input type="text" class="search-input" placeholder="Ürün ara...">
-                    </div>
+                    <input type="text" class="search-input" placeholder="Ürün ara..." id="searchProduct">
                 </div>
                 
                 <div class="categories">
-                    <div class="category active">Tümü</div>
-                    <div class="category">Bilgisayar</div>
-                    <div class="category">Telefon</div>
-                    <div class="category">Aksesuar</div>
-                    <div class="category">Çevre Birimleri</div>
-                    <div class="category">Oyuncu</div>
+                    <button class="category active" onclick="filterCategory('all')">Tümü</button>
+                    <button class="category" onclick="filterCategory('bilgisayar')">Bilgisayar</button>
+                    <button class="category" onclick="filterCategory('telefon')">Telefon</button>
+                    <button class="category" onclick="filterCategory('aksesuar')">Aksesuar</button>
+                    <button class="category" onclick="filterCategory('cevre')">Çevre Birimleri</button>
                 </div>
 
-                <div class="products-grid" id="productsGrid">
-                    <!-- Products will be rendered here -->
-                </div>
+                <div class="products-grid" id="productsGrid"></div>
             </div>
 
-            <!-- Cart -->
             <div class="cart-panel">
                 <div class="barcode-input-container">
                     <input type="text" class="barcode-input" id="barcodeInput" placeholder="Barkod okutun..." autofocus>
@@ -573,7 +527,7 @@
                 </div>
                 
                 <div class="cart-items" id="cartItems">
-                    <div style="text-align: center; color: var(--text-light); padding: 2rem;">
+                    <div class="empty-cart">
                         Ürün eklemek için tıklayın<br>veya barkod okutun
                     </div>
                 </div>
@@ -581,23 +535,23 @@
                 <div class="cart-summary">
                     <div class="cart-row">
                         <span class="cart-row-label">Ara Toplam</span>
-                        <span class="cart-row-value" id="subtotal">₺0</span>
+                        <span class="cart-row-value" id="subtotal">₺ 0</span>
                     </div>
                     <div class="cart-row">
                         <span class="cart-row-label">KDV (%20)</span>
-                        <span class="cart-row-value" id="tax">₺0</span>
+                        <span class="cart-row-value" id="tax">₺ 0</span>
                     </div>
                     <div class="cart-total">
                         <span class="cart-total-label">TOPLAM</span>
-                        <span class="cart-total-value" id="total">₺0</span>
+                        <span class="cart-total-value" id="total">₺ 0</span>
                     </div>
                 </div>
                 
                 <div class="cart-actions">
-                    <button class="btn btn-success" onclick="completeSale()">💵 Nakit</button>
+                    <button class="btn btn-success" onclick="completeSale('nakit')">💵 Nakit</button>
                     <div style="display: flex; gap: 0.5rem;">
-                        <button class="btn btn-primary" style="flex:1">💳 POS</button>
-                        <button class="btn btn-ghost" style="flex:1">👤 Cari</button>
+                        <button class="btn btn-primary" style="flex:1" onclick="completeSale('pos')">💳 POS</button>
+                        <button class="btn btn-ghost" style="flex:1" onclick="completeSale('cari')">👤 Cari</button>
                     </div>
                 </div>
             </div>
@@ -605,42 +559,41 @@
     </main>
 
     <script>
-        // Sample products
         const products = [
-            { barcode: '869123456001', name: 'Klavye', price: 450, stock: 25 },
-            { barcode: '869123456002', name: 'Mouse', price: 280, stock: 30 },
-            { barcode: '869123456003', name: 'Monitor', price: 2100, stock: 12 },
-            { barcode: '869123456004', name: 'SSD 500GB', price: 890, stock: 18 },
-            { barcode: '869123456005', name: 'Kulaklık', price: 350, stock: 22 },
-            { barcode: '869123456006', name: 'Kumanda', price: 120, stock: 45 },
-            { barcode: '869123456007', name: 'Webcam', price: 590, stock: 15 },
-            { barcode: '869123456008', name: 'USB Hub', price: 250, stock: 28 },
-            { barcode: '869123456009', name: 'Kablo Set', price: 150, stock: 50 },
-            { barcode: '869123456010', name: 'Mouse Pad', price: 80, stock: 60 },
-            { barcode: '869123456011', name: 'Ekran Kartı', price: 8500, stock: 5 },
-            { barcode: '869123456012', name: 'RAM 16GB', price: 1200, stock: 14 },
-            { barcode: '869123456013', name: 'Kasa', price: 1800, stock: 8 },
-            { barcode: '869123456014', name: 'Anakart', price: 3200, stock: 6 },
-            { barcode: '869123456015', name: 'İşlemci', price: 6500, stock: 4 },
-            { barcode: '869123456016', name: 'PSU 600W', price: 950, stock: 11 },
+            { barcode: '869123456001', name: 'Klavye', price: 450, stock: 25, category: 'cevre' },
+            { barcode: '869123456002', name: 'Mouse', price: 280, stock: 30, category: 'cevre' },
+            { barcode: '869123456003', name: 'Monitor', price: 2100, stock: 12, category: 'bilgisayar' },
+            { barcode: '869123456004', name: 'SSD 500GB', price: 890, stock: 18, category: 'bilgisayar' },
+            { barcode: '869123456005', name: 'Kulaklık', price: 350, stock: 22, category: 'aksesuar' },
+            { barcode: '869123456006', name: 'Kumanda', price: 120, stock: 45, category: 'aksesuar' },
+            { barcode: '869123456007', name: 'Webcam', price: 590, stock: 15, category: 'cevre' },
+            { barcode: '869123456008', name: 'USB Hub', price: 250, stock: 28, category: 'cevre' },
+            { barcode: '869123456009', name: 'Kablo Set', price: 150, stock: 50, category: 'aksesuar' },
+            { barcode: '869123456010', name: 'Mouse Pad', price: 80, stock: 60, category: 'aksesuar' },
+            { barcode: '869123456011', name: 'Ekran Kartı', price: 8500, stock: 5, category: 'bilgisayar' },
+            { barcode: '869123456012', name: 'RAM 16GB', price: 1200, stock: 14, category: 'bilgisayar' },
+            { barcode: '869123456013', name: 'Kasa', price: 1800, stock: 8, category: 'bilgisayar' },
+            { barcode: '869123456014', name: 'Anakart', price: 3200, stock: 6, category: 'bilgisayar' },
+            { barcode: '869123456015', name: 'İşlemci', price: 6500, stock: 4, category: 'bilgisayar' },
+            { barcode: '869123456016', name: 'PSU 600W', price: 950, stock: 11, category: 'bilgisayar' },
         ];
 
         let cart = [];
 
-        // Render products
-        function renderProducts() {
+        function renderProducts(filter = 'all') {
             const grid = document.getElementById('productsGrid');
-            grid.innerHTML = products.map((p, i) => `
-                <div class="product-card" onclick="addToCart(${i})">
+            let filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+            
+            grid.innerHTML = filtered.map((p, i) => `
+                <div class="product-card" onclick="addToCart(${products.indexOf(p)})">
                     <div class="product-barcode">${p.barcode}</div>
                     <div class="product-name">${p.name}</div>
-                    <div class="product-price">₺${p.price}</div>
+                    <div class="product-price">₺ ${p.price.toLocaleString()}</div>
                     <div class="product-stock ${p.stock < 10 ? 'low' : ''}">Stok: ${p.stock}</div>
                 </div>
             `).join('');
         }
 
-        // Add to cart
         function addToCart(index) {
             const product = products[index];
             const existing = cart.find(p => p.barcode === product.barcode);
@@ -654,16 +607,11 @@
             renderCart();
         }
 
-        // Render cart
         function renderCart() {
             const container = document.getElementById('cartItems');
             
             if (cart.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; color: var(--text-light); padding: 2rem;">
-                        Ürün eklemek için tıklayın<br>veya barkod okutun
-                    </div>
-                `;
+                container.innerHTML = '<div class="empty-cart">Ürün eklemek için tıklayın<br>veya barkod okutun</div>';
             } else {
                 container.innerHTML = cart.map((item, i) => `
                     <div class="cart-item">
@@ -675,9 +623,7 @@
                                 <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
                             </div>
                         </div>
-                        <div class="cart-item-price">
-                            <div class="cart-item-total">₺${item.price * item.qty}</div>
-                        </div>
+                        <div class="cart-item-total">₺ ${(item.price * item.qty).toLocaleString()}</div>
                         <div class="cart-item-delete" onclick="removeFromCart(${i})">×</div>
                     </div>
                 `).join('');
@@ -704,12 +650,17 @@
             const tax = subtotal * 0.20;
             const total = subtotal + tax;
             
-            document.getElementById('subtotal').textContent = `₺${subtotal.toLocaleString()}`;
-            document.getElementById('tax').textContent = `₺${Math.round(tax).toLocaleString()}`;
-            document.getElementById('total').textContent = `₺${Math.round(total).toLocaleString()}`;
+            document.getElementById('subtotal').textContent = `₺ ${subtotal.toLocaleString()}`;
+            document.getElementById('tax').textContent = `₺ ${Math.round(tax).toLocaleString()}`;
+            document.getElementById('total').textContent = `₺ ${Math.round(total).toLocaleString()}`;
         }
 
-        // Barcode input
+        function filterCategory(cat) {
+            document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProducts(cat);
+        }
+
         document.getElementById('barcodeInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const barcode = e.target.value.trim();
@@ -724,26 +675,40 @@
             }
         });
 
-        // Complete sale
-        function completeSale() {
+        document.getElementById('searchProduct').addEventListener('input', (e) => {
+            const search = e.target.value.toLowerCase();
+            const grid = document.getElementById('productsGrid');
+            
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(search) || 
+                p.barcode.includes(search)
+            );
+            
+            grid.innerHTML = filtered.map((p, i) => `
+                <div class="product-card" onclick="addToCart(${products.indexOf(p)})">
+                    <div class="product-barcode">${p.barcode}</div>
+                    <div class="product-name">${p.name}</div>
+                    <div class="product-price">₺ ${p.price.toLocaleString()}</div>
+                    <div class="product-stock ${p.stock < 10 ? 'low' : ''}">Stok: ${p.stock}</div>
+                </div>
+            `).join('');
+        });
+
+        function completeSale(type) {
             if (cart.length === 0) {
                 alert('Sepet boş!');
                 return;
             }
-            alert(`💰 Satış tamamlandı!\nToplam: ${document.getElementById('total').textContent}`);
+            
+            const total = document.getElementById('total').textContent;
+            const methods = { nakit: 'Nakit', pos: 'POS', cari: 'Cari Hesap' };
+            
+            alert(`✅ Satış Tamamlandı!\n\nÖdeme Yöntemi: ${methods[type]}\nToplam: ${total}\n\nTeşekkürler!`);
+            
             cart = [];
             renderCart();
         }
 
-        // Categories
-        document.querySelectorAll('.category').forEach(cat => {
-            cat.addEventListener('click', () => {
-                document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
-                cat.classList.add('active');
-            });
-        });
-
-        // Initialize
         renderProducts();
     </script>
 </body>

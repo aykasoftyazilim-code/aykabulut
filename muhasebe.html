@@ -21,6 +21,7 @@
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --tl: #c9242e;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,7 +35,8 @@
 
         h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; font-weight: 700; }
 
-        /* Sidebar */
+        .tl { color: var(--tl); font-weight: 700; }
+
         .sidebar {
             position: fixed;
             left: 0;
@@ -82,6 +84,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+            overflow-y: auto;
         }
 
         .nav-item {
@@ -94,6 +97,7 @@
             border-radius: 10px;
             font-weight: 500;
             transition: all 0.2s;
+            cursor: pointer;
         }
 
         .nav-item:hover, .nav-item.active {
@@ -113,7 +117,6 @@
             margin: 1rem 0;
         }
 
-        /* Main Content */
         .main {
             margin-left: 260px;
             padding: 2rem;
@@ -131,9 +134,18 @@
             color: var(--dark);
         }
 
-        .header-actions {
+        .header-right {
             display: flex;
+            align-items: center;
             gap: 1rem;
+        }
+
+        .date-display {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--light-secondary);
+            font-weight: 500;
         }
 
         .btn {
@@ -147,6 +159,7 @@
             gap: 0.5rem;
             transition: all 0.2s;
             text-decoration: none;
+            font-size: 0.9rem;
         }
 
         .btn-primary {
@@ -164,7 +177,9 @@
 
         .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
 
-        /* Stats Cards */
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -183,6 +198,7 @@
         .stat-card.danger { border-left: 4px solid var(--danger); }
         .stat-card.warning { border-left: 4px solid var(--warning); }
         .stat-card.info { border-left: 4px solid var(--primary); }
+        .stat-card.tl { border-left: 4px solid var(--tl); }
 
         .stat-label {
             font-size: 0.875rem;
@@ -199,8 +215,52 @@
 
         .stat-value.success { color: var(--success); }
         .stat-value.danger { color: var(--danger); }
+        .stat-value.tl { color: var(--tl); }
 
-        /* Tabs */
+        .stat-change {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-change.up { color: var(--success); }
+        .stat-change.down { color: var(--danger); }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-action {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid var(--light-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-action:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .quick-action:hover .quick-action-icon { transform: scale(1.1); }
+
+        .quick-action-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            transition: transform 0.2s;
+        }
+
+        .quick-action-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
         .tabs {
             display: flex;
             gap: 0.5rem;
@@ -218,6 +278,9 @@
             cursor: pointer;
             color: var(--text-light);
             transition: all 0.2s;
+            border: none;
+            background: none;
+            font-size: 0.9rem;
         }
 
         .tab.active {
@@ -225,12 +288,12 @@
             color: white;
         }
 
-        /* Tables */
         .table-container {
             background: white;
             border-radius: 16px;
             border: 1px solid var(--light-secondary);
             overflow: hidden;
+            margin-bottom: 2rem;
         }
 
         .table-header {
@@ -260,119 +323,82 @@
             background: var(--light);
             font-weight: 600;
             color: var(--text-light);
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
         }
 
         td {
             border-bottom: 1px solid var(--light-secondary);
-            color: var(--text);
         }
 
         tr:hover td { background: var(--light); }
-
-        .status {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.375rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .status.borclu {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
-
-        .status.alacak {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .status.bakiye {
-            background: rgba(37, 99, 235, 0.1);
-            color: var(--primary);
-        }
+        tr:last-child td { border-bottom: none; }
 
         .amount {
             font-family: 'Outfit';
             font-weight: 700;
-            font-size: 1.1rem;
         }
 
         .amount.positive { color: var(--success); }
         .amount.negative { color: var(--danger); }
 
-        /* Quick Actions */
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
         }
 
-        .quick-action {
+        .modal-overlay.active { display: flex; }
+
+        .modal {
             background: white;
-            border-radius: 16px;
-            padding: 1.5rem;
-            text-align: center;
-            border: 1px solid var(--light-secondary);
-            cursor: pointer;
-            transition: all 0.2s;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
         }
 
-        .quick-action:hover {
-            border-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
-
-        .quick-action-icon {
-            font-size: 2rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .quick-action-title {
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        /* Cards Grid */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-
-        .card {
-            background: white;
-            border-radius: 16px;
-            border: 1px solid var(--light-secondary);
-            overflow: hidden;
-        }
-
-        .card-header {
+        .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 1.5rem;
+            padding: 1.5rem;
             border-bottom: 1px solid var(--light-secondary);
         }
 
-        .card-title {
-            font-size: 1.1rem;
-            color: var(--dark);
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
         }
 
-        .card-body {
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .modal-body { padding: 1.5rem; }
+
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
             padding: 1.5rem;
+            border-top: 1px solid var(--light-secondary);
         }
 
-        .form-group {
-            margin-bottom: 1rem;
-        }
+        .modal-footer .btn { flex: 1; justify-content: center; }
+
+        .form-group { margin-bottom: 1rem; }
 
         .form-label {
             display: block;
@@ -389,30 +415,11 @@
             border-radius: 10px;
             font-size: 1rem;
             font-family: inherit;
-            transition: all 0.2s;
         }
 
         .form-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .form-select {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--light-secondary);
-            border-radius: 10px;
-            font-size: 1rem;
-            font-family: inherit;
-            background: white;
-            cursor: pointer;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
         }
 
         @media (max-width: 1200px) {
@@ -426,19 +433,15 @@
 
         @media (max-width: 768px) {
             .stats-grid { grid-template-columns: 1fr; }
-            .cards-grid { grid-template-columns: 1fr; }
-            .form-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo">
-            <div class="logo-icon">A</div>
+            <div class="logo-icon">₺</div>
             <div class="logo-text">AYKA<span>SOFT</span></div>
         </div>
-        
         <nav class="nav-menu">
             <a href="index.html" class="nav-item">
                 <span class="nav-icon">🏠</span>
@@ -477,218 +480,260 @@
         </nav>
     </aside>
 
-    <!-- Main Content -->
     <main class="main">
         <header class="header">
             <h1>Ön Muhasebe</h1>
-            <div class="header-actions">
-                <a href="#" class="btn btn-ghost">
-                    <span>📊</span> Raporlar
-                </a>
-                <a href="#" class="btn btn-primary">
-                    <span>+</span> Yeni İşlem
-                </a>
+            <div class="header-right">
+                <div class="date-display" id="currentDate"></div>
+                <a href="#" class="btn btn-ghost">📊 Raporlar</a>
+                <button class="btn btn-primary" onclick="openModal()">+ Yeni İşlem</button>
             </div>
         </header>
 
-        <!-- Stats -->
         <div class="stats-grid">
-            <div class="stat-card success">
-                <div class="stat-label">Kasa Bakiyesi</div>
-                <div class="stat-value success">₺125.450</div>
+            <div class="stat-card tl">
+                <div class="stat-label">Kasa Mevcudu</div>
+                <div class="stat-value tl">₺ 125.450</div>
+                <div class="stat-change up">▲ %5.2 bu ay</div>
             </div>
             <div class="stat-card danger">
                 <div class="stat-label">Toplam Borçlar</div>
-                <div class="stat-value danger">₺42.800</div>
+                <div class="stat-value danger">₺ 42.800</div>
+                <div class="stat-change down">▼ %2.1 bu ay</div>
             </div>
-            <div class="stat-card warning">
-                <div class="stat-label">Toplam Alacak</div>
-                <div class="stat-value">₺68.250</div>
+            <div class="stat-card success">
+                <div class="stat-label">Toplam Alacaklar</div>
+                <div class="stat-value success">₺ 68.250</div>
+                <div class="stat-change up">▲ %8.5 bu ay</div>
             </div>
             <div class="stat-card info">
                 <div class="stat-label">Bu Ay Gelir</div>
-                <div class="stat-value">₺189.500</div>
+                <div class="stat-value">₺ 189.500</div>
+                <div class="stat-change up">▲ %12 bu ay</div>
             </div>
         </div>
 
-        <!-- Quick Actions -->
+        <h3 style="margin-bottom: 1rem;">Hızlı İşlemler</h3>
         <div class="quick-actions">
-            <div class="quick-action" onclick="openModal('kasa')">
+            <div class="quick-action" onclick="openModal('cashIn')">
                 <div class="quick-action-icon">💵</div>
                 <div class="quick-action-title">Kasa Girişi</div>
             </div>
-            <div class="quick-action" onclick="openModal('kasa')">
+            <div class="quick-action" onclick="openModal('cashOut')">
                 <div class="quick-action-icon">💳</div>
                 <div class="quick-action-title">Kasa Çıkışı</div>
             </div>
-            <div class="quick-action" onclick="openModal('cari')">
+            <div class="quick-action" onclick="openModal('collection')">
                 <div class="quick-action-icon">👤</div>
                 <div class="quick-action-title">Cari Tahsilat</div>
             </div>
-            <div class="quick-action" onclick="openModal('banka')">
+            <div class="quick-action" onclick="openModal('transfer')">
                 <div class="quick-action-icon">🏦</div>
                 <div class="quick-action-title">Banka Transfer</div>
             </div>
         </div>
 
-        <!-- Tabs -->
         <div class="tabs">
-            <div class="tab active">Kasa Hareketleri</div>
-            <div class="tab">Banka Hesapları</div>
-            <div class="tab">Cari Hesaplar</div>
+            <button class="tab active" onclick="switchTab('cash')">Kasa Hareketleri</button>
+            <button class="tab" onclick="switchTab('bank')">Banka Hesapları</button>
+            <button class="tab" onclick="switchTab('cari')">Cari Hesaplar</button>
         </div>
 
-        <!-- Cash Register Table -->
-        <div class="table-container">
+        <div class="table-container" id="cashTab">
             <div class="table-header">
-                <h3 class="table-title">Son Hareketler</h3>
-                <a href="#" class="btn btn-ghost">Tümünü Gör</a>
+                <h3 class="table-title">Son Kasa Hareketleri</h3>
             </div>
             <table>
                 <thead>
                     <tr>
                         <th>Tarih</th>
-                        <th>İşlem Türü</th>
+                        <th>İşlem No</th>
+                        <th>Tür</th>
                         <th>Açıklama</th>
                         <th>Tutar</th>
                         <th>Bakiye</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>22.04.2026</td>
-                        <td>Giriş</td>
-                        <td>Nakit Satış - #1024</td>
-                        <td><span class="amount positive">+₺2.450</span></td>
-                        <td><span class="amount">₺125.450</span></td>
-                    </tr>
-                    <tr>
-                        <td>22.04.2026</td>
-                        <td>Çıkış</td>
-                        <td>Ofis Malzemesi</td>
-                        <td><span class="amount negative">-₺350</span></td>
-                        <td><span class="amount">₺123.000</span></td>
-                    </tr>
-                    <tr>
-                        <td>21.04.2026</td>
-                        <td>Giriş</td>
-                        <td>Cari Tahsilat - Ahmet Y.</td>
-                        <td><span class="amount positive">+₺5.000</span></td>
-                        <td><span class="amount">₺123.350</span></td>
-                    </tr>
-                    <tr>
-                        <td>21.04.2026</td>
-                        <td>Giriş</td>
-                        <td>POS Satış - #1023</td>
-                        <td><span class="amount positive">+₺890</span></td>
-                        <td><span class="amount">₺118.350</span></td>
-                    </tr>
-                    <tr>
-                        <td>20.04.2026</td>
-                        <td>Çıkış</td>
-                        <td>Kira Ödemesi</td>
-                        <td><span class="amount negative">-₺15.000</span></td>
-                        <td><span class="amount">₺117.460</span></td>
-                    </tr>
-                </tbody>
+                <tbody id="cashTableBody"></tbody>
             </table>
         </div>
 
-        <br><br>
-
-        <!-- Cards Grid -->
-        <div class="cards-grid">
-            <!-- Bank Accounts -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Banka Hesapları</h3>
-                    <a href="#" class="btn btn-primary">+ Yeni Hesap</a>
-                </div>
-                <div class="card-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Banka</th>
-                                <th>IBAN</th>
-                                <th>Bakiye</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Garanti Bankası</td>
-                                <td>***4521</td>
-                                <td><span class="amount">₺85.000</span></td>
-                            </tr>
-                            <tr>
-                                <td>Akbank</td>
-                                <td>***8834</td>
-                                <td><span class="amount">₺42.500</span></td>
-                            </tr>
-                            <tr>
-                                <td>QNB Finansbank</td>
-                                <td>***2291</td>
-                                <td><span class="amount">₺15.750</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <div class="table-container" id="bankTab" style="display:none;">
+            <div class="table-header">
+                <h3 class="table-title">Banka Hesapları</h3>
+                <button class="btn btn-primary">+ Yeni Hesap</button>
             </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Banka</th>
+                        <th>Şube</th>
+                        <th>IBAN</th>
+                        <th>Bakiye</th>
+                    </tr>
+                </thead>
+                <tbody id="bankTableBody"></tbody>
+            </table>
+        </div>
 
-            <!-- Cari Hesaplar -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Cari Hesaplar</h3>
-                    <a href="#" class="btn btn-primary">+ Yeni Cari</a>
-                </div>
-                <div class="card-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Cari</th>
-                                <th>Telefon</th>
-                                <th>Durum</th>
-                                <th>Bakiye</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Mehmet Kaya</td>
-                                <td>0532 *** 1122</td>
-                                <td><span class="status borclu">Borçlu</span></td>
-                                <td><span class="amount negative">₺12.500</span></td>
-                            </tr>
-                            <tr>
-                                <td>Ayşe Ltd. Şti.</td>
-                                <td>0212 *** 3344</td>
-                                <td><span class="status alacak">Alacaklı</span></td>
-                                <td><span class="amount positive">₺8.500</span></td>
-                            </tr>
-                            <tr>
-                                <td> Hasan A. </td>
-                                <td>0535 *** 5566</td>
-                                <td><span class="status bakiye">Bakiye</span></td>
-                                <td><span class="amount">₺2.000</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <div class="table-container" id="cariTab" style="display:none;">
+            <div class="table-header">
+                <h3 class="table-title">Cari Hesaplar</h3>
+                <button class="btn btn-primary">+ Yeni Cari</button>
             </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cari Adı</th>
+                        <th>Telefon</th>
+                        <th>Borç</th>
+                        <th>Alacak</th>
+                        <th>Bakiye</th>
+                    </tr>
+                </thead>
+                <tbody id="cariTableBody"></tbody>
+            </table>
         </div>
     </main>
 
+    <div class="modal-overlay" id="transactionModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Yeni İşlem</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">İşlem Türü</label>
+                    <select class="form-input" id="transactionType">
+                        <option value="cashIn">Kasa Girişi</option>
+                        <option value="cashOut">Kasa Çıkışı</option>
+                        <option value="collection">Cari Tahsilat</option>
+                        <option value="payment">Cari Ödeme</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tutar (₺)</label>
+                    <input type="number" class="form-input" id="amount" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Açıklama</label>
+                    <input type="text" class="form-input" id="description" placeholder="İşlem açıklaması...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeModal()">İptal</button>
+                <button class="btn btn-primary" onclick="saveTransaction()">Kaydet</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Simple tab switching
-        document.querySelectorAll('.tab').forEach((tab, index) => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
+        let cashTransactions = [
+            { id: 'KT-1024', date: '22.04.2026', type: 'Giriş', desc: 'Nakit Satış', amount: 2450, balance: 125450 },
+            { id: 'KT-1023', date: '22.04.2026', type: 'Çıkış', desc: 'Ofis Malzemesi', amount: -350, balance: 123000 },
+            { id: 'KT-1022', date: '21.04.2026', type: 'Giriş', desc: 'Cari Tahsilat - Ahmet Y.', amount: 5000, balance: 123350 },
+            { id: 'KT-1021', date: '21.04.2026', type: 'Giriş', desc: 'POS Satış #1023', amount: 890, balance: 118350 },
+            { id: 'KT-1020', date: '20.04.2026', type: 'Çıkış', desc: 'Kira Ödemesi', amount: -15000, balance: 117460 },
+        ];
+
+        let bankAccounts = [
+            { name: 'Garanti Bankası', branch: 'Mecidiyeköy', iban: 'TR12 0006 2001 4521 0006 7829 021', balance: 85000 },
+            { name: 'Akbank', branch: 'Şişli', iban: 'TR34 0000 0000 8834 5678 9012', balance: 42500 },
+            { name: 'QNB Finansbank', branch: 'Beşiktaş', iban: 'TR56 0000 0000 2291 1234 5678', balance: 15750 },
+        ];
+
+        let cariAccounts = [
+            { name: 'Mehmet Kaya', phone: '0532 123 4567', debt: 12500, credit: 0 },
+            { name: 'Ayşe Ltd. Şti.', phone: '0212 234 5678', debt: 0, credit: 8500 },
+            { name: 'Hasan A.', phone: '0535 890 1234', debt: 1000, credit: 0 },
+            { name: 'Ali Ticaret', phone: '0533 456 7890', debt: 0, credit: 5750 },
+        ];
+
+        function renderAll() {
+            document.getElementById('cashTableBody').innerHTML = cashTransactions.map(t => `
+                <tr>
+                    <td>${t.date}</td>
+                    <td><strong>${t.id}</strong></td>
+                    <td><span style="color: ${t.amount > 0 ? 'var(--success)' : 'var(--danger)'}; font-weight: 600;">${t.type}</span></td>
+                    <td>${t.desc}</td>
+                    <td><span class="amount ${t.amount > 0 ? 'positive' : 'negative'}">${t.amount > 0 ? '+' : ''}₺ ${Math.abs(t.amount).toLocaleString()}</span></td>
+                    <td><strong>₺ ${t.balance.toLocaleString()}</strong></td>
+                </tr>
+            `).join('');
+
+            document.getElementById('bankTableBody').innerHTML = bankAccounts.map(b => `
+                <tr>
+                    <td><strong>${b.name}</strong></td>
+                    <td>${b.branch}</td>
+                    <td><code>${b.iban}</code></td>
+                    <td><span class="amount positive">₺ ${b.balance.toLocaleString()}</span></td>
+                </tr>
+            `).join('');
+
+            document.getElementById('cariTableBody').innerHTML = cariAccounts.map(c => {
+                const balance = c.credit - c.debt;
+                return `
+                <tr>
+                    <td><strong>${c.name}</strong></td>
+                    <td>${c.phone}</td>
+                    <td><span class="amount negative">${c.debt ? '₺ ' + c.debt.toLocaleString() : '-'}</span></td>
+                    <td><span class="amount positive">${c.credit ? '₺ ' + c.credit.toLocaleString() : '-'}</span></td>
+                    <td><span class="amount ${balance >= 0 ? 'positive' : 'negative'}">${balance >= 0 ? '+' : ''}₺ ${Math.abs(balance).toLocaleString()}</span></td>
+                </tr>
+            `}).join('');
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('cashTab').style.display = tab === 'cash' ? 'block' : 'none';
+            document.getElementById('bankTab').style.display = tab === 'bank' ? 'block' : 'none';
+            document.getElementById('cariTab').style.display = tab === 'cari' ? 'block' : 'none';
+        }
+
+        function openModal() {
+            document.getElementById('transactionModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('transactionModal').classList.remove('active');
+            document.getElementById('amount').value = '';
+            document.getElementById('description').value = '';
+        }
+
+        function saveTransaction() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const desc = document.getElementById('description').value;
+            const type = document.getElementById('transactionType').value;
+            
+            if (!amount || !desc) {
+                alert('Lütfen tutar ve açıklama giriniz!');
+                return;
+            }
+
+            const newAmount = type === 'cashIn' || type === 'collection' ? amount : -amount;
+            const newType = newAmount > 0 ? 'Giriş' : 'Çıkış';
+            
+            cashTransactions.unshift({
+                id: 'KT-' + String(cashTransactions.length + 1025),
+                date: new Date().toLocaleDateString('tr-TR'),
+                type: newType,
+                desc: desc,
+                amount: newAmount,
+                balance: 125450 + newAmount
             });
+
+            renderAll();
+            closeModal();
+            alert(`✅ İşlem kaydedildi!\n\nTutar: ₺ ${amount.toLocaleString()}\nAçıklama: ${desc}`);
+        }
+
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('tr-TR', {
+            year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
         });
 
-        function openModal(type) {
-            alert(type === 'kasa' ? '💰 Kasa İşlemi Penceresi Açılacak' :
-                  type === 'cari' ? '👤 Cari İşlemi Penceresi Açılacak' : '🏦 Banka İşlemi Penceresi Açılacak');
-        }
+        renderAll();
     </script>
 </body>
 </html>
