@@ -291,10 +291,12 @@ if(!localStorage.getItem("aykasoft_currentUser"))window.location.href="login.htm
         .barcode-input-container {
             padding: 1rem 1.5rem;
             border-bottom: 1px solid var(--light-secondary);
+            display: flex;
+            gap: 0.5rem;
         }
-
+        
         .barcode-input {
-            width: 100%;
+            flex: 1;
             padding: 0.875rem 1rem;
             border: 2px solid var(--primary);
             border-radius: 10px;
@@ -303,10 +305,24 @@ if(!localStorage.getItem("aykasoft_currentUser"))window.location.href="login.htm
             font-family: 'DM Sans';
             letter-spacing: 2px;
         }
-
+        
         .barcode-input:focus {
             outline: none;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+        
+        .scan-btn {
+            padding: 0 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .scan-btn:hover {
+            background: var(--primary-dark);
         }
 
         .cart-header {
@@ -523,6 +539,7 @@ if(!localStorage.getItem("aykasoft_currentUser"))window.location.href="login.htm
             <div class="cart-panel">
                 <div class="barcode-input-container">
                     <input type="text" class="barcode-input" id="barcodeInput" placeholder="Barkod okutun..." autofocus>
+                    <button class="scan-btn" onclick="openScanner()" title="Kamerayla Tara">📷</button>
                 </div>
                 
                 <div class="cart-header">
@@ -736,12 +753,15 @@ if(!localStorage.getItem("aykasoft_currentUser"))window.location.href="login.htm
                 localStorage.setItem('aykasoft_products_' + currentUser.id, JSON.stringify(products));
             }
             
+            
             cart = [];
             renderCart();
             renderProducts();
         }
-
-        renderProducts();
+        
+        function openScanner() {
+            window.location.href = 'scanner.html';
+        }
     </script>
 </body>
 </html>
