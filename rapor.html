@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AYKASOFT - Raporlar</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: #f8fafc; color: #334155; min-height: 100vh; }
+        .header { background: #0f172a; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: white; font-weight: 700; font-size: 1.25rem; }
+        .header-right a { color: white; text-decoration: none; background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 8px; }
+        .header-right a:hover { background: rgba(255,255,255,0.2); }
+        .main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        h1, h2 { font-family: 'Outfit', sans-serif; color: #0f172a; }
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 2rem 0; }
+        .stat-card { background: white; padding: 1.5rem; border-radius: 16px; border-left: 4px solid #2563eb; }
+        .stat-label { color: #64748b; font-size: 0.875rem; }
+        .stat-value { font-family: 'Outfit'; font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-top: 0.5rem; }
+        .card { background: white; border-radius: 16px; padding: 1.5rem; margin-top: 2rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f8fafc; font-weight: 600; color: #0f172a; }
+        tr:hover { background: #f8fafc; }
+        .btn { background: #2563eb; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; cursor: pointer; font-weight: 600; }
+        .btn:hover { background: #1d4ed8; }
+        .filter-bar { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .filter-bar select, .filter-bar input { padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit; }
+        .badge { background: #10b981; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; }
+        .empty { text-align: center; padding: 3rem; color: #64748b; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="dashboard.html" class="logo">₺ AYKASOFT</a>
+        <div class="header-right">
+            <a href="dashboard.html">← Geri</a>
+            <a href="satis.html">Satış</a>
+        </div>
+    </header>
+    
+    <main class="main">
+        <h1>📊 Raporlar</h1>
+        <p style="color: #64748b; margin-top: 0.5rem;">Satış raporlarınızı görüntüleyin</p>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-label">Toplam Satış</div>
+                <div class="stat-value" id="totalSales">₺ 0</div>
+            </div>
+            <div class="stat-card" style="border-color: #10b981;">
+                <div class="stat-label">Bugünkü Satış</div>
+                <div class="stat-value" id="todaySales">₺ 0</div>
+            </div>
+            <div class="stat-card" style="border-color: #f59e0b;">
+                <div class="stat-label">Satış Adedi</div>
+                <div class="stat-value" id="totalCount">0</div>
+            </div>
+            <div class="stat-card" style="border-color: #8b5cf6;">
+                <div class="stat-label">Ortalama Sepet</div>
+                <div class="stat-value" id="avgSale">₺ 0</div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Son Satışlar</h2>
+            <div class="filter-bar" style="margin-top: 1rem;">
+                <select id="filterType" onchange="loadSales()">
+                    <option value="">Tümü</option>
+                    <option value="nakit">Nakit</option>
+                    <option value="pos">POS</option>
+                    <option value="cari">Cari</option>
+                </select>
+                <input type="date" id="filterDate" onchange="loadSales()">
+                <button class="btn" onclick="loadSales()">Filtrele</button>
+                <button class="btn" style="background: #64748b;" onclick="exportCSV()">📥 CSV İndir</button>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tarih</th>
+                        <th>Ürün</th>
+                        <th>Barkod</th>
+                        <th>Fiyat</th>
+                        <th>Adet</th>
+                        <th>Toplam</th>
+                        <th>Ödeme</th>
+                    </tr>
+                </thead>
+                <tbody id="salesTable">
+                    <tr><td colspan="8" class="empty">Henüz satış yok</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
+        if (!currentUser) window.location.href = 'login.html';
+        
+        function loadSales() {
+            const sales = JSON.parse(localStorage.getItem('aykasoft_sales_' + currentUser.id)) || [];
+            const filterType = document.getElementById('filterType').value;
+            const filterDate = document.getElementById('filterDate').value;
+            
+            let filtered = sales;
+            if (filterType) filtered = filtered.filter(s => s.type === filterType);
+            if (filterDate) filtered = filtered.filter(s => s.date === filterDate);
+            
+            // Stats
+            const total = sales.reduce((sum, s) => sum + (s.total || 0), 0);
+            const today = new Date().toLocaleDateString('tr-TR');
+            const todayTotal = sales.filter(s => s.date === today).reduce((sum, s) => sum + (s.total || 0), 0);
+            
+            document.getElementById('totalSales').textContent = '₺ ' + total.toLocaleString();
+            document.getElementById('todaySales').textContent = '₺ ' + todayTotal.toLocaleString();
+            document.getElementById('totalCount').textContent = sales.length;
+            document.getElementById('avgSale').textContent = sales.length ? '₺ ' + Math.round(total/sales.length).toLocaleString() : '₺ 0';
+            
+            // Table
+            const tbody = document.getElementById('salesTable');
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="empty">Henüz satış yok</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = filtered.map(s => `
+                <tr>
+                    <td>${s.id}</td>
+                    <td>${s.date}</td>
+                    <td>${s.product}</td>
+                    <td>${s.barcode}</td>
+                    <td>₺ ${s.price?.toLocaleString()}</td>
+                    <td>${s.qty}</td>
+                    <td><strong>₺ ${s.total?.toLocaleString()}</strong></td>
+                    <td><span class="badge">${s.type?.toUpperCase()}</span></td>
+                </tr>
+            `).join('');
+        }
+        
+        function exportCSV() {
+            const sales = JSON.parse(localStorage.getItem('aykasoft_sales_' + currentUser.id)) || [];
+            if (sales.length === 0) { alert('Veri yok!'); return; }
+            
+            let csv = 'ID,Tarih,Urun,Barkod,Fiyat,Adet,Toplam,Odeme\n';
+            sales.forEach(s => {
+                csv += `${s.id},${s.date},${s.product},${s.barcode},${s.price},${s.qty},${s.total},${s.type}\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'aykasoft_satislar_' + new Date().toISOString().slice(0,10) + '.csv';
+            a.click();
+        }
+        
+        loadSales();
+    </script>
+</body>
+</html>

@@ -708,8 +708,37 @@ if(!localStorage.getItem("aykasoft_currentUser"))window.location.href="login.htm
             
             alert(`✅ Satış Tamamlandı!\n\nÖdeme Yöntemi: ${methods[type]}\nToplam: ${total}\n\nTeşekkürler!`);
             
+            // Satisi localStorage'a kaydet
+            const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
+            if (currentUser) {
+                const sales = JSON.parse(localStorage.getItem('aykasoft_sales_' + currentUser.id) || []);
+                cart.forEach(item => {
+                    sales.push({
+                        id: 'SJS' + Date.now(),
+                        date: new Date().toLocaleDateString('tr-TR'),
+                        product: item.name,
+                        barcode: item.barcode,
+                        price: item.price,
+                        qty: item.qty,
+                        total: item.price * item.qty,
+                        type: type,
+                        status: 'Tamamlandı'
+                    });
+                });
+                localStorage.setItem('aykasoft_sales_' + currentUser.id, JSON.stringify(sales));
+                
+                // Stok guncelle
+                const products = JSON.parse(localStorage.getItem('aykasoft_products_' + currentUser.id)) || [];
+                cart.forEach(cartItem => {
+                    const idx = products.findIndex(p => p.barcode === cartItem.barcode);
+                    if (idx > -1) products[idx].stock -= cartItem.qty;
+                });
+                localStorage.setItem('aykasoft_products_' + currentUser.id, JSON.stringify(products));
+            }
+            
             cart = [];
             renderCart();
+            renderProducts();
         }
 
         renderProducts();
