@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap - AYKASOFT</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --accent: #06b6d4;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --light-secondary: #e2e8f0;
+            --white: #ffffff;
+            --text: #334155;
+            --text-light: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --tl: #c9242e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 440px;
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .logo-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .logo-text span { color: var(--primary); }
+
+        h1 {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .form-group { margin-bottom: 1.25rem; }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--light-secondary);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--light-secondary);
+        }
+
+        .divider span {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .social-login {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--light-secondary);
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .social-btn:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .register-link a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 0.875rem 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .loading.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <div class="logo-icon">₺</div>
+                <div class="logo-text">AYKA<span>SOFT</span></div>
+            </div>
+
+            <h1>Hoş Geldiniz</h1>
+            <p class="subtitle">Hesabınıza giriş yapın</p>
+
+            <div id="alertContainer"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">E-posta</label>
+                    <input type="email" class="form-input" id="email" placeholder="eposta@ornek.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Şifre</label>
+                    <input type="password" class="form-input" id="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="submitBtn">Giriş Yap</button>
+            </form>
+
+            <div class="loading" id="loading">
+                <span>⏳ Giriş yapılıyor...</span>
+            </div>
+
+            <div class="divider">
+                <span>veya</span>
+            </div>
+
+            <div class="social-login">
+                <button class="social-btn" onclick="loginWithGoogle()">
+                    🔵 Google
+                </button>
+                <button class="social-btn" onclick="showRegister()">
+                    Hesap Oluştur
+                </button>
+            </div>
+
+            <p class="register-link">
+                Hesabınız yok mu? <a href="#" onclick="showRegister()">Kayıt olun</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getDatabase, ref, set, get, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        // Firebase config - kullanıcının firebase projesi
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEMO-API-KEY-YERINE-KENDI-KEYNIZI-YAZIN",
+            authDomain: "aykasoft.firebaseapp.com",
+            databaseURL: "https://aykasoft-default-rtdb.firebaseio.com",
+            projectId: "aykasoft",
+            storageBucket: "aykasoft.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abc123"
+        };
+
+        // Initialize Firebase (demo modunda çalışacak)
+        let auth, db, app;
+
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getDatabase(app);
+        } catch(e) {
+            console.log('Firebase başlatılamadı, demo modundasınız');
+        }
+
+        // Demo veritabanı (localStorage)
+        const demoDB = {
+            users: JSON.parse(localStorage.getItem('aykasoft_users') || '[]'),
+            transactions: JSON.parse(localStorage.getItem('aykasoft_transactions') || '[]'),
+            products: JSON.parse(localStorage.getItem('aykasoft_products') || '[]'),
+            customers: JSON.parse(localStorage.getItem('aykasoft_customers') || '[]'),
+            currentUser: JSON.parse(localStorage.getItem('aykasoft_currentUser') || 'null')
+        };
+
+        const defaultProducts = [
+            { barcode: '869123456001', name: 'Klavye', price: 450, stock: 25, category: 'cevre' },
+            { barcode: '869123456002', name: 'Mouse', price: 280, stock: 30, category: 'cevre' },
+            { barcode: '869123456003', name: 'Monitor', price: 2100, stock: 12, category: 'bilgisayar' },
+            { barcode: '869123456004', name: 'SSD 500GB', price: 890, stock: 18, category: 'bilgisayar' },
+            { barcode: '869123456005', name: 'Kulaklık', price: 350, stock: 22, category: 'aksesuar' },
+            { barcode: '869123456006', name: 'Kumanda', price: 120, stock: 45, category: 'akisuar' },
+        ];
+
+        const defaultCustomers = [
+            { id: 1, name: 'Mehmet Kaya', phone: '0532 123 4567', email: 'mehmet@kaya.com', address: 'Fatih Mah. No:15', debt: 12500, credit: 0 },
+            { id: 2, name: 'Ayşe Ltd. Şti.', phone: '0212 234 5678', email: 'bilgi@ayse.com', address: 'Mecidiyeköy No:22', debt: 0, credit: 8500 },
+            { id: 3, name: 'Hasan A.', phone: '0535 890 1234', email: 'hasan@mail.com', address: 'Kadıköy No:8', debt: 1000, credit: 0 },
+        ];
+
+        if(demoDB.products.length === 0) {
+            demoDB.products = defaultProducts;
+            localStorage.setItem('aykasoft_products', JSON.stringify(demoDB.products));
+        }
+        if(demoDB.customers.length === 0) {
+            demoDB.customers = defaultCustomers;
+            localStorage.setItem('aykasoft_customers', JSON.stringify(demoDB.customers));
+        }
+
+        // Demo kullanıcı ekle
+        if(demoDB.users.length === 0) {
+            demoDB.users.push({
+                id: 'demo1',
+                email: 'demo@aykasoft.com',
+                password: 'demo123',
+                name: 'Demo Kullanıcı',
+                company: 'Demo Firma',
+                createdAt: new Date().toISOString()
+            });
+            localStorage.setItem('aykasoft_users', JSON.stringify(demoDB.users));
+        }
+
+        window.demoDB = demoDB;
+        window.saveDemoDB = () => {
+            localStorage.setItem('aykasoft_users', JSON.stringify(demoDB.users));
+            localStorage.setItem('aykasoft_transactions', JSON.stringify(demoDB.transactions));
+            localStorage.setItem('aykasoft_products', JSON.stringify(demoDB.products));
+            localStorage.setItem('aykasoft_customers', JSON.stringify(demoDB.customers));
+            localStorage.setItem('aykasoft_currentUser', JSON.stringify(demoDB.currentUser));
+        };
+    </script>
+
+    <script>
+        const alertContainer = document.getElementById('alertContainer');
+        const loginForm = document.getElementById('loginForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loading');
+
+        function showAlert(message, type = 'error') {
+            alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            setTimeout(() => alertContainer.innerHTML = '', 5000);
+        }
+
+        function showLoading(show) {
+            submitBtn.style.display = show ? 'none' : 'block';
+            loading.classList.toggle('active', show);
+        }
+
+        // Demo giriş
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            showLoading(true);
+
+            // Demo modunda giriş kontrolü
+            setTimeout(() => {
+                const user = window.demoDB.users.find(u => 
+                    (u.email === email || u.email === email + '@demo.com') && u.password === password
+                );
+
+                if (user) {
+                    window.demoDB.currentUser = user;
+                    window.saveDemoDB();
+                    showAlert('✅ Giriş başarılı! Yönlendiriliyorsunuz...', 'success');
+                    setTimeout(() => window.location.href = 'satis.html', 1500);
+                } else {
+                    showAlert('❌ E-posta veya şifre hatalı!\n\nDemo hesap: demo@aykasoft.com / demo123', 'error');
+                    showLoading(false);
+                }
+            }, 1000);
+        });
+
+        function showRegister() {
+            const email = prompt('E-posta adresiniz:');
+            if (!email) return;
+            
+            const password = prompt('Şifre (en az 6 karakter):');
+            if (!password || password.length < 6) {
+                showAlert('Şifre en az 6 karakter olmalı!', 'error');
+                return;
+            }
+
+            const name = prompt('Adınız Soyadınız:');
+            if (!name) return;
+
+            showLoading(true);
+
+            // Kullanıcı kaydet
+            setTimeout(() => {
+                const exists = window.demoDB.users.find(u => u.email === email);
+                if (exists) {
+                    showAlert('❌ Bu e-posta zaten kayıtlı!', 'error');
+                    showLoading(false);
+                    return;
+                }
+
+                const newUser = {
+                    id: 'user_' + Date.now(),
+                    email: email,
+                    password: password,
+                    name: name,
+                    company: name + ' Firması',
+                    createdAt: new Date().toISOString()
+                };
+
+                window.demoDB.users.push(newUser);
+                window.demoDB.currentUser = newUser;
+                window.saveDemoDB();
+                
+                showAlert('✅ Kayıt başarılı!', 'success');
+                setTimeout(() => window.location.href = 'satis.html', 1500);
+            }, 1000);
+        }
+
+        function loginWithGoogle() {
+            alert('🔵 Google ile giriş için Firebase projesi yapılandırmanız gerekiyor.\n\nŞimdilik demo hesap ile deneyebilirsiniz:\nE-posta: demo@aykasoft.com\nŞifre: demo123');
+        }
+    </script>
+</body>
+</html>
