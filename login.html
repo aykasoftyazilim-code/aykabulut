@@ -398,7 +398,7 @@
                     window.demoDB.currentUser = user;
                     window.saveDemoDB();
                     showAlert('✅ Giriş başarılı! Yönlendiriliyorsunuz...', 'success');
-                    setTimeout(() => window.location.href = 'satis.html', 1500);
+                    setTimeout(() => window.location.href = 'dashboard.html', 1500);
                 } else {
                     showAlert('❌ E-posta veya şifre hatalı!\n\nDemo hesap: demo@aykasoft.com / demo123', 'error');
                     showLoading(false);
@@ -444,7 +444,7 @@
                 window.saveDemoDB();
                 
                 showAlert('✅ Kayıt başarılı!', 'success');
-                setTimeout(() => window.location.href = 'satis.html', 1500);
+                setTimeout(() => window.location.href = 'dashboard.html', 1500);
             }, 1000);
         }
 
