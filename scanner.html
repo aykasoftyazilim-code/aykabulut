@@ -2,107 +2,134 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AYKASOFT - Barkod Tarayici</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2@1.8.4/dist/quagga.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'DM Sans', sans-serif; background: #0f172a; color: white; min-height: 100vh; display: flex; flex-direction: column; }
-        .header { padding: 1rem; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); }
-        .logo { background: #2563eb; padding: 0.25rem 0.5rem; border-radius: 6px; font-weight: 700; }
-        .close-btn { background: rgba(255,255,255,0.1); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-size: 1rem; }
+        body { font-family: 'DM Sans', sans-serif; background: #000; color: white; min-height: 100vh; display: flex; flex-direction: column; }
         
-        .scanner-container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 1rem; }
-        #scanner-wrapper { width: 100%; max-width: 400px; border-radius: 16px; overflow: hidden; border: 3px solid #2563eb; }
-        #scanner-wrapper video { width: 100%; }
+        .header { padding: 1rem; display: flex; justify-content: space-between; align-items: center; background: #111; position: sticky; top: 0; z-index: 50; }
+        .logo { background: #2563eb; padding: 0.25rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 0.9rem; }
+        .close-btn { background: rgba(255,255,255,0.1); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
         
-        .scanner-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 280px; height: 100px; border: 3px solid #10b981; border-radius: 12px; pointer-events: none; }
-        .scanner-line { position: absolute; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, #10b981, transparent); top: 0; animation: scan 1.5s infinite linear; }
-        @keyframes scan { 0% { top: 10%; } 100% { top: 90%; } }
+        .scanner-area { flex: 1; position: relative; overflow: hidden; background: #000; }
+        #scanner-viewport { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+        #scanner-viewport video { width: 100%; height: 100%; object-fit: cover; }
         
-        .guide { text-align: center; padding: 1.5rem; }
-        .guide h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-        .guide p { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+        .scan-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; height: 40%; border: 3px solid #10b981; border-radius: 16px; pointer-events: none; }
+        .scan-line { position: absolute; width: 90%; height: 2px; background: #10b981; left: 5%; box-shadow: 0 0 10px #10b981; animation: scanLine 2s infinite; }
+        @keyframes scanLine { 0%, 100% { top: 5%; } 50% { top: 95%; } }
         
-        .status { text-align: center; padding: 1rem; font-size: 0.9rem; }
-        .status.active { color: #10b981; font-weight: 600; }
+        .scan-status { position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); text-align: center; }
+        .scan-status .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .scan-status .text { font-size: 1rem; opacity: 0.9; }
         
-        .result-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 100; }
+        .success-flash { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(16, 185, 129, 0.3); animation: flash 0.3s; pointer-events: none; }
+        @keyframes flash { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+        
+        .manual-entry { padding: 1rem; background: #111; }
+        .manual-entry input { width: 100%; padding: 1rem; border: 2px solid #333; border-radius: 12px; background: #222; color: white; font-size: 1.25rem; text-align: center; letter-spacing: 2px; }
+        .manual-entry input:focus { border-color: #2563eb; outline: none; }
+        .manual-entry input::placeholder { color: #666; }
+        
+        /* Result Modal */
+        .result-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 100; }
         .result-modal.active { display: flex; }
-        .result-content { background: white; width: 90%; max-width: 400px; border-radius: 16px; padding: 1.5rem; color: #0f172a; }
-        .result-barcode { font-size: 1.25rem; font-weight: 700; color: #2563eb; background: #f1f5f9; padding: 0.75rem; border-radius: 8px; margin: 1rem 0; word-break: break-all; text-align: center; }
-        .result-product { font-size: 1.1rem; font-weight: 600; margin: 0.5rem 0; text-align: center; }
-        .result-price { font-size: 1.75rem; font-weight: 700; color: #c9242e; text-align: center; }
+        .result-content { background: white; width: 95%; max-width: 400px; border-radius: 20px; padding: 1.5rem; color: #0f172a; }
+        .result-header { text-align: center; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0; }
+        .result-header h3 { color: #64748b; font-size: 0.9rem; text-transform: uppercase; }
+        .result-barcode { font-size: 1.1rem; font-weight: 700; color: #2563eb; background: #f1f5f9; padding: 0.75rem; border-radius: 8px; margin-top: 0.5rem; word-break: break-all; }
         
-        .result-qty { display: flex; align-items: center; justify-content: center; gap: 1rem; margin: 1rem 0; }
-        .qty-btn { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #e2e8f0; background: white; font-size: 1.5rem; cursor: pointer; font-weight: 700; }
-        .qty-btn:hover { background: #f1f5f9; }
-        .qty-value { font-size: 2rem; font-weight: 700; min-width: 50px; text-align: center; }
+        .result-body { padding: 1rem 0; text-align: center; }
+        .result-product { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .result-price { font-size: 2rem; font-weight: 700; color: #c9242e; }
         
-        .result-total { font-size: 1.1rem; background: #f1f5f9; padding: 0.75rem; border-radius: 8px; margin: 1rem 0; text-align: center; }
+        .qty-control { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin: 1.5rem 0; padding: 1rem; background: #f1f5f9; border-radius: 12px; }
+        .qty-btn { width: 56px; height: 56px; border-radius: 50%; border: none; background: #2563eb; color: white; font-size: 1.75rem; font-weight: 700; cursor: pointer; }
+        .qty-btn:active { background: #1d4ed8; }
+        .qty-value { font-size: 2.5rem; font-weight: 700; min-width: 60px; }
+        
+        .result-total { background: #0f172a; color: white; padding: 1rem; border-radius: 12px; margin: 1rem 0; font-size: 1.1rem; }
+        .result-total strong { font-size: 1.5rem; }
+        
         .result-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
-        .result-btn { flex: 1; padding: 0.875rem; border: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; cursor: pointer; }
+        .result-btn { flex: 1; padding: 1rem; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; }
         .result-btn.primary { background: #2563eb; color: white; }
+        .result-btn.primary:active { background: #1d4ed8; }
         .result-btn.success { background: #10b981; color: white; }
-        .result-btn.secondary { background: #64748b; color: white; width: 100%; margin-top: 0.5rem; }
+        .result-btn.success:active { background: #059669; }
         
-        .result-not-found { background: #fee2e2; color: #dc2626; padding: 1rem; border-radius: 10px; margin: 1rem 0; text-align: center; }
-        .result-not-found h3 { margin-bottom: 0.5rem; }
+        .skip-btn { width: 100%; margin-top: 0.75rem; padding: 0.875rem; border: none; border-radius: 12px; background: #64748b; color: white; font-weight: 600; cursor: pointer; }
         
-        .last-scan { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); background: rgba(16, 185, 129, 0.9); color: white; padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: 600; display: none; }
-        .last-scan.show { display: block; animation: fadeInOut 2s; }
-        @keyframes fadeInOut { 0%, 100% { opacity: 0; } 20%, 80% { opacity: 1; } }
+        .not-found { text-align: center; padding: 1.5rem; }
+        .not-found h3 { color: #dc2626; font-size: 1.5rem; margin-bottom: 1rem; }
+        .not-found .barcode-val { font-size: 1.25rem; font-weight: 700; background: #fee2e2; padding: 1rem; border-radius: 12px; color: #dc2626; margin-bottom: 1rem; }
+        
+        .loading-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 200; }
+        .loading-screen.hidden { display: none; }
+        .loading-icon { font-size: 4rem; margin-bottom: 1rem; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .loading-text { font-size: 1.25rem; }
     </style>
 </head>
 <body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-icon">📷</div>
+        <div class="loading-text">Kamera aciliyor...</div>
+    </div>
+    
     <header class="header">
         <div><span class="logo">AY</span> Barkod</div>
-        <button class="close-btn" onclick="closeScanner()">Kapat</button>
+        <button class="close-btn" onclick="closePage()">Kapat</button>
     </header>
     
-    <div class="scanner-container">
-        <div id="scanner-wrapper"></div>
-        <div class="scanner-overlay">
-            <div class="scanner-line"></div>
+    <div class="scanner-area">
+        <div id="scanner-viewport"></div>
+        <div class="scan-overlay">
+            <div class="scan-line"></div>
         </div>
-        <div class="guide">
-            <h2>📷 Barkod Okutun</h2>
-            <p>Kamerayı barkodun üzerine getirin</p>
+        <div class="scan-status">
+            <div class="icon">📷</div>
+            <div class="text">Barkodu tarama alanina getirin</div>
         </div>
-        <div class="status" id="scannerStatus">Tarayıcı başlatılıyor...</div>
-        <div class="last-scan" id="lastScan"></div>
+    </div>
+    
+    <div class="manual-entry">
+        <input type="text" id="manualBarcode" placeholder="Barkod numarasini girin" onkeypress="if(event.key==='Enter')manualSearch()">
     </div>
     
     <div class="result-modal" id="resultModal">
         <div class="result-content">
-            <div id="resultFound">
-                <h3 style="color:#64748b;text-align:center;">BULUNAN ÜRÜN</h3>
-                <div class="result-barcode" id="resultBarcode">-</div>
-                <div class="result-product" id="resultProduct">-</div>
-                <div class="result-price" id="resultPrice">₺ 0</div>
-                
-                <div class="result-qty">
+            <div id="foundContent">
+                <div class="result-header">
+                    <h3>Bulunan Urun</h3>
+                    <div class="result-barcode" id="modalBarcode">-</div>
+                </div>
+                <div class="result-body">
+                    <div class="result-product" id="modalProduct">-</div>
+                    <div class="result-price" id="modalPrice">₺ 0</div>
+                </div>
+                <div class="qty-control">
                     <button class="qty-btn" onclick="changeQty(-1)">-</button>
-                    <div class="qty-value" id="resultQty">1</div>
+                    <div class="qty-value" id="modalQty">1</div>
                     <button class="qty-btn" onclick="changeQty(1)">+</button>
                 </div>
-                
-                <div class="result-total">Toplam: <strong id="resultTotal">₺ 0</strong></div>
-                
+                <div class="result-total">Toplam: <strong id="modalTotal">₺ 0</strong></div>
                 <div class="result-actions">
                     <button class="result-btn primary" onclick="addToCart()">Sepete Ekle</button>
-                    <button class="result-btn success" onclick="quickSale()">Anlık Satış</button>
+                    <button class="result-btn success" onclick="quickSale()">Anlik Satis</button>
                 </div>
-                <button class="result-btn secondary" onclick="closeResult()">Başka Ürün Tara</button>
+                <button class="skip-btn" onclick="closeResult()">Baska Urun Tara</button>
             </div>
             
-            <div id="resultNotFound" style="display:none;">
-                <div class="result-not-found">
-                    <h3>❌ ÜRÜN BULUNAMADI</h3>
-                    <p>Barkod: <strong id="notFoundBarcode">-</strong></p>
+            <div id="notFoundContent" style="display:none;">
+                <div class="not-found">
+                    <h3>Urun Bulunamadi</h3>
+                    <div class="barcode-val" id="notFoundBarcode">-</div>
+                    <button class="result-btn primary" onclick="closeResult()">Baska Urun Tara</button>
                 </div>
-                <button class="result-btn primary" onclick="closeResult()" style="width:100%;">Başka Ürün Tara</button>
             </div>
         </div>
     </div>
@@ -111,47 +138,45 @@
         const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
         if (!currentUser) window.location.href = 'login.html';
         
-        let html5QrCode = null;
         let selectedProduct = null;
         let qty = 1;
-        let lastResult = null;
-        let lastScanTime = 0;
+        let lastCode = null;
+        let lastTime = 0;
         
+        // Demo urunler - EAN-13 barkodlu
         const products = [
-            { barcode: '869123456001', name: 'Klavye', price: 450, stock: 25 },
-            { barcode: '869123456002', name: 'Mouse', price: 280, stock: 30 },
-            { barcode: '869123456003', name: 'Monitor', price: 2100, stock: 12 },
-            { barcode: '869123456004', name: 'SSD 500GB', price: 890, stock: 18 },
-            { barcode: '869123456005', name: 'Kulaklık', price: 350, stock: 22 },
-            { barcode: '869123456006', name: 'USB Kablo', price: 80, stock: 50 },
-            { barcode: '869123456007', name: 'Webcam', price: 590, stock: 15 },
-            { barcode: '869123456008', name: 'USB Hub', price: 250, stock: 28 },
-            { barcode: '869123456009', name: 'Kablo Set', price: 150, stock: 50 },
-            { barcode: '869123456010', name: 'Mouse Pad', price: 80, stock: 60 },
-            { barcode: '869123456011', name: 'Ekran Kartı', price: 8500, stock: 5 },
-            { barcode: '869123456012', name: 'RAM 16GB', price: 1200, stock: 14 },
-            { barcode: '869123456013', name: 'Kasa', price: 1800, stock: 8 },
-            { barcode: '869123456014', name: 'Anakart', price: 3200, stock: 6 },
-            { barcode: '869123456015', name: 'İşlemci', price: 6500, stock: 4 }
+            {barcode:'869123456001',name:'Klavye',price:450},
+            {barcode:'869123456002',name:'Mouse',price:280},
+            {barcode:'869123456003',name:'Monitor',price:2100},
+            {barcode:'869123456004',name:'SSD 500GB',price:890},
+            {barcode:'869123456005',name:'Kulaklik',price:350},
+            {barcode:'869123456006',name:'USB Kablo',price:80},
+            {barcode:'869123456007',name:'Webcam',price:590},
+            {barcode:'869123456008',name:'USB Hub',price:250},
+            {barcode:'869123456009',name:'Kablo Set',price:150},
+            {barcode:'869123456010',name:'Mouse Pad',price:80},
+            {barcode:'869123456011',name:'Ekran Karti',price:8500},
+            {barcode:'869123456012',name:'RAM 16GB',price:1200},
+            {barcode:'869123456013',name:'Kasa',price:1800},
+            {barcode:'869123456014',name:'Anakart',price:3200},
+            {barcode:'869123456015',name:'Islemci',price:6500}
         ];
         
-        function closeScanner() {
-            if (html5QrCode) {
-                html5QrCode.stop().catch(() => {});
-            }
+        function closePage() {
+            if (window.Quagga) Quagga.stop();
             window.location.href = 'satis.html';
         }
         
         function changeQty(delta) {
             qty = Math.max(1, qty + delta);
-            document.getElementById('resultQty').textContent = qty;
-            document.getElementById('resultTotal').textContent = '₺ ' + (selectedProduct.price * qty).toLocaleString();
+            document.getElementById('modalQty').textContent = qty;
+            document.getElementById('modalTotal').textContent = '₺ ' + (selectedProduct.price * qty).toLocaleString();
         }
         
         function findProduct(barcode) {
             const stored = JSON.parse(localStorage.getItem('aykasoft_products_' + currentUser.id)) || [];
-            const storedProduct = stored.find(p => p.barcode === barcode);
-            if (storedProduct) return storedProduct;
+            const sp = stored.find(p => p.barcode === barcode);
+            if (sp) return sp;
             return products.find(p => p.barcode === barcode);
         }
         
@@ -161,21 +186,17 @@
             
             if (product) {
                 selectedProduct = product;
-                document.getElementById('resultFound').style.display = 'block';
-                document.getElementById('resultNotFound').style.display = 'none';
-                document.getElementById('resultBarcode').textContent = barcode;
-                document.getElementById('resultProduct').textContent = product.name;
-                document.getElementById('resultPrice').textContent = '₺ ' + product.price.toLocaleString();
-                document.getElementById('resultQty').textContent = qty;
-                document.getElementById('resultTotal').textContent = '₺ ' + product.price.toLocaleString();
-                
-                // Pause scanner
-                if (html5QrCode) {
-                    html5QrCode.pause();
-                }
+                document.getElementById('foundContent').style.display = 'block';
+                document.getElementById('notFoundContent').style.display = 'none';
+                document.getElementById('modalBarcode').textContent = barcode;
+                document.getElementById('modalProduct').textContent = product.name;
+                document.getElementById('modalPrice').textContent = '₺ ' + product.price.toLocaleString();
+                document.getElementById('modalQty').textContent = qty;
+                document.getElementById('modalTotal').textContent = '₺ ' + product.price.toLocaleString();
+                if (window.Quagga) Quagga.stop();
             } else {
-                document.getElementById('resultFound').style.display = 'none';
-                document.getElementById('resultNotFound').style.display = 'block';
+                document.getElementById('foundContent').style.display = 'none';
+                document.getElementById('notFoundContent').style.display = 'block';
                 document.getElementById('notFoundBarcode').textContent = barcode;
             }
         }
@@ -183,108 +204,101 @@
         function closeResult() {
             document.getElementById('resultModal').classList.remove('active');
             selectedProduct = null;
-            
-            if (html5QrCode) {
-                html5QrCode.resume();
-            }
+            startScan();
         }
         
         function addToCart() {
             if (!selectedProduct) return;
-            
             const cart = JSON.parse(localStorage.getItem('aykasoft_cart_' + currentUser.id)) || [];
-            const existing = cart.find(c => c.barcode === selectedProduct.barcode);
-            if (existing) {
-                existing.qty += qty;
-            } else {
-                cart.push({
-                    barcode: selectedProduct.barcode,
-                    name: selectedProduct.name,
-                    price: selectedProduct.price,
-                    qty: qty
-                });
-            }
+            const ex = cart.find(c => c.barcode === selectedProduct.barcode);
+            if (ex) ex.qty += qty;
+            else cart.push({barcode:selectedProduct.barcode,name:selectedProduct.name,price:selectedProduct.price,qty:qty});
             localStorage.setItem('aykasoft_cart_' + currentUser.id, JSON.stringify(cart));
-            
             alert(selectedProduct.name + ' x' + qty + ' sepete eklendi!');
             closeResult();
-            // Return to sales page
-            setTimeout(() => window.location.href = 'satis.html', 500);
+            setTimeout(() => window.location.href = 'satis.html', 300);
         }
         
         function quickSale() {
             if (!selectedProduct) return;
-            
             const sales = JSON.parse(localStorage.getItem('aykasoft_sales_' + currentUser.id)) || [];
             sales.push({
-                id: 'SJS' + Date.now(),
-                date: new Date().toLocaleDateString('tr-TR'),
-                product: selectedProduct.name,
-                barcode: selectedProduct.barcode,
-                price: selectedProduct.price,
-                qty: qty,
-                total: selectedProduct.price * qty,
-                type: 'nakit',
-                status: 'Tamamlandı'
+                id:'SJS'+Date.now(),
+                date:new Date().toLocaleDateString('tr-TR'),
+                product:selectedProduct.name,
+                barcode:selectedProduct.barcode,
+                price:selectedProduct.price,
+                qty:qty,
+                total:selectedProduct.price*qty,
+                type:'nakit',
+                status:'Tamamlandi'
             });
             localStorage.setItem('aykasoft_sales_' + currentUser.id, JSON.stringify(sales));
-            
-            alert('Satış tamamlandı!');
+            alert('Satis tamamlandi!');
             closeResult();
-            setTimeout(() => window.location.href = 'satis.html', 500);
+            setTimeout(() => window.location.href = 'satis.html', 300);
         }
         
-        async function initScanner() {
-            try {
-                document.getElementById('scannerStatus').textContent = 'Tarayıcı başlatılıyor...';
-                
-                html5QrCode = new Html5Qrcode("scanner-wrapper");
-                
-                const config = {
-                    fps: 15,
-                    qrbox: { width: 280, height: 100 },
-                    aspectRatio: 1.0,
-                    experimentalFeatures: {
-                        useBarCodeDetectorIfSupported: true
-                    }
-                };
-                
-                await html5QrCode.start(
-                    { facingMode: "environment" },
-                    config,
-                    (decodedText, decodedResult) => {
-                        const now = Date.now();
-                        // Prevent rapid duplicate scans (1 second cooldown)
-                        if (now - lastScanTime < 1000) return;
-                        if (decodedText === lastResult) return;
-                        
-                        lastScanTime = now;
-                        lastResult = decodedText;
-                        
-                        // Show feedback
-                        const lastScanEl = document.getElementById('lastScan');
-                        lastScanEl.textContent = '✓ Okundu: ' + decodedText;
-                        lastScanEl.classList.add('show');
-                        setTimeout(() => lastScanEl.classList.remove('show'), 2000);
-                        
-                        const product = findProduct(decodedText);
-                        showResult(decodedText, product);
-                    },
-                    (errorMessage) => {
-                        // Ignore scan errors
-                    }
-                );
-                
-                document.getElementById('scannerStatus').textContent = 'Barkod bekleniyor...';
-                document.getElementById('scannerStatus').classList.add('active');
-                
-            } catch (err) {
-                console.error('Scanner error:', err);
-                document.getElementById('scannerStatus').textContent = 'Kamera hatası: ' + err.message;
+        function manualSearch() {
+            const code = document.getElementById('manualBarcode').value.trim();
+            if (code) showResult(code, findProduct(code));
+        }
+        
+        function onDetected(result) {
+            const code = result.codeResult.code;
+            const now = Date.now();
+            if (code === lastCode || now - lastTime < 1500) return;
+            lastCode = code;
+            lastTime = now;
+            showResult(code, findProduct(code));
+        }
+        
+        function startScan() {
+            document.getElementById('loadingScreen').classList.remove('hidden');
+            
+            if (window.Quagga) {
+                Quagga.stop();
             }
+            
+            Quagga.init({
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    target: document.getElementById('scanner-viewport'),
+                    constraints: {
+                        facingMode: "environment"
+                    }
+                },
+                locator: {
+                    patchSize: "medium",
+                    halfSample: true
+                },
+                numOfWorkers: 2,
+                frequency: 10,
+                decoder: {
+                    readers: [
+                        "ean_reader",
+                        "ean_8_reader",
+                        "code_128_reader",
+                        "code_39_reader"
+                    ]
+                },
+                locate: true
+            }, function(err) {
+                if (err) {
+                    console.error(err);
+                    document.getElementById('loadingScreen').innerHTML = '<div style="text-align:center;padding:2rem;color:white;"><h3>Kamera hatasi</h3><p>' + err.message + '</p><button onclick="startScan()" style="padding:1rem;margin-top:1rem;background:#2563eb;color:white;border:none;border-radius:8px;cursor:pointer;">Tekrar Dene</button></div>';
+                    return;
+                }
+                document.getElementById('loadingScreen').classList.add('hidden');
+                Quagga.start();
+            });
+            
+            Quagga.onDetected(onDetected);
         }
         
-        initScanner();
+        // Baslat
+        startScan();
     </script>
 </body>
 </html>
