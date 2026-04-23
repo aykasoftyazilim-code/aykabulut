@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürünler - AYKASOFT</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --primary: #2563eb; --dark: #0f172a; --light: #f8fafc; --light-secondary: #e2e8f0; --text: #334155; --text-light: #64748b; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --tl: #c9242e; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
+        
+        .header { background: var(--dark); color: white; padding: 1rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
+        .header a { color: white; text-decoration: none; font-size: 1.25rem; }
+        .header h1 { flex: 1; font-size: 1.1rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
+        
+        .main { padding: 1rem; padding-bottom: 80px; }
+        
+        .tabs { display: flex; background: white; gap: 0.5rem; padding: 0.5rem; margin-bottom: 1rem; overflow-x: auto; }
+        .tab { padding: 0.75rem 1.25rem; border-radius: 10px; font-weight: 600; cursor: pointer; white-space: nowrap; background: var(--light); border: none; }
+        .tab.active { background: var(--primary); color: white; }
+        
+        .search-box { background: white; padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1rem; display: flex; gap: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .search-box input { flex: 1; border: none; font-size: 1rem; outline: none; }
+        .search-box button { background: none; border: none; font-size: 1.25rem; cursor: pointer; }
+        
+        .add-btn { position: fixed; bottom: 70px; right: 1rem; width: 56px; height: 56px; border-radius: 50%; background: var(--primary); color: white; border: none; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); z-index: 50; }
+        
+        .product-list { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .product-item { display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid var(--light-secondary); }
+        .product-item:last-child { border-bottom: none; }
+        .product-item:hover { background: var(--light); }
+        .product-icon { width: 48px; height: 48px; background: var(--light); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 1.5rem; }
+        .product-info { flex: 1; }
+        .product-info h4 { font-size: 0.95rem; font-weight: 600; }
+        .product-info p { font-size: 0.8rem; color: var(--text-light); }
+        .product-price { font-weight: 700; color: var(--tl); margin-right: 1rem; }
+        .product-stock { font-size: 0.85rem; padding: 0.25rem 0.75rem; border-radius: 20px; background: #d1fae5; color: #059669; }
+        
+        .empty { text-align: center; padding: 3rem; color: var(--text-light); }
+        
+        /* Modal */
+        .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: flex-end; z-index: 200; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; width: 100%; border-radius: 24px 24px 0 0; padding: 1.5rem; max-height: 80vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .modal-header h3 { font-size: 1.25rem; }
+        .modal-close { width: 36px; height: 36px; border-radius: 50%; background: var(--light); border: none; font-size: 1.25rem; cursor: pointer; }
+        
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        .form-group input { width: 100%; padding: 0.875rem; border: 1px solid var(--light-secondary); border-radius: 10px; font-size: 1rem; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        
+        .btn { width: 100%; padding: 1rem; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: var(--light); color: var(--text); margin-top: 0.5rem; }
+        
+        .mobile-nav { display: none; }
+        @media (max-width: 768px) {
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); padding: 0.5rem; justify-content: space-around; z-index: 1000; }
+            .mobile-nav a { display: flex; flex-direction: column; align-items: center; padding: 0.5rem; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.7rem; }
+            .mobile-nav a.active { color: white; }
+            .add-btn { bottom: 70px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="dashboard.html">←</a>
+        <h1>🏷️ Ürünler</h1>
+    </header>
+    
+    <main class="main">
+        <div class="tabs">
+            <button class="tab active" onclick="filterTab('all', this)">Tümü</button>
+            <button class="tab" onclick="filterTab('elektronik', this)">Elektronik</button>
+            <button class="tab" onclick="filterTab('bilgisayar', this)">Bilgisayar</button>
+            <button class="tab" onclick="filterTab('aksesuar', this)">Aksesuar</button>
+        </div>
+        
+        <div class="search-box">
+            <button>🔍</button>
+            <input type="text" placeholder="Ürün ara..." id="searchInput" onkeyup="filterProducts()">
+        </div>
+        
+        <div class="product-list" id="productList"></div>
+    </main>
+    
+    <button class="add-btn" onclick="openModal()">+</button>
+    
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Yeni Ürün</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Barkod</label>
+                    <input type="text" id="productBarcode" placeholder="869123456001">
+                </div>
+                <div class="form-group">
+                    <label>Kategori</label>
+                    <select id="productCategory" style="width:100%;padding:0.875rem;border:1px solid var(--light-secondary);border-radius:10px;font-size:1rem;">
+                        <option>Elektronik</option>
+                        <option>Bilgisayar</option>
+                        <option>Aksesuar</option>
+                        <option>Diğer</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Ürün Adı</label>
+                <input type="text" id="productName" placeholder="Ürün adı">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Fiyat (₺)</label>
+                    <input type="number" id="productPrice" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>Stok Adedi</label>
+                    <input type="number" id="productStock" placeholder="0">
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="saveProduct()">Kaydet</button>
+            <button class="btn btn-secondary" onclick="closeModal()">İptal</button>
+        </div>
+    </div>
+    
+    <nav class="mobile-nav">
+        <a href="dashboard.html"><span>🏠</span><span>Panel</span></a>
+        <a href="satis.html"><span>🏷️</span><span>Satış</span></a>
+        <a href="saha.html"><span>📱</span><span>Saha</span></a>
+        <a href="rapor.html"><span>📊</span><span>Rapor</span></a>
+        <a href="ayarlar.html"><span>⚙️</span><span>Ayarlar</span></a>
+    </nav>
+    
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
+        if (!currentUser) window.location.href = 'login.html';
+        
+        let products = JSON.parse(localStorage.getItem('aykasoft_products_' + currentUser.id)) || [
+            {barcode:'869123456001',name:'Klavye',category:'elektronik',price:450,stock:45,icon:'⌨️'},
+            {barcode:'869123456002',name:'Mouse',category:'elektronik',price:280,stock:32,icon:'🖱️'},
+            {barcode:'869123456003',name:'Monitor',category:'bilgisayar',price:2100,stock:18,icon:'🖥️'},
+            {barcode:'869123456004',name:'SSD 500GB',category:'bilgisayar',price:890,stock:25,icon:'💾'},
+            {barcode:'869123456005',name:'Kulaklık',category:'elektronik',price:350,stock:12,icon:'🎧'},
+            {barcode:'869123456006',name:'USB Kablo',category:'aksesuar',price:80,stock:50,icon:'🔌'},
+            {barcode:'869123456007',name:'Webcam',category:'elektronik',price:590,stock:15,icon:'📷'},
+            {barcode:'869123456008',name:'USB Hub',category:'aksesuar',price:250,stock:20,icon:'🔗'},
+            {barcode:'869123456009',name:'Kablo Set',category:'aksesuar',price:150,stock:30,icon:'🔌'},
+            {barcode:'869123456010',name:'Mouse Pad',category:'aksesuar',price:80,stock:40,icon:'🟦'},
+            {barcode:'869123456011',name:'Ekran Kartı',category:'bilgisayar',price:8500,stock:5,icon:'🎮'},
+            {barcode:'869123456012',name:'RAM 16GB',category:'bilgisayar',price:1200,stock:12,icon:'💻'},
+        ];
+        
+        let editIndex = -1;
+        let currentFilter = 'all';
+        
+        function renderProducts() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const list = document.getElementById('productList');
+            
+            let filtered = products.filter(p => {
+                const matchFilter = currentFilter === 'all' || p.category === currentFilter;
+                const matchSearch = p.name.toLowerCase().includes(search) || p.barcode.includes(search);
+                return matchFilter && matchSearch;
+            });
+            
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="empty">Ürün bulunamadı</div>';
+                return;
+            }
+            
+            list.innerHTML = filtered.map((p, i) => `
+                <div class="product-item" onclick="editProduct(${i})">
+                    <div class="product-icon">${p.icon}</div>
+                    <div class="product-info">
+                        <h4>${p.name}</h4>
+                        <p>${p.barcode} • ${p.category}</p>
+                    </div>
+                    <div class="product-price">₺ ${p.price}</div>
+                    <div class="product-stock">${p.stock} adet</div>
+                </div>
+            `).join('');
+        }
+        
+        function filterTab(cat, btn) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = cat;
+            renderProducts();
+        }
+        
+        function filterProducts() {
+            renderProducts();
+        }
+        
+        function openModal() {
+            editIndex = -1;
+            document.getElementById('modalTitle').textContent = 'Yeni Ürün';
+            document.getElementById('productBarcode').value = '';
+            document.getElementById('productName').value = '';
+            document.getElementById('productPrice').value = '';
+            document.getElementById('productStock').value = '';
+            document.getElementById('productCategory').value = 'Elektronik';
+            document.getElementById('productModal').classList.add('active');
+        }
+        
+        function editProduct(index) {
+            const p = products[index];
+            editIndex = index;
+            document.getElementById('modalTitle').textContent = 'Ürün Düzenle';
+            document.getElementById('productBarcode').value = p.barcode;
+            document.getElementById('productName').value = p.name;
+            document.getElementById('productPrice').value = p.price;
+            document.getElementById('productStock').value = p.stock;
+            document.getElementById('productCategory').value = p.category;
+            document.getElementById('productModal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('productModal').classList.remove('active');
+        }
+        
+        function saveProduct() {
+            const barcode = document.getElementById('productBarcode').value.trim();
+            const name = document.getElementById('productName').value.trim();
+            const price = parseFloat(document.getElementById('productPrice').value) || 0;
+            const stock = parseInt(document.getElementById('productStock').value) || 0;
+            const category = document.getElementById('productCategory').value;
+            
+            if (!barcode || !name) { alert('Lütfen barkod ve ürün adını girin!'); return; }
+            
+            const icons = {'elektronik':'💻','bilgisayar':'🖥️','aksesuar':'🔌','diğer':'📦'};
+            const product = {barcode, name, price, stock, category, icon: icons[category] || '📦'};
+            
+            if (editIndex >= 0) {
+                products[editIndex] = product;
+            } else {
+                products.push(product);
+            }
+            
+            localStorage.setItem('aykasoft_products_' + currentUser.id, JSON.stringify(products));
+            alert('Kaydedildi!');
+            closeModal();
+            renderProducts();
+        }
+        
+        renderProducts();
+    </script>
+</body>
+</html>

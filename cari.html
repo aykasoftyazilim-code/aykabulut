@@ -17,7 +17,16 @@
         
         .main { padding: 1rem; padding-bottom: 80px; }
         
-        .search-box { background: white; padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1rem; display: flex; gap: 0.5rem; }
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+        .stat-card { background: white; border-radius: 14px; padding: 1rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .stat-card .stat-value { font-size: 1.25rem; font-weight: 700; }
+        .stat-card .stat-label { font-size: 0.75rem; color: var(--text-light); }
+        
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; overflow-x: auto; }
+        .tab { padding: 0.75rem 1.25rem; border-radius: 10px; font-weight: 600; background: white; border: none; cursor: pointer; white-space: nowrap; }
+        .tab.active { background: var(--primary); color: white; }
+        
+        .search-box { background: white; padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1rem; display: flex; gap: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .search-box input { flex: 1; border: none; font-size: 1rem; outline: none; }
         .search-box button { background: none; border: none; font-size: 1.25rem; cursor: pointer; }
         
@@ -27,19 +36,46 @@
         .cari-item { display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid var(--light-secondary); cursor: pointer; }
         .cari-item:last-child { border-bottom: none; }
         .cari-item:hover { background: var(--light); }
-        .cari-avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 1.25rem; }
+        .cari-avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 1.25rem; font-weight: 700; }
         .cari-info { flex: 1; }
         .cari-info h4 { font-size: 0.95rem; font-weight: 600; }
         .cari-info p { font-size: 0.8rem; color: var(--text-light); }
         .cari-balance { font-weight: 700; font-size: 0.95rem; }
         
-        .add-btn { position: fixed; bottom: 70px; right: 1rem; width: 56px; height: 56px; border-radius: 50%; background: var(--primary); color: white; border: none; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); }
+        .add-btn { position: fixed; bottom: 70px; right: 1rem; width: 56px; height: 56px; border-radius: 50%; background: var(--primary); color: white; border: none; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); z-index: 50; }
+        
+        .empty { text-align: center; padding: 3rem; color: var(--text-light); }
+        
+        /* Modal */
+        .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: flex-end; z-index: 200; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; width: 100%; border-radius: 24px 24px 0 0; padding: 1.5rem; max-height: 80vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .modal-header h3 { font-size: 1.25rem; }
+        .modal-close { width: 36px; height: 36px; border-radius: 50%; background: var(--light); border: none; font-size: 1.25rem; cursor: pointer; }
+        
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        .form-group input, .form-group select { width: 100%; padding: 0.875rem; border: 1px solid var(--light-secondary); border-radius: 10px; font-size: 1rem; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        
+        .btn { width: 100%; padding: 1rem; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: var(--light); color: var(--text); margin-top: 0.5rem; }
+        .btn-success { background: var(--success); color: white; }
+        
+        .cari-detail { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .detail-header { padding: 1rem; border-bottom: 1px solid var(--light-secondary); display: flex; justify-content: space-between; align-items: center; }
+        .history-item { display: flex; justify-content: space-between; padding: 1rem; border-bottom: 1px solid var(--light-secondary); }
+        .history-item:last-child { border-bottom: none; }
         
         .mobile-nav { display: none; }
         @media (max-width: 768px) {
+            .stats-row { grid-template-columns: 1fr; }
             .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); padding: 0.5rem; justify-content: space-around; z-index: 1000; }
             .mobile-nav a { display: flex; flex-direction: column; align-items: center; padding: 0.5rem; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.7rem; }
             .mobile-nav a.active { color: white; }
+            .add-btn { bottom: 70px; }
         }
     </style>
 </head>
@@ -50,61 +86,109 @@
     </header>
     
     <main class="main">
+        <div class="stats-row" id="statsRow">
+            <div class="stat-card">
+                <div class="stat-value" id="musteriCount">0</div>
+                <div class="stat-label">Müşteri</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value tl" id="alacakToplam" style="color:var(--warning);">₺ 0</div>
+                <div class="stat-label">Alacak</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value tl" id="borcToplam" style="color:var(--danger);">₺ 0</div>
+                <div class="stat-label">Borç</div>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="filterTab('all', this)">Tümü</button>
+            <button class="tab" onclick="filterTab('musteri', this)">Müşteri</button>
+            <button class="tab" onclick="filterTab('tedarikci', this)">Tedarikçi</button>
+        </div>
+        
         <div class="search-box">
             <button>🔍</button>
-            <input type="text" placeholder="Cari ara...">
+            <input type="text" placeholder="Cari ara..." id="searchInput" onkeyup="renderCariler()">
         </div>
         
         <h2 class="section-title">👤 Müşteriler</h2>
-        <div class="cari-list">
-            <div class="cari-item">
-                <div class="cari-avatar" style="background:#dbeafe;color:#2563eb;">A</div>
-                <div class="cari-info">
-                    <h4>Ahmet Yılmaz</h4>
-                    <p>0532 123 4567 • Konya</p>
-                </div>
-                <div class="cari-balance tl" style="color:var(--warning);">₺ 12.500</div>
-            </div>
-            <div class="cari-item">
-                <div class="cari-avatar" style="background:#dbeafe;color:#2563eb;">M</div>
-                <div class="cari-info">
-                    <h4>Mehmet Kaya</h4>
-                    <p>0533 234 5678 • Konya</p>
-                </div>
-                <div class="cari-balance tl" style="color:var(--warning);">₺ 8.900</div>
-            </div>
-            <div class="cari-item">
-                <div class="cari-avatar" style="background:#dbeafe;color:#2563eb;">A</div>
-                <div class="cari-info">
-                    <h4>Ali Demir</h4>
-                    <p>0544 345 6789 • Ankara</p>
-                </div>
-                <div class="cari-balance tl" style="color:var(--warning);">₺ 15.400</div>
-            </div>
-        </div>
+        <div class="cari-list" id="musteriList"></div>
         
         <h2 class="section-title" style="margin-top:1rem;">🏪 Tedarikçiler</h2>
-        <div class="cari-list">
-            <div class="cari-item">
-                <div class="cari-avatar" style="background:#fce7f3;color:#ec4899;">A</div>
-                <div class="cari-info">
-                    <h4>ABC Ltd. Şti</h4>
-                    <p>Ankara • Elektronik</p>
-                </div>
-                <div class="cari-balance tl" style="color:var(--danger);">₺ 8.500</div>
-            </div>
-            <div class="cari-item">
-                <div class="cari-avatar" style="background:#fce7f3;color:#ec4899;">X</div>
-                <div class="cari-info">
-                    <h4>XYZ A.Ş</h4>
-                    <p>İstanbul • Bilgisayar</p>
-                </div>
-                <div class="cari-balance tl" style="color:var(--danger);">₺ 12.300</div>
-            </div>
-        </div>
+        <div class="cari-list" id="tedarikciList"></div>
     </main>
     
-    <button class="add-btn" onclick="alert('Yeni cari ekleme modalı açılıyor...')">+</button>
+    <button class="add-btn" onclick="openModal()">+</button>
+    
+    <!-- Cari Modal -->
+    <div class="modal" id="cariModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Yeni Cari</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ad Soyad / Ünvan</label>
+                    <input type="text" id="cariAd" placeholder="Ad Soyad">
+                </div>
+                <div class="form-group">
+                    <label>Telefon</label>
+                    <input type="text" id="cariTel" placeholder="0532 123 4567">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Adres</label>
+                <input type="text" id="cariAdres" placeholder="Adres">
+            </div>
+            <div class="form-group">
+                <label>Tip</label>
+                <select id="cariTip">
+                    <option value="musteri">Müşteri</option>
+                    <option value="tedarikci">Tedarikçi</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="saveCari()">Kaydet</button>
+            <button class="btn btn-secondary" onclick="closeModal()">İptal</button>
+        </div>
+    </div>
+    
+    <!-- Detail Modal -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="detailName">Cari Detay</h3>
+                <button class="modal-close" onclick="closeDetail()">×</button>
+            </div>
+            <div class="cari-detail" style="margin-bottom:1rem;">
+                <div class="detail-header">
+                    <span>Bakiye</span>
+                    <span class="tl" id="detailBakiye" style="font-weight:700;font-size:1.25rem;">₺ 0</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>İşlem Tutarı</label>
+                <input type="number" id="islemTutar" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label>İşlem Tipi</label>
+                <select id="islemTip">
+                    <option value="tahsilat">Tahsilat (Ödeme Al)</option>
+                    <option value="odeme">Ödeme (Borç Ver)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Açıklama</label>
+                <input type="text" id="islemAciklama" placeholder="Açıklama">
+            </div>
+            <button class="btn btn-success" onclick="saveIslem()">Kaydet</button>
+            <button class="btn btn-secondary" onclick="closeDetail()">Kapat</button>
+            
+            <h3 style="margin:1.5rem 0 1rem;">📋 İşlem Geçmişi</h3>
+            <div class="cari-detail" id="historyList"></div>
+        </div>
+    </div>
     
     <nav class="mobile-nav">
         <a href="dashboard.html"><span>🏠</span><span>Panel</span></a>
@@ -113,5 +197,145 @@
         <a href="rapor.html"><span>📊</span><span>Rapor</span></a>
         <a href="ayarlar.html"><span>⚙️</span><span>Ayarlar</span></a>
     </nav>
+    
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
+        if (!currentUser) window.location.href = 'login.html';
+        
+        let cariler = JSON.parse(localStorage.getItem('aykasoft_cari_' + currentUser.id)) || [
+            {id:1, ad:'Ahmet Yılmaz', tel:'0532 123 4567', adres:'Selçuklu, Konya', tip:'musteri', bakiye:12500, tarih:'22.04.2026'},
+            {id:2, ad:'Mehmet Kaya', tel:'0533 234 5678', adres:'Meram, Konya', tip:'musteri', bakiye:8900, tarih:'21.04.2026'},
+            {id:3, ad:'Ali Demir', tel:'0544 345 6789', adres:'Çumra, Konya', tip:'musteri', bakiye:-5000, tarih:'20.04.2026'},
+            {id:4, ad:'ABC Ltd. Şti', tel:'0312 111 2233', adres:'Ankara', tip:'tedarikci', bakiye:-8500, tarih:'19.04.2026'},
+            {id:5, ad:'XYZ A.Ş', tel:'0212 444 5566', adres:'İstanbul', tip:'tedarikci', bakiye:-12300, tarih:'18.04.2026'},
+        ];
+        
+        let editId = -1;
+        let currentCari = null;
+        
+        renderCariler();
+        
+        function renderCariler() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            
+            const musteriler = cariler.filter(c => c.tip === 'musteri' && (c.ad.toLowerCase().includes(search) || c.tel.includes(search)));
+            const tedarikciler = cariler.filter(c => c.tip === 'tedarikci' && (c.ad.toLowerCase().includes(search) || c.tel.includes(search)));
+            
+            const alacak = cariler.filter(c => c.tip === 'musteri' && c.bakiye > 0).reduce((s, c) => s + c.bakiye, 0);
+            const borc = cariler.filter(c => c.tip === 'tedarikci' && c.bakiye < 0).reduce((s, c) => s + Math.abs(c.bakiye), 0);
+            
+            document.getElementById('musteriCount').textContent = musteriler.length;
+            document.getElementById('alacakToplam').textContent = '₺ ' + alacak.toLocaleString();
+            document.getElementById('borcToplam').textContent = '₺ ' + borc.toLocaleString();
+            
+            document.getElementById('musteriList').innerHTML = musteriler.map(c => `
+                <div class="cari-item" onclick="openDetail(${c.id})">
+                    <div class="cari-avatar" style="background:#dbeafe;color:#2563eb;">${c.ad[0]}</div>
+                    <div class="cari-info">
+                        <h4>${c.ad}</h4>
+                        <p>${c.tel} • ${c.adres}</p>
+                    </div>
+                    <div class="cari-balance ${c.bakiye > 0 ? 'tl' : ''}" style="color:${c.bakiye > 0 ? 'var(--warning)' : c.bakiye < 0 ? 'var(--danger)' : 'var(--text)'}">₺ ${Math.abs(c.bakiye).toLocaleString()}</div>
+                </div>
+            `).join('') || '<div class="empty">Müşteri bulunamadı</div>';
+            
+            document.getElementById('tedarikciList').innerHTML = tedarikciler.map(c => `
+                <div class="cari-item" onclick="openDetail(${c.id})">
+                    <div class="cari-avatar" style="background:#fce7f3;color:#ec4899;">${c.ad[0]}</div>
+                    <div class="cari-info">
+                        <h4>${c.ad}</h4>
+                        <p>${c.tel} • ${c.adres}</p>
+                    </div>
+                    <div class="cari-balance tl" style="color:var(--danger);">₺ ${Math.abs(c.bakiye).toLocaleString()}</div>
+                </div>
+            `).join('') || '<div class="empty">Tedarikçi bulunamadı</div>';
+        }
+        
+        function filterTab(tab, btn) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            // Filter logic here
+        }
+        
+        function openModal() {
+            editId = -1;
+            document.getElementById('modalTitle').textContent = 'Yeni Cari';
+            document.getElementById('cariAd').value = '';
+            document.getElementById('cariTel').value = '';
+            document.getElementById('cariAdres').value = '';
+            document.getElementById('cariModal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('cariModal').classList.remove('active');
+        }
+        
+        function saveCari() {
+            const ad = document.getElementById('cariAd').value.trim();
+            const tel = document.getElementById('cariTel').value.trim();
+            const adres = document.getElementById('cariAdres').value.trim();
+            const tip = document.getElementById('cariTip').value;
+            
+            if (!ad) { alert('Lütfen ad girin!'); return; }
+            
+            if (editId >= 0) {
+                const cari = cariler.find(c => c.id === editId);
+                cari.ad = ad;
+                cari.tel = tel;
+                cari.adres = adres;
+                cari.tip = tip;
+            } else {
+                cariler.push({
+                    id: Date.now(),
+                    ad, tel, adres, tip,
+                    bakiye: 0,
+                    tarih: new Date().toLocaleDateString('tr-TR')
+                });
+            }
+            
+            localStorage.setItem('aykasoft_cari_' + currentUser.id, JSON.stringify(cariler));
+            alert('Kaydedildi!');
+            closeModal();
+            renderCariler();
+        }
+        
+        function openDetail(id) {
+            currentCari = cariler.find(c => c.id === id);
+            if (!currentCari) return;
+            
+            document.getElementById('detailName').textContent = currentCari.ad;
+            document.getElementById('detailBakiye').textContent = '₺ ' + currentCari.bakiye.toLocaleString();
+            document.getElementById('detailBakiye').style.color = currentCari.bakiye > 0 ? 'var(--warning)' : currentCari.bakiye < 0 ? 'var(--danger)' : 'var(--text)';
+            document.getElementById('islemTutar').value = '';
+            document.getElementById('islemAciklama').value = '';
+            document.getElementById('detailModal').classList.add('active');
+            
+            // Load history would be here
+            document.getElementById('historyList').innerHTML = '<div class="empty">İşlem geçmişi yok</div>';
+        }
+        
+        function closeDetail() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+        
+        function saveIslem() {
+            const tutar = parseFloat(document.getElementById('islemTutar').value) || 0;
+            const islemTip = document.getElementById('islemTip').value;
+            const aciklama = document.getElementById('islemAciklama').value;
+            
+            if (!tutar) { alert('Lütfen tutar girin!'); return; }
+            
+            if (islemTip === 'tahsilat') {
+                currentCari.bakiye -= tutar;
+            } else {
+                currentCari.bakiye -= tutar;
+            }
+            
+            localStorage.setItem('aykasoft_cari_' + currentUser.id, JSON.stringify(cariler));
+            alert('İşlem kaydedildi!');
+            closeDetail();
+            renderCariler();
+        }
+    </script>
 </body>
 </html>

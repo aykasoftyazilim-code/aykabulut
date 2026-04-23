@@ -13,29 +13,22 @@
         h1, h2, h3 { font-family: 'Outfit', sans-serif; font-weight: 700; }
         .tl { color: var(--tl); font-weight: 700; }
         
-        /* Header */
         .header { background: var(--dark); color: white; padding: 1rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
         .header a { color: white; text-decoration: none; font-size: 1.25rem; }
         .header h1 { flex: 1; font-size: 1.1rem; }
         
-        /* Barcode Input */
         .barcode-container { background: white; padding: 1rem; display: flex; gap: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .barcode-input { flex: 1; padding: 0.875rem; border: 2px solid var(--light-secondary); border-radius: 10px; font-size: 1.1rem; }
         .barcode-input:focus { outline: none; border-color: var(--primary); }
         .scan-btn { width: 50px; border: none; border-radius: 10px; background: var(--primary); color: white; font-size: 1.5rem; cursor: pointer; }
         
-        /* Layout */
         .pos-layout { display: grid; grid-template-columns: 1fr 350px; height: calc(100vh - 140px); }
-        
-        /* Products */
         .products-panel { overflow-y: auto; padding: 1rem; }
         
-        /* Categories */
         .categories { display: flex; gap: 0.5rem; margin-bottom: 1rem; overflow-x: auto; padding-bottom: 0.5rem; }
         .category { padding: 0.5rem 1rem; background: white; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; border: 1px solid var(--light-secondary); }
         .category.active { background: var(--primary); color: white; border-color: var(--primary); }
         
-        /* Product Grid */
         .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
         .product-card { background: white; border-radius: 12px; padding: 1rem; text-align: center; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .product-card:hover { transform: scale(1.02); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
@@ -43,7 +36,6 @@
         .product-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; }
         .product-price { color: var(--tl); font-weight: 700; }
         
-        /* Cart */
         .cart-panel { background: white; border-left: 1px solid var(--light-secondary); display: flex; flex-direction: column; }
         .cart-header { padding: 1rem; border-bottom: 1px solid var(--light-secondary); display: flex; justify-content: space-between; align-items: center; }
         .cart-items { flex: 1; overflow-y: auto; padding: 1rem; }
@@ -57,21 +49,17 @@
         .cart-item-total { font-weight: 700; font-size: 0.95rem; }
         .delete-btn { color: var(--danger); background: none; border: none; cursor: pointer; font-size: 1rem; }
         
-        /* Cart Summary */
         .cart-summary { padding: 1rem; border-top: 1px solid var(--light-secondary); background: var(--light); }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; }
         .summary-row.total { font-size: 1.25rem; font-weight: 700; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--light-secondary); }
         
-        /* Cart Actions */
         .cart-actions { padding: 1rem; display: flex; gap: 0.5rem; }
         .cart-actions button { flex: 1; padding: 1rem; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 1rem; }
         .btn-sale { background: var(--success); color: white; }
         .btn-clear { background: var(--light); color: var(--text); }
         
-        /* Empty Cart */
         .empty-cart { text-align: center; padding: 3rem 1rem; color: var(--text-light); }
         
-        /* Mobile */
         .mobile-nav { display: none; }
         @media (max-width: 768px) {
             .pos-layout { grid-template-columns: 1fr; }
@@ -104,9 +92,9 @@
         <div class="products-panel">
             <div class="categories">
                 <div class="category active" onclick="filterCategory('all')">Tümü</div>
-                <div class="category" onclick="filterCategory('elektronik')">Elektronik</div>
-                <div class="category" onclick="filterCategory('aksesuar')">Aksesuar</div>
-                <div class="category" onclick="filterCategory('bilgisayar')">Bilgisayar</div>
+                <div class="category" onclick="filterCategory('Elektronik')">Elektronik</div>
+                <div class="category" onclick="filterCategory('Bilgisayar')">Bilgisayar</div>
+                <div class="category" onclick="filterCategory('Aksesuar')">Aksesuar</div>
             </div>
             <div class="products-grid" id="productsGrid"></div>
         </div>
@@ -143,26 +131,36 @@
         const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
         if (!currentUser) window.location.href = 'login.html';
         
-        const products = [
-            {barcode:'869123456001',name:'Klavye',category:'elektronik',price:450,icon:'⌨️'},
-            {barcode:'869123456002',name:'Mouse',category:'elektronik',price:280,icon:'🖱️'},
-            {barcode:'869123456003',name:'Monitor',category:'bilgisayar',price:2100,icon:'🖥️'},
-            {barcode:'869123456004',name:'SSD 500GB',category:'bilgisayar',price:890,icon:'💾'},
-            {barcode:'869123456005',name:'Kulaklık',category:'elektronik',price:350,icon:'🎧'},
-            {barcode:'869123456006',name:'USB Kablo',category:'aksesuar',price:80,icon:'🔌'},
-            {barcode:'869123456007',name:'Webcam',category:'elektronik',price:590,icon:'📷'},
-            {barcode:'869123456008',name:'USB Hub',category:'aksesuar',price:250,icon:'🔗'},
-            {barcode:'869123456009',name:'Kablo Set',category:'aksesuar',price:150,icon:'🔌'},
-            {barcode:'869123456010',name:'Mouse Pad',category:'aksesuar',price:80,icon:'🟦'},
-            {barcode:'869123456011',name:'Ekran Kartı',category:'bilgisayar',price:8500,icon:'🎮'},
-            {barcode:'869123456012',name:'RAM 16GB',category:'bilgisayar',price:1200,icon:'💻'},
+        // Load products from localStorage or use defaults
+        let products = JSON.parse(localStorage.getItem('aykasoft_products_' + currentUser.id)) || [
+            {barcode:'869123456001',name:'Klavye',category:'Elektronik',price:450,stock:45,icon:'⌨️'},
+            {barcode:'869123456002',name:'Mouse',category:'Elektronik',price:280,stock:32,icon:'🖱️'},
+            {barcode:'869123456003',name:'Monitor',category:'Bilgisayar',price:2100,stock:18,icon:'🖥️'},
+            {barcode:'869123456004',name:'SSD 500GB',category:'Bilgisayar',price:890,stock:25,icon:'💾'},
+            {barcode:'869123456005',name:'Kulaklık',category:'Elektronik',price:350,stock:12,icon:'🎧'},
+            {barcode:'869123456006',name:'USB Kablo',category:'Aksesuar',price:80,stock:50,icon:'🔌'},
+            {barcode:'869123456007',name:'Webcam',category:'Elektronik',price:590,stock:15,icon:'📷'},
+            {barcode:'869123456008',name:'USB Hub',category:'Aksesuar',price:250,stock:20,icon:'🔗'},
+            {barcode:'869123456009',name:'Kablo Set',category:'Aksesuar',price:150,stock:30,icon:'🔌'},
+            {barcode:'869123456010',name:'Mouse Pad',category:'Aksesuar',price:80,stock:40,icon:'🟦'},
+            {barcode:'869123456011',name:'Ekran Kartı',category:'Bilgisayar',price:8500,stock:5,icon:'🎮'},
+            {barcode:'869123456012',name:'RAM 16GB',category:'Bilgisayar',price:1200,stock:12,icon:'💻'},
         ];
         
         let cart = [];
+        let currentFilter = 'all';
         
         function renderProducts(filter = 'all') {
+            currentFilter = filter;
             const grid = document.getElementById('productsGrid');
-            grid.innerHTML = products.filter(p => filter === 'all' || p.category === filter).map(p => `
+            const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #64748b;">Ürün bulunamadı</div>';
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(p => `
                 <div class="product-card" onclick="addToCart('${p.barcode}')">
                     <div class="product-icon">${p.icon}</div>
                     <div class="product-name">${p.name}</div>
@@ -180,23 +178,32 @@
         function addToCart(barcode) {
             const product = products.find(p => p.barcode === barcode);
             if (!product) return;
+            if (product.stock <= 0) { alert('Stok yok!'); return; }
+            
             const existing = cart.find(c => c.barcode === barcode);
-            if (existing) existing.qty++;
-            else cart.push({...product, qty: 1});
+            if (existing) {
+                if (existing.qty >= product.stock) { alert('Stok yetersiz!'); return; }
+                existing.qty++;
+            } else {
+                cart.push({...product, qty: 1});
+            }
             renderCart();
         }
         
         function renderCart() {
             const items = document.getElementById('cartItems');
             const summary = document.getElementById('cartSummary');
+            
             if (cart.length === 0) {
                 items.innerHTML = '<div class="empty-cart">Sepetiniz boş</div>';
                 summary.style.display = 'none';
                 document.getElementById('cartCount').textContent = '0 ürün';
                 return;
             }
+            
             summary.style.display = 'block';
             document.getElementById('cartCount').textContent = cart.length + ' ürün';
+            
             items.innerHTML = cart.map((item, i) => `
                 <div class="cart-item">
                     <div class="cart-item-info">
@@ -221,6 +228,11 @@
         }
         
         function changeQty(index, delta) {
+            const item = cart[index];
+            const product = products.find(p => p.barcode === item.barcode);
+            
+            if (item.qty + delta > product.stock) { alert('Stok yetersiz!'); return; }
+            
             cart[index].qty += delta;
             if (cart[index].qty <= 0) cart.splice(index, 1);
             renderCart();
@@ -242,8 +254,11 @@
             if (e.key === 'Enter') {
                 const code = e.target.value.trim();
                 const product = products.find(p => p.barcode === code);
-                if (product) addToCart(code);
-                else if (code.length >= 8) alert('Ürün bulunamadı: ' + code);
+                if (product) {
+                    addToCart(code);
+                } else if (code.length >= 8) {
+                    alert('Ürün bulunamadı: ' + code);
+                }
                 e.target.value = '';
             }
         }
@@ -254,21 +269,36 @@
         
         function processSale() {
             if (cart.length === 0) { alert('Sepetiniz boş!'); return; }
-            const total = cart.reduce((s, i) => s + i.price * i.qty, 0) * 1.18;
-            if (confirm('Toplam: ₺ ' + total.toLocaleString() + '\n\nSatışı tamamlamak istiyor musunuz?')) {
-                const sales = JSON.parse(localStorage.getItem('aykasoft_sales_' + currentUser.id)) || [];
-                sales.push({
-                    id: 'S' + Date.now(),
-                    date: new Date().toLocaleDateString('tr-TR'),
-                    items: cart,
-                    total: total,
-                    type: 'nakit'
-                });
-                localStorage.setItem('aykasoft_sales_' + currentUser.id, JSON.stringify(sales));
-                alert('✅ Satış tamamlandı!');
-                cart = [];
-                renderCart();
-            }
+            
+            const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+            const total = subtotal * 1.18;
+            
+            if (!confirm('Toplam: ₺ ' + total.toLocaleString() + '\n\nSatışı tamamlamak istiyor musunuz?')) return;
+            
+            // Save sale
+            const sales = JSON.parse(localStorage.getItem('aykasoft_sales_' + currentUser.id)) || [];
+            sales.push({
+                id: 'S' + Date.now(),
+                date: new Date().toLocaleDateString('tr-TR'),
+                items: cart.map(c => ({name: c.name, price: c.price, qty: c.qty})),
+                subtotal: subtotal,
+                kdv: Math.round(subtotal * 0.18),
+                total: total,
+                type: 'nakit'
+            });
+            localStorage.setItem('aykasoft_sales_' + currentUser.id, JSON.stringify(sales));
+            
+            // Update stock
+            cart.forEach(item => {
+                const product = products.find(p => p.barcode === item.barcode);
+                if (product) product.stock -= item.qty;
+            });
+            localStorage.setItem('aykasoft_products_' + currentUser.id, JSON.stringify(products));
+            
+            alert('✅ Satış tamamlandı!');
+            cart = [];
+            renderCart();
+            renderProducts(currentFilter);
         }
         
         function logout() {

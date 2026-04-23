@@ -7,30 +7,27 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --primary: #2563eb; --dark: #0f172a; --light: #f8fafc; --light-secondary: #e2e8f0; --white: #ffffff; --text: #334155; --text-light: #64748b; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --tl: #c9242e; }
+        :root { --primary: #2563eb; --dark: #0f172a; --light: #f8fafc; --light-secondary: #e2e8f0; --text: #334155; --text-light: #64748b; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --tl: #c9242e; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
-        h1, h2, h3 { font-family: 'Outfit', sans-serif; font-weight: 700; }
         
         .header { background: var(--dark); color: white; padding: 1rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
         .header a { color: white; text-decoration: none; font-size: 1.25rem; }
-        .header h1 { flex: 1; font-size: 1.1rem; }
+        .header h1 { flex: 1; font-size: 1.1rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
         
         .main { padding: 1rem; padding-bottom: 80px; }
         
-        /* Stats */
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
         .stat-card { background: white; border-radius: 14px; padding: 1rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .stat-card .stat-label { font-size: 0.8rem; color: var(--text-light); }
         .stat-card .stat-value { font-size: 1.5rem; font-weight: 700; }
+        .stat-card .stat-label { font-size: 0.8rem; color: var(--text-light); }
         
-        /* Customer Select */
         .customer-select { background: white; border-radius: 14px; padding: 1rem; margin-bottom: 1rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .customer-select h3 { font-size: 0.9rem; margin-bottom: 0.5rem; }
         .customer-select p { color: var(--text-light); font-size: 0.85rem; }
         
-        /* Products */
-        .section-title { font-size: 1rem; margin-bottom: 0.75rem; }
+        .section-title { font-size: 1rem; margin-bottom: 0.75rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
+        
         .products-list { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .product-row { display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid var(--light-secondary); cursor: pointer; }
         .product-row:last-child { border-bottom: none; }
@@ -41,17 +38,14 @@
         .product-info p { font-size: 0.8rem; color: var(--text-light); }
         .product-price { font-weight: 700; color: var(--tl); }
         
-        /* Cart Preview */
         .cart-preview { background: white; border-radius: 14px; padding: 1rem; margin-top: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .cart-preview h3 { margin-bottom: 0.75rem; }
         .cart-item { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-secondary); }
         .cart-total { display: flex; justify-content: space-between; padding-top: 0.75rem; font-weight: 700; font-size: 1.25rem; }
         
-        /* Order Button */
         .order-btn { position: fixed; bottom: 70px; left: 0; right: 0; padding: 1rem; background: white; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); }
         .order-btn button { width: 100%; padding: 1rem; background: var(--success); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; }
         
-        /* Modal */
         .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: flex-end; z-index: 200; }
         .modal.active { display: flex; }
         .modal-content { background: white; width: 100%; border-radius: 24px 24px 0 0; padding: 1.5rem; max-height: 80vh; overflow-y: auto; }
@@ -61,9 +55,13 @@
         
         .customer-item { display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid var(--light-secondary); cursor: pointer; }
         .customer-item:hover { background: var(--light); }
-        .customer-icon { width: 44px; height: 44px; background: #dbeafe; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; }
+        .customer-icon { width: 44px; height: 44px; background: #dbeafe; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-weight: 700; }
+        .customer-info { flex: 1; }
         .customer-info h4 { font-size: 0.95rem; }
         .customer-info p { font-size: 0.8rem; color: var(--text-light); }
+        
+        .btn { width: 100%; padding: 1rem; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; margin-top: 0.5rem; }
+        .btn-secondary { background: var(--light); color: var(--text); }
         
         .mobile-nav { display: none; }
         @media (max-width: 768px) {
@@ -83,12 +81,12 @@
     <main class="main">
         <div class="stats-grid">
             <div class="stat-card">
+                <div class="stat-value" id="todayVisit">0</div>
                 <div class="stat-label">Bugün Ziyaret</div>
-                <div class="stat-value">12</div>
             </div>
             <div class="stat-card">
+                <div class="stat-value tl" id="todaySales">₺ 0</div>
                 <div class="stat-label">Bugün Satış</div>
-                <div class="stat-value tl">₺ 4.850</div>
             </div>
         </div>
         
@@ -98,48 +96,7 @@
         </div>
         
         <h2 class="section-title">📦 Ürünler</h2>
-        <div class="products-list">
-            <div class="product-row" onclick="addProduct('Klavye', 450, '⌨️')">
-                <div class="product-icon">⌨️</div>
-                <div class="product-info">
-                    <h4>Klavye</h4>
-                    <p>Kablosuz</p>
-                </div>
-                <div class="product-price tl">₺ 450</div>
-            </div>
-            <div class="product-row" onclick="addProduct('Mouse', 280, '🖱️')">
-                <div class="product-icon">🖱️</div>
-                <div class="product-info">
-                    <h4>Mouse</h4>
-                    <p>Wireless</p>
-                </div>
-                <div class="product-price tl">₺ 280</div>
-            </div>
-            <div class="product-row" onclick="addProduct('Kulaklık', 350, '🎧')">
-                <div class="product-icon">🎧</div>
-                <div class="product-info">
-                    <h4>Kulaklık</h4>
-                    <p>Bluetooth</p>
-                </div>
-                <div class="product-price tl">₺ 350</div>
-            </div>
-            <div class="product-row" onclick="addProduct('Webcam', 590, '📷')">
-                <div class="product-icon">📷</div>
-                <div class="product-info">
-                    <h4>Webcam</h4>
-                    <p>Full HD</p>
-                </div>
-                <div class="product-price tl">₺ 590</div>
-            </div>
-            <div class="product-row" onclick="addProduct('USB Hub', 250, '🔗')">
-                <div class="product-icon">🔗</div>
-                <div class="product-info">
-                    <h4>USB Hub</h4>
-                    <p>4lü Port</p>
-                </div>
-                <div class="product-price tl">₺ 250</div>
-            </div>
-        </div>
+        <div class="products-list" id="productsList"></div>
         
         <div class="cart-preview" id="cartPreview" style="display:none;">
             <h3>🛒 Sipariş Özeti</h3>
@@ -162,28 +119,8 @@
                 <h3>👥 Müşteri Seç</h3>
                 <button class="modal-close" onclick="closeModal()">×</button>
             </div>
-            <div class="customer-item" onclick="selectCustomer('Ahmet Yılmaz', '0532 123 4567')">
-                <div class="customer-icon"><i class="fas fa-user"></i></div>
-                <div class="customer-info">
-                    <h4>Ahmet Yılmaz</h4>
-                    <p>0532 123 4567 • Selçuklu, Konya</p>
-                </div>
-            </div>
-            <div class="customer-item" onclick="selectCustomer('Mehmet Kaya', '0533 234 5678')">
-                <div class="customer-icon"><i class="fas fa-user"></i></div>
-                <div class="customer-info">
-                    <h4>Mehmet Kaya</h4>
-                    <p>0533 234 5678 • Meram, Konya</p>
-                </div>
-            </div>
-            <div class="customer-item" onclick="selectCustomer('Ali Demir', '0544 345 6789')">
-                <div class="customer-icon"><i class="fas fa-user"></i></div>
-                <div class="customer-info">
-                    <h4>Ali Demir</h4>
-                    <p>0544 345 6789 • Çumra, Konya</p>
-                </div>
-            </div>
-            <button class="btn btn-secondary" onclick="closeModal()" style="width:100%;padding:1rem;margin-top:1rem;background:var(--light);border:none;border-radius:12px;font-weight:600;">İptal</button>
+            <div id="customerList"></div>
+            <button class="btn btn-secondary" onclick="closeModal()">İptal</button>
         </div>
     </div>
     
@@ -199,22 +136,79 @@
         const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
         if (!currentUser) window.location.href = 'login.html';
         
+        let cariler = JSON.parse(localStorage.getItem('aykasoft_cari_' + currentUser.id)) || [
+            {id:1, ad:'Ahmet Yılmaz', tel:'0532 123 4567', adres:'Selçuklu, Konya', bakiye:12500},
+            {id:2, ad:'Mehmet Kaya', tel:'0533 234 5678', adres:'Meram, Konya', bakiye:8900},
+            {id:3, ad:'Ali Demir', tel:'0544 345 6789', adres:'Çumra, Konya', bakiye:15400},
+            {id:4, ad:'Ayşe Fatma', tel:'0535 456 7890', adres:'Karatay, Konya', bakiye:0},
+            {id:5, ad:'Fatma Ali', tel:'0546 567 8901', adres:'Sarayönü, Konya', bakiye:0},
+        ];
+        
+        let products = JSON.parse(localStorage.getItem('aykasoft_products_' + currentUser.id)) || [
+            {barcode:'869123456001',name:'Klavye',price:450,icon:'⌨️'},
+            {barcode:'869123456002',name:'Mouse',price:280,icon:'🖱️'},
+            {barcode:'869123456005',name:'Kulaklık',price:350,icon:'🎧'},
+            {barcode:'869123456007',name:'Webcam',price:590,icon:'📷'},
+            {barcode:'869123456008',name:'USB Hub',price:250,icon:'🔗'},
+        ];
+        
         let selectedCustomer = null;
         let cart = [];
+        
+        renderCariler();
+        renderProducts();
+        loadStats();
+        
+        function renderCariler() {
+            document.getElementById('customerList').innerHTML = cariler.map(c => `
+                <div class="customer-item" onclick="selectCustomer(${c.id})">
+                    <div class="customer-icon">${c.ad[0]}</div>
+                    <div class="customer-info">
+                        <h4>${c.ad}</h4>
+                        <p>${c.tel} • ${c.adres}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function renderProducts() {
+            document.getElementById('productsList').innerHTML = products.map(p => `
+                <div class="product-row" onclick="addProduct('${p.barcode}')">
+                    <div class="product-icon">${p.icon}</div>
+                    <div class="product-info">
+                        <h4>${p.name}</h4>
+                        <p>${p.barcode}</p>
+                    </div>
+                    <div class="product-price tl">₺ ${p.price}</div>
+                </div>
+            `).join('');
+        }
+        
+        function loadStats() {
+            const orders = JSON.parse(localStorage.getItem('aykasoft_orders_' + currentUser.id)) || [];
+            const today = new Date().toLocaleDateString('tr-TR');
+            const todayOrders = orders.filter(o => o.date === today);
+            
+            document.getElementById('todayVisit').textContent = todayOrders.length;
+            document.getElementById('todaySales').textContent = '₺ ' + todayOrders.reduce((s, o) => s + (o.total || 0), 0).toLocaleString();
+        }
         
         function openCustomerModal() { document.getElementById('customerModal').classList.add('active'); }
         function closeModal() { document.getElementById('customerModal').classList.remove('active'); }
         
-        function selectCustomer(name, phone) {
-            selectedCustomer = { name, phone };
-            document.getElementById('selectedCustomer').textContent = name + ' • ' + phone;
+        function selectCustomer(id) {
+            selectedCustomer = cariler.find(c => c.id === id);
+            document.getElementById('selectedCustomer').textContent = selectedCustomer.ad + ' • ' + selectedCustomer.tel;
             closeModal();
         }
         
-        function addProduct(name, price, icon) {
-            const existing = cart.find(p => p.name === name);
+        function addProduct(barcode) {
+            const product = products.find(p => p.barcode === barcode);
+            if (!product) return;
+            
+            const existing = cart.find(p => p.barcode === barcode);
             if (existing) existing.qty++;
-            else cart.push({ name, price, icon, qty: 1 });
+            else cart.push({...product, qty: 1});
             renderCart();
         }
         
@@ -222,12 +216,14 @@
             const preview = document.getElementById('cartPreview');
             if (cart.length === 0) { preview.style.display = 'none'; return; }
             preview.style.display = 'block';
+            
             document.getElementById('cartItems').innerHTML = cart.map(item => `
                 <div class="cart-item">
                     <span>${item.icon} ${item.name} x${item.qty}</span>
                     <span class="tl">₺ ${(item.price * item.qty).toLocaleString()}</span>
                 </div>
             `).join('');
+            
             document.getElementById('cartTotal').textContent = '₺ ' + cart.reduce((s, i) => s + i.price * i.qty, 0).toLocaleString();
         }
         
@@ -235,22 +231,30 @@
             if (!selectedCustomer) { alert('Lütfen müşteri seçin!'); return; }
             if (cart.length === 0) { alert('Sepetiniz boş!'); return; }
             
+            const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+            const total = subtotal * 1.18;
+            
             const orders = JSON.parse(localStorage.getItem('aykasoft_orders_' + currentUser.id)) || [];
             orders.push({
                 id: 'ORD' + Date.now(),
                 date: new Date().toLocaleDateString('tr-TR'),
-                customer: selectedCustomer,
-                items: cart,
-                total: cart.reduce((s, i) => s + i.price * i.qty, 0),
+                customer: {id: selectedCustomer.id, ad: selectedCustomer.ad, tel: selectedCustomer.tel},
+                items: cart.map(c => ({name: c.name, price: c.price, qty: c.qty})),
+                subtotal: subtotal,
+                total: total,
                 status: 'Bekliyor'
             });
             localStorage.setItem('aykasoft_orders_' + currentUser.id, JSON.stringify(orders));
             
+            // Update cari bakiye
+            const cari = cariler.find(c => c.id === selectedCustomer.id);
+            if (cari) cari.bakiye += total;
+            localStorage.setItem('aykasoft_cari_' + currentUser.id, JSON.stringify(cariler));
+            
             alert('✅ Sipariş oluşturuldu!');
             cart = [];
             renderCart();
-            selectedCustomer = null;
-            document.getElementById('selectedCustomer').textContent = 'Henüz müşteri seçilmedi';
+            loadStats();
         }
         
         function logout() {

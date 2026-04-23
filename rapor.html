@@ -7,36 +7,30 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --primary: #2563eb; --dark: #0f172a; --light: #f8fafc; --light-secondary: #e2e8f0; --white: #ffffff; --text: #334155; --text-light: #64748b; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --tl: #c9242e; }
+        :root { --primary: #2563eb; --dark: #0f172a; --light: #f8fafc; --light-secondary: #e2e8f0; --text: #334155; --text-light: #64748b; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --tl: #c9242e; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
-        h1, h2, h3 { font-family: 'Outfit', sans-serif; font-weight: 700; }
         
         .header { background: var(--dark); color: white; padding: 1rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
         .header a { color: white; text-decoration: none; font-size: 1.25rem; }
-        .header h1 { flex: 1; font-size: 1.1rem; }
+        .header h1 { flex: 1; font-size: 1.1rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
         
         .main { padding: 1rem; padding-bottom: 80px; }
         
-        /* Filters */
         .filters { display: flex; gap: 0.5rem; margin-bottom: 1rem; overflow-x: auto; padding-bottom: 0.5rem; }
-        .filter { padding: 0.5rem 1rem; background: white; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; border: 1px solid var(--light-secondary); }
+        .filter { padding: 0.5rem 1rem; background: white; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; border: 1px solid var(--light-secondary); font-family: inherit; }
         .filter.active { background: var(--primary); color: white; border-color: var(--primary); }
         
-        /* Summary Cards */
         .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
         .sum-card { background: white; border-radius: 14px; padding: 1rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .sum-card .sum-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem; font-size: 1.25rem; }
         .sum-card .sum-value { font-size: 1.25rem; font-weight: 700; }
         .sum-card .sum-label { font-size: 0.75rem; color: var(--text-light); }
         
-        /* Charts Placeholder */
-        .chart-card { background: white; border-radius: 14px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .chart-card h3 { margin-bottom: 1rem; font-size: 1rem; }
-        .chart-placeholder { height: 200px; background: var(--light); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-light); }
+        .section-title { font-size: 1rem; margin-bottom: 0.75rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
         
-        /* Report List */
-        .report-list { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .report-card { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .report-card h3 { padding: 1rem; border-bottom: 1px solid var(--light-secondary); font-size: 1rem; }
         .report-item { display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid var(--light-secondary); }
         .report-item:last-child { border-bottom: none; }
         .report-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 1.25rem; }
@@ -44,6 +38,13 @@
         .report-info h4 { font-size: 0.95rem; }
         .report-info p { font-size: 0.8rem; color: var(--text-light); }
         .report-amount { font-weight: 700; }
+        
+        .chart-bar { padding: 1rem; }
+        .bar-row { display: flex; align-items: center; margin-bottom: 0.75rem; }
+        .bar-label { width: 100px; font-size: 0.85rem; }
+        .bar-track { flex: 1; height: 24px; background: var(--light); border-radius: 12px; overflow: hidden; margin: 0 1rem; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 12px; display: flex; align-items: center; justify-content: flex-end; padding-right: 0.5rem; color: white; font-size: 0.75rem; font-weight: 600; }
+        .bar-value { width: 70px; text-align: right; font-weight: 600; }
         
         .mobile-nav { display: none; }
         @media (max-width: 768px) {
@@ -63,98 +64,48 @@
     
     <main class="main">
         <div class="filters">
-            <div class="filter active" onclick="setFilter('bugun')">Bugün</div>
-            <div class="filter" onclick="setFilter('hafta')">Bu Hafta</div>
-            <div class="filter" onclick="setFilter('ay')">Bu Ay</div>
-            <div class="filter" onclick="setFilter('yil')">Bu Yıl</div>
+            <div class="filter active" onclick="setFilter('bugun', this)">Bugün</div>
+            <div class="filter" onclick="setFilter('hafta', this)">Bu Hafta</div>
+            <div class="filter" onclick="setFilter('ay', this)">Bu Ay</div>
+            <div class="filter" onclick="setFilter('yil', this)">Bu Yıl</div>
         </div>
         
         <div class="summary-grid">
             <div class="sum-card">
                 <div class="sum-icon" style="background:#d1fae5;color:#10b981;"><i class="fas fa-cash-register"></i></div>
-                <div class="sum-value tl">₺ 4.190</div>
+                <div class="sum-value" id="toplamSatis">₺ 0</div>
                 <div class="sum-label">Toplam Satış</div>
             </div>
             <div class="sum-card">
                 <div class="sum-icon" style="background:#dbeafe;color:#2563eb;"><i class="fas fa-receipt"></i></div>
-                <div class="sum-value">28</div>
+                <div class="sum-value" id="islemSayisi">0</div>
                 <div class="sum-label">İşlem</div>
             </div>
             <div class="sum-card">
                 <div class="sum-icon" style="background:#fef3c7;color:#f59e0b;"><i class="fas fa-percentage"></i></div>
-                <div class="sum-value tl">₺ 150</div>
+                <div class="sum-value" id="kdvToplam">₺ 0</div>
                 <div class="sum-label">KDV</div>
             </div>
             <div class="sum-card">
                 <div class="sum-icon" style="background:#fce7f3;color:#ec4899;"><i class="fas fa-user"></i></div>
-                <div class="sum-value">15</div>
+                <div class="sum-value" id="musteriSayisi">0</div>
                 <div class="sum-label">Müşteri</div>
             </div>
         </div>
         
-        <div class="chart-card">
-            <h3>📈 Satış Grafiği</h3>
-            <div class="chart-placeholder">Grafik burada gösterilecek</div>
+        <h2 class="section-title">📈 Satış Grafiği</h2>
+        <div class="report-card" style="margin-bottom:1rem;">
+            <div class="chart-bar" id="chartBar"></div>
         </div>
         
-        <div class="chart-card">
-            <h3>🏆 En Çok Satılan Ürünler</h3>
-            <div class="report-list">
-                <div class="report-item">
-                    <div class="report-icon" style="background:#dbeafe;color:#2563eb;">⌨️</div>
-                    <div class="report-info">
-                        <h4>Klavye</h4>
-                        <p>15 adet</p>
-                    </div>
-                    <div class="report-amount tl">₺ 6.750</div>
-                </div>
-                <div class="report-item">
-                    <div class="report-icon" style="background:#dbeafe;color:#2563eb;">🖱️</div>
-                    <div class="report-info">
-                        <h4>Mouse</h4>
-                        <p>12 adet</p>
-                    </div>
-                    <div class="report-amount tl">₺ 3.360</div>
-                </div>
-                <div class="report-item">
-                    <div class="report-icon" style="background:#dbeafe;color:#2563eb;">🎧</div>
-                    <div class="report-info">
-                        <h4>Kulaklık</h4>
-                        <p>8 adet</p>
-                    </div>
-                    <div class="report-amount tl">₺ 2.800</div>
-                </div>
-            </div>
+        <h2 class="section-title">🏆 En Çok Satılan Ürünler</h2>
+        <div class="report-card" style="margin-bottom:1rem;">
+            <div id="topProducts"></div>
         </div>
         
-        <div class="chart-card">
-            <h3>📋 Son İşlemler</h3>
-            <div class="report-list">
-                <div class="report-item">
-                    <div class="report-icon" style="background:#d1fae5;color:#10b981;"><i class="fas fa-check"></i></div>
-                    <div class="report-info">
-                        <h4>Nakit Satış</h4>
-                        <p>14:32 • Klavye x1</p>
-                    </div>
-                    <div class="report-amount tl">₺ 531</div>
-                </div>
-                <div class="report-item">
-                    <div class="report-icon" style="background:#dbeafe;color:#2563eb;"><i class="fas fa-credit-card"></i></div>
-                    <div class="report-info">
-                        <h4>Kart Ödeme</h4>
-                        <p>12:15 • Mouse x2</p>
-                    </div>
-                    <div class="report-amount tl">₺ 660</div>
-                </div>
-                <div class="report-item">
-                    <div class="report-icon" style="background:#fef3c7;color:#f59e0b;"><i class="fas fa-exchange-alt"></i></div>
-                    <div class="report-info">
-                        <h4>Cari Tahsilat</h4>
-                        <p>10:00 • Ahmet Y.</p>
-                    </div>
-                    <div class="report-amount tl">₺ 2.000</div>
-                </div>
-            </div>
+        <h2 class="section-title">📋 Son Satışlar</h2>
+        <div class="report-card">
+            <div id="sonSatislar"></div>
         </div>
     </main>
     
@@ -167,10 +118,94 @@
     </nav>
     
     <script>
-        function setFilter(filter) {
+        const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
+        if (!currentUser) window.location.href = 'login.html';
+        
+        let currentFilter = 'bugun';
+        
+        loadReports();
+        
+        function loadReports() {
+            const sales = JSON.parse(localStorage.getItem('aykasoft_sales_' + currentUser.id)) || [];
+            const cariler = JSON.parse(localStorage.getItem('aykasoft_cari_' + currentUser.id)) || [];
+            
+            // Filter by date
+            const today = new Date().toLocaleDateString('tr-TR');
+            let filtered = sales;
+            
+            if (currentFilter === 'bugun') {
+                filtered = sales.filter(s => s.date === today);
+            } else if (currentFilter === 'hafta') {
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                filtered = sales.filter(s => new Date(s.date.split('.').reverse().join('-')) >= weekAgo);
+            } else if (currentFilter === 'ay') {
+                const monthAgo = new Date();
+                monthAgo.setMonth(monthAgo.getMonth() - 1);
+                filtered = sales.filter(s => new Date(s.date.split('.').reverse().join('-')) >= monthAgo);
+            }
+            
+            const toplam = filtered.reduce((s, sale) => s + (sale.total || 0), 0);
+            const kdv = filtered.reduce((s, sale) => s + (sale.kdv || 0), 0);
+            const uniqueMusteri = [...new Set(filtered.map(s => s.customer?.ad).filter(Boolean))].length;
+            
+            document.getElementById('toplamSatis').textContent = '₺ ' + toplam.toLocaleString();
+            document.getElementById('islemSayisi').textContent = filtered.length;
+            document.getElementById('kdvToplam').textContent = '₺ ' + kdv.toLocaleString();
+            document.getElementById('musteriSayisi').textContent = uniqueMusteri || cariler.filter(c => c.tip === 'musteri').length;
+            
+            // Chart
+            const maxVal = Math.max(...filtered.map(s => s.total || 0), 1);
+            document.getElementById('chartBar').innerHTML = filtered.slice(-7).reverse().map(sale => `
+                <div class="bar-row">
+                    <div class="bar-label">${sale.date.slice(0,5)}</div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width:${(sale.total / maxVal * 100)}%"></div>
+                    </div>
+                    <div class="bar-value tl">₺ ${(sale.total || 0).toLocaleString()}</div>
+                </div>
+            `).join('') || '<div style="text-align:center;padding:2rem;color:#64748b;">Veri yok</div>';
+            
+            // Top products
+            const productSales = {};
+            filtered.forEach(sale => {
+                if (sale.items) {
+                    sale.items.forEach(item => {
+                        productSales[item.name] = (productSales[item.name] || 0) + (item.qty || 1);
+                    });
+                }
+            });
+            
+            const topProducts = Object.entries(productSales).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            const icons = ['🥇','🥈','🥉','4','5'];
+            document.getElementById('topProducts').innerHTML = topProducts.map((name, i) => `
+                <div class="report-item">
+                    <div class="report-icon" style="background:#fef3c7;color:#d97706;">${icons[i]}</div>
+                    <div class="report-info">
+                        <h4>${name[0]}</h4>
+                        <p>${name[1]} adet</p>
+                    </div>
+                </div>
+            `).join('') || '<div style="padding:1rem;color:#64748b;">Satış yok</div>';
+            
+            // Last sales
+            document.getElementById('sonSatislar').innerHTML = filtered.slice(-10).reverse().map(sale => `
+                <div class="report-item">
+                    <div class="report-icon" style="background:#d1fae5;color:#10b981;"><i class="fas fa-check"></i></div>
+                    <div class="report-info">
+                        <h4>${sale.type === 'nakit' ? 'Nakit' : 'Kart'} Satış</h4>
+                        <p>${sale.date} • ${sale.items?.map(i => i.name).join(', ') || 'Ürün'}</p>
+                    </div>
+                    <div class="report-amount tl">₺ ${(sale.total || 0).toLocaleString()}</div>
+                </div>
+            `).join('') || '<div style="padding:1rem;color:#64748b;">Satış yok</div>';
+        }
+        
+        function setFilter(filter, btn) {
             document.querySelectorAll('.filter').forEach(f => f.classList.remove('active'));
-            event.target.classList.add('active');
-            alert(filter.toUpperCase() + ' raporu yükleniyor...');
+            btn.classList.add('active');
+            currentFilter = filter;
+            loadReports();
         }
     </script>
 </body>
