@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faturalar - AYKASOFT</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --primary: #2563eb; --dark: #0f172a; --light: #f8fafc; --light-secondary: #e2e8f0; --text: #334155; --text-light: #64748b; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --tl: #c9242e; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
+        
+        .header { background: var(--dark); color: white; padding: 1rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
+        .header a { color: white; text-decoration: none; font-size: 1.25rem; }
+        .header h1 { flex: 1; font-size: 1.1rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
+        
+        .main { padding: 1rem; padding-bottom: 80px; }
+        
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+        .stat-card { background: white; border-radius: 14px; padding: 1rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .stat-card .stat-value { font-size: 1.25rem; font-weight: 700; }
+        .stat-card .stat-label { font-size: 0.8rem; color: var(--text-light); }
+        
+        /* Tabs */
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; overflow-x: auto; }
+        .tab { padding: 0.75rem 1.25rem; border-radius: 10px; font-weight: 600; background: white; border: none; cursor: pointer; white-space: nowrap; font-family: inherit; font-size: 0.9rem; }
+        .tab.active { background: var(--primary); color: white; }
+        
+        /* Invoice Type Buttons */
+        .invoice-types { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .invoice-type { background: white; border: 2px solid var(--light-secondary); border-radius: 16px; padding: 1.5rem; text-align: center; cursor: pointer; transition: 0.2s; }
+        .invoice-type:active { transform: scale(0.98); }
+        .invoice-type.selected { border-color: var(--primary); background: #eff6ff; }
+        .invoice-type .icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+        .invoice-type h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+        .invoice-type p { font-size: 0.85rem; color: var(--text-light); }
+        
+        /* Form */
+        .form-card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .form-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--light-secondary); }
+        
+        .form-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--light-secondary); border-radius: 10px; font-size: 1rem; font-family: inherit; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
+        
+        /* Currency Toggle */
+        .currency-toggle { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+        .currency-btn { flex: 1; padding: 0.75rem; border: 2px solid var(--light-secondary); border-radius: 10px; background: white; cursor: pointer; font-weight: 600; font-family: inherit; }
+        .currency-btn.active { border-color: var(--primary); background: var(--primary); color: white; }
+        
+        /* Products Table */
+        .products-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+        .products-table th { text-align: left; padding: 0.75rem; background: var(--light); font-size: 0.85rem; font-weight: 600; }
+        .products-table td { padding: 0.75rem; border-bottom: 1px solid var(--light-secondary); }
+        .products-table input { width: 100%; padding: 0.5rem; border: 1px solid var(--light-secondary); border-radius: 6px; font-family: inherit; }
+        .products-table .qty-input { width: 60px; text-align: center; }
+        .products-table .price-input { width: 100px; text-align: right; }
+        .delete-row { color: var(--danger); background: none; border: none; cursor: pointer; font-size: 1.25rem; }
+        
+        .add-row-btn { width: 100%; padding: 0.75rem; border: 2px dashed var(--light-secondary); border-radius: 10px; background: none; cursor: pointer; font-weight: 600; color: var(--text-light); font-family: inherit; }
+        .add-row-btn:hover { border-color: var(--primary); color: var(--primary); }
+        
+        /* Summary */
+        .summary-box { background: var(--dark); color: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+        .summary-row.total { font-size: 1.5rem; font-weight: 700; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.2); margin-top: 0.75rem; }
+        
+        /* Buttons */
+        .btn { width: 100%; padding: 1rem; border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; font-family: inherit; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        
+        /* Invoice List */
+        .invoice-list { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .invoice-item { display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid var(--light-secondary); cursor: pointer; }
+        .invoice-item:last-child { border-bottom: none; }
+        .invoice-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-right: 1rem; }
+        .invoice-info { flex: 1; }
+        .invoice-info h4 { font-size: 0.95rem; font-weight: 600; }
+        .invoice-info p { font-size: 0.8rem; color: var(--text-light); }
+        .invoice-amount { font-weight: 700; font-size: 1.1rem; }
+        
+        .empty { text-align: center; padding: 3rem; color: var(--text-light); }
+        
+        /* Modal */
+        .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 200; padding: 1rem; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; width: 100%; max-width: 500px; border-radius: 20px; padding: 1.5rem; max-height: 90vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .modal-header h3 { font-size: 1.25rem; }
+        .modal-close { width: 36px; height: 36px; border-radius: 50%; background: var(--light); border: none; font-size: 1.25rem; cursor: pointer; }
+        
+        .mobile-nav { display: none; }
+        
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .form-row { grid-template-columns: 1fr; }
+            .invoice-types { grid-template-columns: 1fr; }
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); padding: 0.5rem; justify-content: space-around; z-index: 1000; }
+            .mobile-nav a { display: flex; flex-direction: column; align-items: center; padding: 0.5rem; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.7rem; }
+            .mobile-nav a.active { color: white; }
+            .main { padding-bottom: 80px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="dashboard.html">←</a>
+        <h1>🧾 Faturalar</h1>
+    </header>
+    
+    <main class="main">
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="toplamFatura">0</div>
+                <div class="stat-label">Toplam Fatura</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value tl" id="toplamSatis" style="color:var(--success);">₺ 0</div>
+                <div class="stat-label">Satış</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value tl" id="toplamAlis" style="color:var(--danger);">₺ 0</div>
+                <div class="stat-label">Alış</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value tl" id="netKar" style="color:var(--primary);">₺ 0</div>
+                <div class="stat-label">Net Kar</div>
+            </div>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('yeni', this)">Yeni Fatura</button>
+            <button class="tab" onclick="showTab('listele', this)">Fatura Listesi</button>
+        </div>
+        
+        <!-- New Invoice Form -->
+        <div id="yeni-tab">
+            <!-- Invoice Type Selection -->
+            <div class="invoice-types">
+                <div class="invoice-type selected" id="satisType" onclick="selectInvoiceType('satis')">
+                    <div class="icon">📤</div>
+                    <h3>Satış Faturası</h3>
+                    <p>Müşteriye satış yap</p>
+                </div>
+                <div class="invoice-type" id="alisType" onclick="selectInvoiceType('alis')">
+                    <div class="icon">📥</div>
+                    <h3>Alış Faturası</h3>
+                    <p>Tedarikçiden mal al</p>
+                </div>
+            </div>
+            
+            <!-- Invoice Form -->
+            <div class="form-card">
+                <div class="form-title" id="formTitle">🧾 Satış Faturası</div>
+                
+                <!-- Currency Toggle -->
+                <div class="currency-toggle">
+                    <button class="currency-btn active" id="tlBtn" onclick="selectCurrency('TL')">🇹🇷 TL</button>
+                    <button class="currency-btn" id="usdBtn" onclick="selectCurrency('USD')">🇺🇸 USD</button>
+                    <button class="currency-btn" id="eurBtn" onclick="selectCurrency('EUR')">🇪🇺 EUR</button>
+                </div>
+                
+                <!-- Invoice Info -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Fatura No</label>
+                        <input type="text" id="faturaNo" placeholder="FTR-0001">
+                    </div>
+                    <div class="form-group">
+                        <label>Tarih</label>
+                        <input type="date" id="faturaTarih">
+                    </div>
+                </div>
+                
+                <div class="form-group" id="cariGroup">
+                    <label id="cariLabel">Müşteri</label>
+                    <select id="faturaCari">
+                        <option value="">Seçiniz...</option>
+                    </select>
+                </div>
+                
+                <!-- Exchange Rate -->
+                <div class="form-group" id="kurGroup" style="display:none;">
+                    <label>Döviz Kuru (1 USD = ₺)</label>
+                    <input type="number" id="dovizKuru" value="30" step="0.01">
+                </div>
+                
+                <!-- Products -->
+                <div class="form-group">
+                    <label>Ürünler</label>
+                    <table class="products-table">
+                        <thead>
+                            <tr>
+                                <th style="width:40%;">Ürün</th>
+                                <th>Adet</th>
+                                <th>Birim Fiyat</th>
+                                <th>Toplam</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsBody">
+                        </tbody>
+                    </table>
+                    <button class="add-row-btn" onclick="addProductRow()">+ Ürün Ekle</button>
+                </div>
+                
+                <!-- Summary -->
+                <div class="summary-box">
+                    <div class="summary-row">
+                        <span>Ara Toplam</span>
+                        <span id="araToplam">₺ 0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>KDV (%18)</span>
+                        <span id="kdvTutar">₺ 0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>İndirim</span>
+                        <span id="indirimTutar">₺ 0</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>GENEL TOPLAM</span>
+                        <span id="genelToplam">₺ 0</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Not</label>
+                    <textarea id="faturaNot" rows="2" placeholder="opsiyonel notlar..."></textarea>
+                </div>
+                
+                <button class="btn btn-success" onclick="saveInvoice()">💾 Faturayı Kaydet</button>
+            </div>
+        </div>
+        
+        <!-- Invoice List -->
+        <div id="listele-tab" style="display:none;">
+            <div class="form-card" style="margin-bottom: 1rem;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Başlangıç</label>
+                        <input type="date" id="filterBas">
+                    </div>
+                    <div class="form-group">
+                        <label>Bitiş</label>
+                        <input type="date" id="filterBit">
+                    </div>
+                </div>
+            </div>
+            
+            <div id="faturaListesi"></div>
+        </div>
+    </main>
+    
+    <!-- Invoice Detail Modal -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Fatura Detay</h3>
+                <button class="modal-close" onclick="closeDetail()">×</button>
+            </div>
+            <div id="detailContent"></div>
+            <button class="btn btn-primary" onclick="printInvoice()" style="margin-top:1rem;">🖨️ Yazdır</button>
+        </div>
+    </div>
+    
+    <nav class="mobile-nav">
+        <a href="dashboard.html"><span>🏠</span><span>Panel</span></a>
+        <a href="satis.html"><span>🏷️</span><span>Satış</span></a>
+        <a href="cari.html"><span>👥</span><span>Cari</span></a>
+        <a href="rapor.html"><span>📊</span><span>Rapor</span></a>
+        <a href="ayarlar.html"><span>⚙️</span><span>Ayarlar</span></a>
+    </nav>
+    
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
+        if (!currentUser) window.location.href = 'login.html';
+        
+        // Data
+        let faturalar = JSON.parse(localStorage.getItem('aykasoft_faturalar_' + currentUser.id)) || [];
+        let cariler = JSON.parse(localStorage.getItem('aykasoft_cari_' + currentUser.id)) || [];
+        
+        // Form State
+        let invoiceType = 'satis';
+        let currency = 'TL';
+        let products = [{ad:'', adet:1, fiyat:0}];
+        
+        // Initialize
+        document.getElementById('faturaTarih').value = new Date().toISOString().split('T')[0];
+        document.getElementById('faturaNo').value = 'FTR-' + Date.now().toString().slice(-6);
+        
+        // Load cariler
+        loadCariler();
+        renderProducts();
+        loadInvoices();
+        
+        function loadCariler() {
+            const select = document.getElementById('faturaCari');
+            cariler.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c.id;
+                opt.textContent = c.ad;
+                select.appendChild(opt);
+            });
+        }
+        
+        function showTab(tab, btn) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('yeni-tab').style.display = tab === 'yeni' ? 'block' : 'none';
+            document.getElementById('listele-tab').style.display = tab === 'listele' ? 'block' : 'none';
+            if (tab === 'listele') loadInvoices();
+        }
+        
+        function selectInvoiceType(type) {
+            invoiceType = type;
+            document.getElementById('satisType').classList.toggle('selected', type === 'satis');
+            document.getElementById('alisType').classList.toggle('selected', type === 'alis');
+            document.getElementById('formTitle').textContent = type === 'satis' ? '🧾 Satış Faturası' : '🧾 Alış Faturası';
+            document.getElementById('cariLabel').textContent = type === 'satis' ? 'Müşteri *' : 'Tedarikçi *';
+            updateSummary();
+        }
+        
+        function selectCurrency(cur) {
+            currency = cur;
+            document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(cur + 'Btn').classList.add('active');
+            document.getElementById('kurGroup').style.display = cur !== 'TL' ? 'block' : 'none';
+            updateSummary();
+        }
+        
+        function renderProducts() {
+            const tbody = document.getElementById('productsBody');
+            tbody.innerHTML = products.map((p, i) => `
+                <tr>
+                    <td><input type="text" value="${p.ad}" onchange="updateProduct(${i}, 'ad', this.value)" placeholder="Ürün adı"></td>
+                    <td><input type="number" class="qty-input" value="${p.adet}" min="1" onchange="updateProduct(${i}, 'adet', parseFloat(this.value))"></td>
+                    <td><input type="number" class="price-input" value="${p.fiyat}" onchange="updateProduct(${i}, 'fiyat', parseFloat(this.value))"></td>
+                    <td class="tl">₺ ${(p.adet * p.fiyat).toLocaleString()}</td>
+                    <td><button class="delete-row" onclick="deleteProduct(${i})">×</button></td>
+                </tr>
+            `).join('');
+            updateSummary();
+        }
+        
+        function addProductRow() {
+            products.push({ad:'', adet:1, fiyat:0});
+            renderProducts();
+        }
+        
+        function updateProduct(index, field, value) {
+            products[index][field] = value;
+            renderProducts();
+        }
+        
+        function deleteProduct(index) {
+            if (products.length > 1) {
+                products.splice(index, 1);
+                renderProducts();
+            }
+        }
+        
+        function updateSummary() {
+            let araToplam = products.reduce((s, p) => s + (p.adet * p.fiyat), 0);
+            let kur = currency === 'TL' ? 1 : (parseFloat(document.getElementById('dovizKuru').value) || 1);
+            
+            if (currency !== 'TL') {
+                araToplam = araToplam * kur;
+            }
+            
+            let kdv = araToplam * 0.18;
+            let genelToplam = araToplam + kdv;
+            
+            const currencySymbol = currency === 'TL' ? '₺' : currency === 'USD' ? '$' : '€';
+            
+            document.getElementById('araToplam').textContent = currencySymbol + ' ' + araToplam.toLocaleString();
+            document.getElementById('kdvTutar').textContent = currencySymbol + ' ' + kdv.toLocaleString();
+            document.getElementById('genelToplam').textContent = currencySymbol + ' ' + genelToplam.toLocaleString();
+            document.getElementById('indirimTutar').textContent = currencySymbol + ' 0';
+        }
+        
+        function saveInvoice() {
+            const faturaNo = document.getElementById('faturaNo').value.trim();
+            const tarih = document.getElementById('faturaTarih').value;
+            const cariId = document.getElementById('faturaCari').value;
+            const not = document.getElementById('faturaNot').value;
+            
+            if (!faturaNo || !tarih) { alert('Lütfen fatura no ve tarih girin!'); return; }
+            if (!cariId) { alert('Lütfen ' + (invoiceType === 'satis' ? 'müşteri' : 'tedarikçi') + ' seçin!'); return; }
+            
+            const validProducts = products.filter(p => p.ad && p.adet > 0);
+            if (validProducts.length === 0) { alert('Lütfen en az bir ürün ekleyin!'); return; }
+            
+            let araToplam = validProducts.reduce((s, p) => s + (p.adet * p.fiyat), 0);
+            let kur = currency === 'TL' ? 1 : (parseFloat(document.getElementById('dovizKuru').value) || 1);
+            if (currency !== 'TL') araToplam = araToplam * kur;
+            
+            let kdv = araToplam * 0.18;
+            let total = araToplam + kdv;
+            
+            const cari = cariler.find(c => c.id == cariId);
+            
+            const fatura = {
+                id: Date.now(),
+                no: faturaNo,
+                tarih: tarih,
+                tip: invoiceType,
+                currency: currency,
+                kur: kur,
+                cariId: cariId,
+                cariAd: cari ? cari.ad : '-',
+                urunler: validProducts,
+                araToplam: araToplam,
+                kdv: kdv,
+                total: total,
+                not: not,
+                olusturma: new Date().toLocaleString('tr-TR')
+            };
+            
+            faturalar.push(fatura);
+            localStorage.setItem('aykasoft_faturalar_' + currentUser.id, JSON.stringify(faturalar));
+            
+            // Update cari bakiye
+            if (cari) {
+                if (invoiceType === 'satis') {
+                    cari.bakiye += total;
+                } else {
+                    cari.bakiye -= total;
+                }
+                localStorage.setItem('aykasoft_cari_' + currentUser.id, JSON.stringify(cariler));
+            }
+            
+            alert('✅ Fatura kaydedildi!\n\n' + faturaNo + '\n' + (invoiceType === 'satis' ? 'Satış' : 'Alış') + ' - ' + currency + ' ' + total.toLocaleString());
+            
+            // Reset form
+            document.getElementById('faturaNo').value = 'FTR-' + Date.now().toString().slice(-6);
+            products = [{ad:'', adet:1, fiyat:0}];
+            renderProducts();
+            loadInvoices();
+        }
+        
+        function loadInvoices() {
+            const satis = faturalar.filter(f => f.tip === 'satis').reduce((s, f) => s + f.total, 0);
+            const alis = faturalar.filter(f => f.tip === 'alis').reduce((s, f) => s + f.total, 0);
+            
+            document.getElementById('toplamFatura').textContent = faturalar.length;
+            document.getElementById('toplamSatis').textContent = '₺ ' + satis.toLocaleString();
+            document.getElementById('toplamAlis').textContent = '₺ ' + alis.toLocaleString();
+            document.getElementById('netKar').textContent = '₺ ' + (satis - alis).toLocaleString();
+            
+            const list = document.getElementById('faturaListesi');
+            if (faturalar.length === 0) {
+                list.innerHTML = '<div class="empty">Fatura bulunamadı</div>';
+                return;
+            }
+            
+            list.innerHTML = faturalar.sort((a, b) => new Date(b.tarih) - new Date(a.tarih)).map(f => `
+                <div class="invoice-list" style="margin-bottom:1rem;">
+                    <div class="invoice-item" onclick="viewInvoice(${f.id})">
+                        <div class="invoice-icon" style="background:${f.tip === 'satis' ? '#d1fae5' : '#fee2e2'};color:${f.tip === 'satis' ? '#10b981' : '#ef4444'};">
+                            ${f.tip === 'satis' ? '📤' : '📥'}
+                        </div>
+                        <div class="invoice-info">
+                            <h4>${f.no}</h4>
+                            <p>${f.tarih} • ${f.cariAd}</p>
+                        </div>
+                        <div class="invoice-amount tl">${f.currency} ${f.total.toLocaleString()}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function viewInvoice(id) {
+            const f = faturalar.find(x => x.id === id);
+            if (!f) return;
+            
+            const currencySymbol = f.currency === 'TL' ? '₺' : f.currency === 'USD' ? '$' : '€';
+            
+            let urunlerHtml = f.urunler.map(u => `
+                <tr>
+                    <td>${u.ad}</td>
+                    <td style="text-align:center;">${u.adet}</td>
+                    <td style="text-align:right;">${currencySymbol} ${u.fiyat.toLocaleString()}</td>
+                    <td style="text-align:right;">${currencySymbol} ${(u.adet * u.fiyat).toLocaleString()}</td>
+                </tr>
+            `).join('');
+            
+            document.getElementById('detailContent').innerHTML = `
+                <div style="background:${f.tip === 'satis' ? '#d1fae5' : '#fee2e2'};padding:1rem;border-radius:12px;margin-bottom:1rem;">
+                    <div style="font-size:1.5rem;font-weight:700;">${f.no}</div>
+                    <div style="color:var(--text-light);">${f.tarih} • ${f.tip === 'satis' ? 'Satış' : 'Alış'} Faturası</div>
+                </div>
+                
+                <div style="margin-bottom:1rem;">
+                    <strong>Cari:</strong> ${f.cariAd}
+                </div>
+                
+                <table style="width:100%;border-collapse:collapse;margin-bottom:1rem;">
+                    <tr style="background:var(--light);">
+                        <th style="text-align:left;padding:0.5rem;">Ürün</th>
+                        <th style="text-align:center;padding:0.5rem;">Adet</th>
+                        <th style="text-align:right;padding:0.5rem;">Fiyat</th>
+                        <th style="text-align:right;padding:0.5rem;">Toplam</th>
+                    </tr>
+                    ${urunlerHtml}
+                </table>
+                
+                <div style="background:var(--dark);color:white;padding:1rem;border-radius:12px;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+                        <span>Ara Toplam:</span>
+                        <span>${currencySymbol} ${f.araToplam.toLocaleString()}</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+                        <span>KDV (%18):</span>
+                        <span>${currencySymbol} ${f.kdv.toLocaleString()}</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:1.25rem;font-weight:700;border-top:1px solid rgba(255,255,255,0.2);padding-top:0.5rem;">
+                        <span>TOPLAM:</span>
+                        <span>${currencySymbol} ${f.total.toLocaleString()}</span>
+                    </div>
+                </div>
+                
+                ${f.not ? '<div style="margin-top:1rem;color:var(--text-light);"><strong>Not:</strong> ' + f.not + '</div>' : ''}
+            `;
+            
+            document.getElementById('detailModal').classList.add('active');
+        }
+        
+        function closeDetail() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+        
+        function printInvoice() {
+            alert('🖨️ Yazdırma özelliği için yazıcı entegrasyonu gerekli.\n\nFatura detay sayfası açık - buradan PDF çıktısı alabilirsiniz.');
+        }
+        
+        // Listen for exchange rate changes
+        document.getElementById('dovizKuru').addEventListener('input', updateSummary);
+    </script>
+</body>
+</html>
