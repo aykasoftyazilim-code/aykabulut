@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stok Yönetimi - AYKASOFT</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --primary: #2563eb; --dark: #0f172a; --light: #f8fafc; --light-secondary: #e2e8f0; --text: #334155; --text-light: #64748b; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --tl: #c9242e; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
+        
+        .header { background: var(--dark); color: white; padding: 1rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
+        .header a { color: white; text-decoration: none; font-size: 1.25rem; }
+        .header h1 { flex: 1; font-size: 1.1rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
+        
+        .main { padding: 1rem; padding-bottom: 80px; }
+        
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+        .stat-card { background: white; border-radius: 14px; padding: 1rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .stat-card .stat-value { font-size: 1.5rem; font-weight: 700; }
+        .stat-card .stat-label { font-size: 0.8rem; color: var(--text-light); }
+        
+        .search-box { background: white; padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1rem; display: flex; gap: 0.5rem; }
+        .search-box input { flex: 1; border: none; font-size: 1rem; outline: none; }
+        .search-box button { background: none; border: none; font-size: 1.25rem; cursor: pointer; }
+        
+        .section-title { font-size: 1rem; margin-bottom: 0.75rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
+        
+        .product-list { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .product-item { display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid var(--light-secondary); }
+        .product-item:last-child { border-bottom: none; }
+        .product-icon { width: 48px; height: 48px; background: var(--light); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 1.5rem; }
+        .product-info { flex: 1; }
+        .product-info h4 { font-size: 0.95rem; font-weight: 600; }
+        .product-info p { font-size: 0.8rem; color: var(--text-light); }
+        .product-stock { font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; }
+        .stock-ok { background: #d1fae5; color: #059669; }
+        .stock-low { background: #fef3c7; color: #d97706; }
+        .stock-out { background: #fee2e2; color: #dc2626; }
+        
+        .add-btn { position: fixed; bottom: 70px; right: 1rem; width: 56px; height: 56px; border-radius: 50%; background: var(--primary); color: white; border: none; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); }
+        
+        .mobile-nav { display: none; }
+        @media (max-width: 768px) {
+            .stats-row { grid-template-columns: 1fr; }
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); padding: 0.5rem; justify-content: space-around; z-index: 1000; }
+            .mobile-nav a { display: flex; flex-direction: column; align-items: center; padding: 0.5rem; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.7rem; }
+            .mobile-nav a.active { color: white; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="dashboard.html">←</a>
+        <h1>📦 Stok Yönetimi</h1>
+    </header>
+    
+    <main class="main">
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value">125</div>
+                <div class="stat-label">Toplam Ürün</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--success);">118</div>
+                <div class="stat-label">Stokta</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color:var(--warning);">7</div>
+                <div class="stat-label">Kritik</div>
+            </div>
+        </div>
+        
+        <div class="search-box">
+            <button>🔍</button>
+            <input type="text" placeholder="Ürün ara...">
+        </div>
+        
+        <h2 class="section-title">⚠️ Kritik Stok</h2>
+        <div class="product-list">
+            <div class="product-item">
+                <div class="product-icon">⌨️</div>
+                <div class="product-info">
+                    <h4>Klavye Kablosuz</h4>
+                    <p>869123456001 • Elektronik</p>
+                </div>
+                <div class="product-stock stock-low">5 adet</div>
+            </div>
+            <div class="product-item">
+                <div class="product-icon">🎧</div>
+                <div class="product-info">
+                    <h4>Kulaklık BT</h4>
+                    <p>869123456005 • Elektronik</p>
+                </div>
+                <div class="product-stock stock-low">3 adet</div>
+            </div>
+        </div>
+        
+        <h2 class="section-title" style="margin-top:1rem;">📋 Tüm Ürünler</h2>
+        <div class="product-list">
+            <div class="product-item">
+                <div class="product-icon">⌨️</div>
+                <div class="product-info">
+                    <h4>Klavye</h4>
+                    <p>869123456001 • Elektronik</p>
+                </div>
+                <div class="product-stock stock-ok">45 adet</div>
+            </div>
+            <div class="product-item">
+                <div class="product-icon">🖱️</div>
+                <div class="product-info">
+                    <h4>Mouse</h4>
+                    <p>869123456002 • Elektronik</p>
+                </div>
+                <div class="product-stock stock-ok">32 adet</div>
+            </div>
+            <div class="product-item">
+                <div class="product-icon">🖥️</div>
+                <div class="product-info">
+                    <h4>Monitor 24"</h4>
+                    <p>869123456003 • Bilgisayar</p>
+                </div>
+                <div class="product-stock stock-ok">18 adet</div>
+            </div>
+            <div class="product-item">
+                <div class="product-icon">💾</div>
+                <div class="product-info">
+                    <h4>SSD 500GB</h4>
+                    <p>869123456004 • Bilgisayar</p>
+                </div>
+                <div class="product-stock stock-ok">25 adet</div>
+            </div>
+            <div class="product-item">
+                <div class="product-icon">📷</div>
+                <div class="product-info">
+                    <h4>Webcam HD</h4>
+                    <p>869123456007 • Elektronik</p>
+                </div>
+                <div class="product-stock stock-ok">12 adet</div>
+            </div>
+        </div>
+    </main>
+    
+    <button class="add-btn" onclick="alert('Yeni ürün ekleme modalı açılıyor...')">+</button>
+    
+    <nav class="mobile-nav">
+        <a href="dashboard.html"><span>🏠</span><span>Panel</span></a>
+        <a href="satis.html"><span>🏷️</span><span>Satış</span></a>
+        <a href="saha.html"><span>📱</span><span>Saha</span></a>
+        <a href="rapor.html"><span>📊</span><span>Rapor</span></a>
+        <a href="ayarlar.html"><span>⚙️</span><span>Ayarlar</span></a>
+    </nav>
+</body>
+</html>

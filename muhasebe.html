@@ -1,13 +1,11 @@
-<script>
-if(!localStorage.getItem("aykasoft_currentUser"))window.location.href="login.html";
-</script>
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ön Muhasebe - AYKASOFT</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
             --primary: #2563eb;
@@ -26,735 +24,384 @@ if(!localStorage.getItem("aykasoft_currentUser"))window.location.href="login.htm
             --danger: #ef4444;
             --tl: #c9242e;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--light);
-            color: var(--text);
-            min-height: 100vh;
-        }
-
+        body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
         h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; font-weight: 700; }
-
         .tl { color: var(--tl); font-weight: 700; }
-
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 260px;
-            background: var(--dark);
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 2rem;
-        }
-
-        .logo-icon {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Outfit';
-            font-weight: 800;
-            font-size: 1.25rem;
-            color: white;
-        }
-
-        .logo-text {
-            font-family: 'Outfit';
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
-        }
-
-        .logo-text span { color: var(--primary-light); }
-
-        .nav-menu {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            overflow-y: auto;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.875rem 1rem;
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 500;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-
-        .nav-item.active {
-            background: var(--primary);
-        }
-
-        .nav-icon { font-size: 1.25rem; }
-
-        .nav-divider {
-            height: 1px;
-            background: rgba(255,255,255,0.1);
-            margin: 1rem 0;
-        }
-
-        .main {
-            margin-left: 260px;
-            padding: 2rem;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .header h1 {
-            font-size: 1.75rem;
-            color: var(--dark);
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .date-display {
-            background: white;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--light-secondary);
-            font-weight: 500;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.2s;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover { background: var(--primary-dark); }
-
-        .btn-ghost {
-            background: white;
-            color: var(--text);
-            border: 1px solid var(--light-secondary);
-        }
-
-        .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
-
-        .btn-success { background: var(--success); color: white; }
-        .btn-danger { background: var(--danger); color: white; }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 16px;
-            padding: 1.5rem;
-            border: 1px solid var(--light-secondary);
-        }
-
-        .stat-card.success { border-left: 4px solid var(--success); }
-        .stat-card.danger { border-left: 4px solid var(--danger); }
-        .stat-card.warning { border-left: 4px solid var(--warning); }
-        .stat-card.info { border-left: 4px solid var(--primary); }
-        .stat-card.tl { border-left: 4px solid var(--tl); }
-
-        .stat-label {
-            font-size: 0.875rem;
-            color: var(--text-light);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-family: 'Outfit';
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .stat-value.success { color: var(--success); }
-        .stat-value.danger { color: var(--danger); }
-        .stat-value.tl { color: var(--tl); }
-
-        .stat-change {
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-        }
-
-        .stat-change.up { color: var(--success); }
-        .stat-change.down { color: var(--danger); }
-
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .quick-action {
-            background: white;
-            border-radius: 16px;
-            padding: 1.5rem;
-            text-align: center;
-            border: 1px solid var(--light-secondary);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .quick-action:hover {
-            border-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
-
-        .quick-action:hover .quick-action-icon { transform: scale(1.1); }
-
-        .quick-action-icon {
-            font-size: 2rem;
-            margin-bottom: 0.75rem;
-            transition: transform 0.2s;
-        }
-
-        .quick-action-title {
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            background: white;
-            padding: 0.5rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--light-secondary);
-        }
-
-        .tab {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            color: var(--text-light);
-            transition: all 0.2s;
-            border: none;
-            background: none;
-            font-size: 0.9rem;
-        }
-
-        .tab.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .table-container {
-            background: white;
-            border-radius: 16px;
-            border: 1px solid var(--light-secondary);
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--light-secondary);
-        }
-
-        .table-title {
-            font-size: 1.1rem;
-            color: var(--dark);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 1rem 1.5rem;
-            text-align: left;
-        }
-
-        th {
-            background: var(--light);
-            font-weight: 600;
-            color: var(--text-light);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-        }
-
-        td {
-            border-bottom: 1px solid var(--light-secondary);
-        }
-
-        tr:hover td { background: var(--light); }
-        tr:last-child td { border-bottom: none; }
-
-        .amount {
-            font-family: 'Outfit';
-            font-weight: 700;
-        }
-
-        .amount.positive { color: var(--success); }
-        .amount.negative { color: var(--danger); }
-
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal-overlay.active { display: flex; }
-
-        .modal {
-            background: white;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--light-secondary);
-        }
-
-        .modal-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: none;
-            font-size: 1rem;
-        }
-
-        .modal-body { padding: 1.5rem; }
-
-        .modal-footer {
-            display: flex;
-            gap: 1rem;
-            padding: 1.5rem;
-            border-top: 1px solid var(--light-secondary);
-        }
-
-        .modal-footer .btn { flex: 1; justify-content: center; }
-
+        
+        /* Header */
+        .header { background: var(--dark); color: white; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .header a { color: white; text-decoration: none; font-size: 1.25rem; }
+        .header h1 { flex: 1; text-align: center; font-size: 1.25rem; }
+        
+        /* Tabs */
+        .tabs { display: flex; background: white; padding: 0.5rem; gap: 0.5rem; overflow-x: auto; border-bottom: 1px solid var(--light-secondary); }
+        .tab { padding: 0.75rem 1.25rem; border-radius: 10px; font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text-light); background: var(--light); border: none; }
+        .tab.active { background: var(--primary); color: white; }
+        
+        /* Main */
+        .main { padding: 1rem; padding-bottom: 80px; }
+        
+        /* Stats */
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+        .stat-box { background: white; border-radius: 12px; padding: 1rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .stat-box .stat-label { font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.25rem; }
+        .stat-box .stat-value { font-size: 1.25rem; font-weight: 700; }
+        .stat-box.warning .stat-value { color: var(--warning); }
+        .stat-box.success .stat-value { color: var(--success); }
+        .stat-box.danger .stat-value { color: var(--danger); }
+        
+        /* Cards */
+        .card { background: white; border-radius: 16px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
+        .card-header { padding: 1rem; border-bottom: 1px solid var(--light-secondary); display: flex; justify-content: space-between; align-items: center; }
+        .card-header h3 { font-size: 1rem; }
+        .card-header a { color: var(--primary); font-size: 0.9rem; text-decoration: none; }
+        
+        /* List Items */
+        .list-item { padding: 1rem; border-bottom: 1px solid var(--light-secondary); display: flex; align-items: center; gap: 1rem; cursor: pointer; }
+        .list-item:last-child { border-bottom: none; }
+        .list-item:hover { background: var(--light); }
+        .item-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+        .item-icon.green { background: #d1fae5; color: var(--success); }
+        .item-icon.yellow { background: #fef3c7; color: var(--warning); }
+        .item-icon.red { background: #fee2e2; color: var(--danger); }
+        .item-icon.blue { background: #dbeafe; color: var(--primary); }
+        .item-info { flex: 1; }
+        .item-info h4 { font-size: 0.95rem; font-weight: 600; }
+        .item-info p { font-size: 0.8rem; color: var(--text-light); }
+        .item-amount { font-weight: 700; font-size: 1rem; }
+        
+        /* Action Button */
+        .action-bar { position: fixed; bottom: 70px; left: 0; right: 0; padding: 1rem; background: white; display: flex; gap: 0.5rem; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); }
+        .action-bar a { flex: 1; padding: 0.875rem; border-radius: 12px; font-weight: 600; text-align: center; text-decoration: none; }
+        .action-bar .primary { background: var(--primary); color: white; }
+        .action-bar .secondary { background: var(--light); color: var(--text); }
+        
+        /* Modal */
+        .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: flex-end; z-index: 200; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; width: 100%; max-height: 80vh; border-radius: 24px 24px 0 0; padding: 1.5rem; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .modal-header h3 { font-size: 1.25rem; }
+        .modal-close { width: 36px; height: 36px; border-radius: 50%; background: var(--light); border: none; font-size: 1.25rem; cursor: pointer; }
         .form-group { margin-bottom: 1rem; }
-
-        .form-label {
-            display: block;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--light-secondary);
-            border-radius: 10px;
-            font-size: 1rem;
-            font-family: inherit;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        @media (max-width: 1200px) {
-            .sidebar { width: 80px; padding: 1rem; }
-            .logo-text, .nav-item span { display: none; }
-            .nav-item { justify-content: center; }
-            .main { margin-left: 80px; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .quick-actions { grid-template-columns: repeat(2, 1fr); }
-        }
-
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        .form-group input, .form-group select { width: 100%; padding: 0.875rem; border: 1px solid var(--light-secondary); border-radius: 10px; font-size: 1rem; }
+        .btn { width: 100%; padding: 1rem; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: var(--light); color: var(--text); margin-top: 0.5rem; }
+        
+        /* Mobile Nav */
+        .mobile-nav { display: none; }
         @media (max-width: 768px) {
-            .stats-grid { grid-template-columns: 1fr; }
+            .stats-row { grid-template-columns: 1fr; }
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); padding: 0.5rem; justify-content: space-around; z-index: 1000; }
+            .mobile-nav a { display: flex; flex-direction: column; align-items: center; padding: 0.5rem; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.7rem; }
+            .mobile-nav a.active { color: white; }
+            .mobile-nav a:hover { color: white; }
+            .main { padding-bottom: 80px; }
         }
-    .mobile-nav { display: none; }
-@media (max-width: 768px) {
-  .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: #0f172a; padding: 0.5rem; justify-content: space-around; z-index: 1000; }
-  .mobile-nav a { display: flex; flex-direction: column; align-items: center; padding: 0.5rem; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.7rem; }
-  .mobile-nav a.active { color: white; }
-  .mobile-nav span:first-child { font-size: 1.5rem; }
-  .mobile-nav .nav-logout { color: #ef4444; }
-  body { padding-bottom: 70px; }
-}
-</style>
+    </style>
 </head>
 <body>
-    <aside class="sidebar">
-        <div class="logo">
-            <div class="logo-icon">AY</div>
-            <div class="logo-text">AYKA<span>SOFT</span></div>
-        </div>
-        <nav class="nav-menu">
-            <a href="index.html" class="nav-item">
-                <span class="nav-icon">🏠</span>
-                <span>Ana Sayfa</span>
-            </a>
-            <a href="#" class="nav-item active">
-                <span class="nav-icon">💰</span>
-                <span>Ön Muhasebe</span>
-            </a>
-            <a href="satis.html" class="nav-item">
-                <span class="nav-icon">🏷️</span>
-                <span>Barkodlu Satış</span>
-            </a>
-            <a href="saha.html" class="nav-item">
-                <span class="nav-icon">📱</span>
-                <span>Saha Satış</span>
-            </a>
-            <div class="nav-divider"></div>
-            <a href="#" class="nav-item">
-                <span class="nav-icon">📦</span>
-                <span>Stok Yönetimi</span>
-            </a>
-            <a href="#" class="nav-item">
-                <span class="nav-icon">👥</span>
-                <span>Cari Hesap</span>
-            </a>
-            <a href="#" class="nav-item">
-                <span class="nav-icon">📊</span>
-                <span>Raporlar</span>
-            </a>
-            <div class="nav-divider"></div>
-            <a href="#" class="nav-item">
-                <span class="nav-icon">⚙️</span>
-                <span>Ayarlar</span>
-            </a>
-        </nav>
-    </aside>
-
+    <header class="header">
+        <a href="dashboard.html">←</a>
+        <h1>💰 Ön Muhasebe</h1>
+        <div style="width: 40px;"></div>
+    </header>
+    
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('cari')">Cari Hesap</button>
+        <button class="tab" onclick="showTab('kasa')">Kasa</button>
+        <button class="tab" onclick="showTab('banka')">Banka</button>
+        <button class="tab" onclick="showTab('cek')">Çek/Senet</button>
+    </div>
+    
     <main class="main">
-        <header class="header">
-            <h1>Ön Muhasebe</h1>
-            <div class="header-right">
-                <div class="date-display" id="currentDate"></div>
-                <a href="#" class="btn btn-ghost">📊 Raporlar</a>
-                <button class="btn btn-primary" onclick="openModal()">+ Yeni İşlem</button>
+        <!-- cari Summary -->
+        <div id="cari-tab">
+            <div class="stats-row">
+                <div class="stat-box warning">
+                    <div class="stat-label">Alacak</div>
+                    <div class="stat-value tl">₺ 68.250</div>
+                </div>
+                <div class="stat-box danger">
+                    <div class="stat-label">Borç</div>
+                    <div class="stat-value tl">₺ 42.800</div>
+                </div>
+                <div class="stat-box success">
+                    <div class="stat-label">Bakiye</div>
+                    <div class="stat-value tl">₺ 25.450</div>
+                </div>
             </div>
-        </header>
-
-        <div class="stats-grid">
-            <div class="stat-card tl">
-                <div class="stat-label">Kasa Mevcudu</div>
-                <div class="stat-value tl">₺ 125.450</div>
-                <div class="stat-change up">▲ %5.2 bu ay</div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>👥 Müşteriler (Alacaklı)</h3>
+                </div>
+                <div class="list-item" onclick="openCari('Ahmet Yılmaz', 12500)">
+                    <div class="item-icon yellow"><i class="fas fa-user"></i></div>
+                    <div class="item-info">
+                        <h4>Ahmet Yılmaz</h4>
+                        <p>Selçuklu, Konya</p>
+                    </div>
+                    <div class="item-amount tl">₺ 12.500</div>
+                </div>
+                <div class="list-item" onclick="openCari('Mehmet Kaya', 8900)">
+                    <div class="item-icon yellow"><i class="fas fa-user"></i></div>
+                    <div class="item-info">
+                        <h4>Mehmet Kaya</h4>
+                        <p>Meram, Konya</p>
+                    </div>
+                    <div class="item-amount tl">₺ 8.900</div>
+                </div>
+                <div class="list-item" onclick="openCari('Ali Demir', 15400)">
+                    <div class="item-icon yellow"><i class="fas fa-user"></i></div>
+                    <div class="item-info">
+                        <h4>Ali Demir</h4>
+                        <p>Çumra, Konya</p>
+                    </div>
+                    <div class="item-amount tl">₺ 15.400</div>
+                </div>
             </div>
-            <div class="stat-card danger">
-                <div class="stat-label">Toplam Borçlar</div>
-                <div class="stat-value danger">₺ 42.800</div>
-                <div class="stat-change down">▼ %2.1 bu ay</div>
-            </div>
-            <div class="stat-card success">
-                <div class="stat-label">Toplam Alacaklar</div>
-                <div class="stat-value success">₺ 68.250</div>
-                <div class="stat-change up">▲ %8.5 bu ay</div>
-            </div>
-            <div class="stat-card info">
-                <div class="stat-label">Bu Ay Gelir</div>
-                <div class="stat-value">₺ 189.500</div>
-                <div class="stat-change up">▲ %12 bu ay</div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>🏪 Tedarikçiler (Borçlu)</h3>
+                </div>
+                <div class="list-item" onclick="openCari('ABC Ltd.', -8500)">
+                    <div class="item-icon red"><i class="fas fa-building"></i></div>
+                    <div class="item-info">
+                        <h4>ABC Ltd. Şti</h4>
+                        <p>Ankara</p>
+                    </div>
+                    <div class="item-amount tl">₺ 8.500</div>
+                </div>
+                <div class="list-item" onclick="openCari('XYZ A.Ş', -12300)">
+                    <div class="item-icon red"><i class="fas fa-building"></i></div>
+                    <div class="item-info">
+                        <h4>XYZ A.Ş</h4>
+                        <p>İstanbul</p>
+                    </div>
+                    <div class="item-amount tl">₺ 12.300</div>
+                </div>
             </div>
         </div>
-
-        <h3 style="margin-bottom: 1rem;">Hızlı İşlemler</h3>
-        <div class="quick-actions">
-            <div class="quick-action" onclick="openModal('cashIn')">
-                <div class="quick-action-icon">💵</div>
-                <div class="quick-action-title">Kasa Girişi</div>
+        
+        <!-- Kasa Tab -->
+        <div id="kasa-tab" style="display:none;">
+            <div class="stats-row">
+                <div class="stat-box success">
+                    <div class="stat-label">Nakit</div>
+                    <div class="stat-value tl">₺ 45.200</div>
+                </div>
+                <div class="stat-box warning">
+                    <div class="stat-label">Pos</div>
+                    <div class="stat-value tl">₺ 28.500</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Veresiye</div>
+                    <div class="stat-value tl">₺ 12.800</div>
+                </div>
             </div>
-            <div class="quick-action" onclick="openModal('cashOut')">
-                <div class="quick-action-icon">💳</div>
-                <div class="quick-action-title">Kasa Çıkışı</div>
-            </div>
-            <div class="quick-action" onclick="openModal('collection')">
-                <div class="quick-action-icon">👤</div>
-                <div class="quick-action-title">Cari Tahsilat</div>
-            </div>
-            <div class="quick-action" onclick="openModal('transfer')">
-                <div class="quick-action-icon">🏦</div>
-                <div class="quick-action-title">Banka Transfer</div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>💵 Kasa Hareketleri</h3>
+                </div>
+                <div class="list-item">
+                    <div class="item-icon green"><i class="fas fa-arrow-up"></i></div>
+                    <div class="item-info">
+                        <h4>Kasa Girişi</h4>
+                        <p>Bugün, 14:30</p>
+                    </div>
+                    <div class="item-amount tl">₺ 5.000</div>
+                </div>
+                <div class="list-item">
+                    <div class="item-icon red"><i class="fas fa-arrow-down"></i></div>
+                    <div class="item-info">
+                        <h4>Ödeme</h4>
+                        <p>Bugün, 11:15</p>
+                    </div>
+                    <div class="item-amount tl">₺ 2.500</div>
+                </div>
+                <div class="list-item">
+                    <div class="item-icon green"><i class="fas fa-arrow-up"></i></div>
+                    <div class="item-info">
+                        <h4>Banka Havalesi</h4>
+                        <p>Dün</p>
+                    </div>
+                    <div class="item-amount tl">₺ 10.000</div>
+                </div>
             </div>
         </div>
-
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('cash')">Kasa Hareketleri</button>
-            <button class="tab" onclick="switchTab('bank')">Banka Hesapları</button>
-            <button class="tab" onclick="switchTab('cari')">Cari Hesaplar</button>
-        </div>
-
-        <div class="table-container" id="cashTab">
-            <div class="table-header">
-                <h3 class="table-title">Son Kasa Hareketleri</h3>
+        
+        <!-- Banka Tab -->
+        <div id="banka-tab" style="display:none;">
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-label">Garanti BB</div>
+                    <div class="stat-value tl">₺ 125.400</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Akbank</div>
+                    <div class="stat-value tl">₺ 45.800</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">İş Bankası</div>
+                    <div class="stat-value tl">₺ 28.900</div>
+                </div>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tarih</th>
-                        <th>İşlem No</th>
-                        <th>Tür</th>
-                        <th>Açıklama</th>
-                        <th>Tutar</th>
-                        <th>Bakiye</th>
-                    </tr>
-                </thead>
-                <tbody id="cashTableBody"></tbody>
-            </table>
-        </div>
-
-        <div class="table-container" id="bankTab" style="display:none;">
-            <div class="table-header">
-                <h3 class="table-title">Banka Hesapları</h3>
-                <button class="btn btn-primary">+ Yeni Hesap</button>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>🏦 Son İşlemler</h3>
+                </div>
+                <div class="list-item">
+                    <div class="item-icon blue"><i class="fas fa-building-columns"></i></div>
+                    <div class="item-info">
+                        <h4>Garanti - POS Tahsilat</h4>
+                        <p>Bugün, 15:00</p>
+                    </div>
+                    <div class="item-amount tl">₺ 3.450</div>
+                </div>
+                <div class="list-item">
+                    <div class="item-icon red"><i class="fas fa-money-bill-transfer"></i></div>
+                    <div class="item-info">
+                        <h4>Akbank - EFT</h4>
+                        <p>Bugün, 10:30</p>
+                    </div>
+                    <div class="item-amount tl">₺ 15.000</div>
+                </div>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Banka</th>
-                        <th>Şube</th>
-                        <th>IBAN</th>
-                        <th>Bakiye</th>
-                    </tr>
-                </thead>
-                <tbody id="bankTableBody"></tbody>
-            </table>
         </div>
-
-        <div class="table-container" id="cariTab" style="display:none;">
-            <div class="table-header">
-                <h3 class="table-title">Cari Hesaplar</h3>
-                <button class="btn btn-primary">+ Yeni Cari</button>
+        
+        <!-- Çek/Senet Tab -->
+        <div id="cek-tab" style="display:none;">
+            <div class="stats-row">
+                <div class="stat-box warning">
+                    <div class="stat-label">Portföy Çek</div>
+                    <div class="stat-value">₺ 85.000</div>
+                </div>
+                <div class="stat-box danger">
+                    <div class="stat-label">Tahsil Edilecek</div>
+                    <div class="stat-value">₺ 42.500</div>
+                </div>
+                <div class="stat-box success">
+                    <div class="stat-label">Ödenen</div>
+                    <div class="stat-value">₺ 28.000</div>
+                </div>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Cari Adı</th>
-                        <th>Telefon</th>
-                        <th>Borç</th>
-                        <th>Alacak</th>
-                        <th>Bakiye</th>
-                    </tr>
-                </thead>
-                <tbody id="cariTableBody"></tbody>
-            </table>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>📄 Çekler</h3>
+                </div>
+                <div class="list-item">
+                    <div class="item-icon yellow"><i class="fas fa-file-contract"></i></div>
+                    <div class="item-info">
+                        <h4>Çek #1045</h4>
+                        <p>Vadesi: 25.05.2026 • Ahmet Y.</p>
+                    </div>
+                    <div class="item-amount">₺ 15.000</div>
+                </div>
+                <div class="list-item">
+                    <div class="item-icon yellow"><i class="fas fa-file-contract"></i></div>
+                    <div class="item-info">
+                        <h4>Çek #1048</h4>
+                        <p>Vadesi: 10.06.2026 • Mehmet K.</p>
+                    </div>
+                    <div class="item-amount">₺ 22.500</div>
+                </div>
+            </div>
         </div>
     </main>
-
-    <div class="modal-overlay" id="transactionModal">
-        <div class="modal">
+    
+    <!-- Action Bar -->
+    <div class="action-bar">
+        <a href="#" class="primary" onclick="openModal('tahsilat')">💰 Tahsilat</a>
+        <a href="#" class="secondary" onclick="openModal('odeme')">💸 Ödeme</a>
+    </div>
+    
+    <!-- Cari Modal -->
+    <div class="modal" id="cariModal">
+        <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Yeni İşlem</h3>
-                <button class="modal-close" onclick="closeModal()">✕</button>
+                <h3 id="cariName">Cari Detay</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">İşlem Türü</label>
-                    <select class="form-input" id="transactionType">
-                        <option value="cashIn">Kasa Girişi</option>
-                        <option value="cashOut">Kasa Çıkışı</option>
-                        <option value="collection">Cari Tahsilat</option>
-                        <option value="payment">Cari Ödeme</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Tutar (₺)</label>
-                    <input type="number" class="form-input" id="amount" placeholder="0.00">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Açıklama</label>
-                    <input type="text" class="form-input" id="description" placeholder="İşlem açıklaması...">
+            <div class="stats-row" style="margin-bottom: 1rem;">
+                <div class="stat-box">
+                    <div class="stat-label">Bakiye</div>
+                    <div class="stat-value tl" id="cariBakiye">₺ 0</div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-ghost" onclick="closeModal()">İptal</button>
-                <button class="btn btn-primary" onclick="saveTransaction()">Kaydet</button>
+            <div class="form-group">
+                <label>Tutar</label>
+                <input type="text" id="cariTutar" placeholder="₺ 0">
             </div>
+            <div class="form-group">
+                <label>Açıklama</label>
+                <input type="text" id="cariAciklama" placeholder="Açıklama">
+            </div>
+            <button class="btn btn-primary" onclick="saveCari()">Kaydet</button>
+            <button class="btn btn-secondary" onclick="closeModal()">İptal</button>
         </div>
     </div>
-
+    
+    <!-- Mobile Nav -->
+    <nav class="mobile-nav">
+        <a href="dashboard.html"><span>🏠</span><span>Panel</span></a>
+        <a href="satis.html"><span>🏷️</span><span>Satış</span></a>
+        <a href="saha.html"><span>📱</span><span>Saha</span></a>
+        <a href="rapor.html"><span>📊</span><span>Rapor</span></a>
+        <a href="ayarlar.html"><span>⚙️</span><span>Ayarlar</span></a>
+    </nav>
+    
     <script>
-        let cashTransactions = [
-            { id: 'KT-1024', date: '22.04.2026', type: 'Giriş', desc: 'Nakit Satış', amount: 2450, balance: 125450 },
-            { id: 'KT-1023', date: '22.04.2026', type: 'Çıkış', desc: 'Ofis Malzemesi', amount: -350, balance: 123000 },
-            { id: 'KT-1022', date: '21.04.2026', type: 'Giriş', desc: 'Cari Tahsilat - Ahmet Y.', amount: 5000, balance: 123350 },
-            { id: 'KT-1021', date: '21.04.2026', type: 'Giriş', desc: 'POS Satış #1023', amount: 890, balance: 118350 },
-            { id: 'KT-1020', date: '20.04.2026', type: 'Çıkış', desc: 'Kira Ödemesi', amount: -15000, balance: 117460 },
-        ];
-
-        let bankAccounts = [
-            { name: 'Garanti Bankası', branch: 'Mecidiyeköy', iban: 'TR12 0006 2001 4521 0006 7829 021', balance: 85000 },
-            { name: 'Akbank', branch: 'Şişli', iban: 'TR34 0000 0000 8834 5678 9012', balance: 42500 },
-            { name: 'QNB Finansbank', branch: 'Beşiktaş', iban: 'TR56 0000 0000 2291 1234 5678', balance: 15750 },
-        ];
-
-        let cariAccounts = [
-            { name: 'Mehmet Kaya', phone: '0532 123 4567', debt: 12500, credit: 0 },
-            { name: 'Ayşe Ltd. Şti.', phone: '0212 234 5678', debt: 0, credit: 8500 },
-            { name: 'Hasan A.', phone: '0535 890 1234', debt: 1000, credit: 0 },
-            { name: 'Ali Ticaret', phone: '0533 456 7890', debt: 0, credit: 5750 },
-        ];
-
-        function renderAll() {
-            document.getElementById('cashTableBody').innerHTML = cashTransactions.map(t => `
-                <tr>
-                    <td>${t.date}</td>
-                    <td><strong>${t.id}</strong></td>
-                    <td><span style="color: ${t.amount > 0 ? 'var(--success)' : 'var(--danger)'}; font-weight: 600;">${t.type}</span></td>
-                    <td>${t.desc}</td>
-                    <td><span class="amount ${t.amount > 0 ? 'positive' : 'negative'}">${t.amount > 0 ? '+' : ''}₺ ${Math.abs(t.amount).toLocaleString()}</span></td>
-                    <td><strong>₺ ${t.balance.toLocaleString()}</strong></td>
-                </tr>
-            `).join('');
-
-            document.getElementById('bankTableBody').innerHTML = bankAccounts.map(b => `
-                <tr>
-                    <td><strong>${b.name}</strong></td>
-                    <td>${b.branch}</td>
-                    <td><code>${b.iban}</code></td>
-                    <td><span class="amount positive">₺ ${b.balance.toLocaleString()}</span></td>
-                </tr>
-            `).join('');
-
-            document.getElementById('cariTableBody').innerHTML = cariAccounts.map(c => {
-                const balance = c.credit - c.debt;
-                return `
-                <tr>
-                    <td><strong>${c.name}</strong></td>
-                    <td>${c.phone}</td>
-                    <td><span class="amount negative">${c.debt ? '₺ ' + c.debt.toLocaleString() : '-'}</span></td>
-                    <td><span class="amount positive">${c.credit ? '₺ ' + c.credit.toLocaleString() : '-'}</span></td>
-                    <td><span class="amount ${balance >= 0 ? 'positive' : 'negative'}">${balance >= 0 ? '+' : ''}₺ ${Math.abs(balance).toLocaleString()}</span></td>
-                </tr>
-            `}).join('');
-        }
-
-        function switchTab(tab) {
+        const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
+        if (!currentUser) window.location.href = 'login.html';
+        
+        let cariData = { name: '', balance: 0 };
+        
+        function showTab(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
-            document.getElementById('cashTab').style.display = tab === 'cash' ? 'block' : 'none';
-            document.getElementById('bankTab').style.display = tab === 'bank' ? 'block' : 'none';
-            document.getElementById('cariTab').style.display = tab === 'cari' ? 'block' : 'none';
+            document.getElementById('cari-tab').style.display = 'none';
+            document.getElementById('kasa-tab').style.display = 'none';
+            document.getElementById('banka-tab').style.display = 'none';
+            document.getElementById('cek-tab').style.display = 'none';
+            document.getElementById(tab + '-tab').style.display = 'block';
         }
-
-        function openModal() {
-            document.getElementById('transactionModal').classList.add('active');
+        
+        function openCari(name, balance) {
+            cariData.name = name;
+            cariData.balance = balance;
+            document.getElementById('cariName').textContent = name;
+            document.getElementById('cariBakiye').textContent = '₺ ' + Math.abs(balance).toLocaleString();
+            document.getElementById('cariModal').classList.add('active');
         }
-
+        
+        function openModal(type) {
+            alert(type === 'tahsilat' ? '💰 Tahsilat modülü açılıyor...' : '💸 Ödeme modülü açılıyor...');
+        }
+        
         function closeModal() {
-            document.getElementById('transactionModal').classList.remove('active');
-            document.getElementById('amount').value = '';
-            document.getElementById('description').value = '';
+            document.getElementById('cariModal').classList.remove('active');
         }
-
-        function saveTransaction() {
-            const amount = parseFloat(document.getElementById('amount').value);
-            const desc = document.getElementById('description').value;
-            const type = document.getElementById('transactionType').value;
-            
-            if (!amount || !desc) {
-                alert('Lütfen tutar ve açıklama giriniz!');
-                return;
-            }
-
-            const newAmount = type === 'cashIn' || type === 'collection' ? amount : -amount;
-            const newType = newAmount > 0 ? 'Giriş' : 'Çıkış';
-            
-            cashTransactions.unshift({
-                id: 'KT-' + String(cashTransactions.length + 1025),
-                date: new Date().toLocaleDateString('tr-TR'),
-                type: newType,
-                desc: desc,
-                amount: newAmount,
-                balance: 125450 + newAmount
-            });
-
-            renderAll();
+        
+        function saveCari() {
+            const amount = document.getElementById('cariTutar').value;
+            if (!amount) { alert('Lütfen tutar girin!'); return; }
+            alert('Kaydedildi: ' + amount);
             closeModal();
-            alert(`✅ İşlem kaydedildi!\n\nTutar: ₺ ${amount.toLocaleString()}\nAçıklama: ${desc}`);
         }
-
-        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('tr-TR', {
-            year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
-        });
-
-        renderAll();
+        
+        function logout() {
+            localStorage.removeItem('aykasoft_currentUser');
+            window.location.href = 'login.html';
+        }
     </script>
-<!-- Mobil Alt Menü -->
-<nav class="mobile-nav">
-  <a href="dashboard.html"><span>🏠</span><span>Panel</span></a>
-  <a href="satis.html"><span>🏷️</span><span>Satış</span></a>
-  <a href="saha.html"><span>📱</span><span>Saha</span></a>
-  <a href="ayarlar.html"><span>⚙️</span><span>Ayarlar</span></a>
-        <a href="rapor.html"><span>📊</span><span>Rapor</span></a>
-  <a href="#" onclick="logout()" class="nav-logout"><span>🚪</span><span>Çıkış</span></a>
-</nav>
 </body>
 </html>

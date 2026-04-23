@@ -2,335 +2,261 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AYKASOFT - Saha Satis</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saha Satışı - AYKASOFT</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        :root { --primary: #2563eb; --dark: #0f172a; --light: #f8fafc; --light-secondary: #e2e8f0; --white: #ffffff; --text: #334155; --text-light: #64748b; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --tl: #c9242e; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'DM Sans', sans-serif; background: #f1f5f9; min-height: 100vh; max-width: 480px; margin: 0 auto; padding-bottom: 80px; }
-        .header { background: #0f172a; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { background: #2563eb; padding: 0.25rem 0.5rem; border-radius: 6px; font-weight: 700; }
-        .logout-btn { background: rgba(255,255,255,0.1); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
-        .tabs { display: flex; background: white; border-bottom: 1px solid #e2e8f0; }
-        .tab { flex: 1; padding: 1rem; text-align: center; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; }
-        .tab.active { color: #2563eb; border-color: #2563eb; }
-        .content { padding: 1rem; }
-        .card { background: white; padding: 1rem; border-radius: 12px; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 2px solid transparent; }
-        .card:hover { border-color: #2563eb; }
-        .card.selected { border-color: #10b981; background: #f0fdf4; }
-        .name { font-weight: 600; color: #0f172a; }
-        .info { font-size: 0.8rem; color: #64748b; margin-top: 0.25rem; }
-        .price { font-weight: 700; color: #c9242e; font-size: 1.1rem; }
-        .debt { color: #ef4444; }
-        .clear { background: white; padding: 1rem; border-radius: 12px; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; border: 2px solid transparent; }
-        .clear:hover { border-color: #2563eb; }
-        .icon { width: 50px; height: 50px; background: #f1f5f9; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-        .detail { flex: 1; }
-        .order-card { background: white; padding: 1rem; border-radius: 12px; margin-bottom: 0.75rem; }
-        .order-header { display: flex; justify-content: space-between; }
-        .order-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 0.5rem; border-top: 1px solid #e2e8f0; margin-top: 0.5rem; }
-        .total { font-weight: 700; color: #c9242e; }
-        .btn { background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
-        .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 200; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; font-weight: 700; }
+        
+        .header { background: var(--dark); color: white; padding: 1rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
+        .header a { color: white; text-decoration: none; font-size: 1.25rem; }
+        .header h1 { flex: 1; font-size: 1.1rem; }
+        
+        .main { padding: 1rem; padding-bottom: 80px; }
+        
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+        .stat-card { background: white; border-radius: 14px; padding: 1rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .stat-card .stat-label { font-size: 0.8rem; color: var(--text-light); }
+        .stat-card .stat-value { font-size: 1.5rem; font-weight: 700; }
+        
+        /* Customer Select */
+        .customer-select { background: white; border-radius: 14px; padding: 1rem; margin-bottom: 1rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .customer-select h3 { font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .customer-select p { color: var(--text-light); font-size: 0.85rem; }
+        
+        /* Products */
+        .section-title { font-size: 1rem; margin-bottom: 0.75rem; }
+        .products-list { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .product-row { display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid var(--light-secondary); cursor: pointer; }
+        .product-row:last-child { border-bottom: none; }
+        .product-row:hover { background: var(--light); }
+        .product-icon { width: 44px; height: 44px; background: var(--light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-right: 1rem; }
+        .product-info { flex: 1; }
+        .product-info h4 { font-size: 0.95rem; }
+        .product-info p { font-size: 0.8rem; color: var(--text-light); }
+        .product-price { font-weight: 700; color: var(--tl); }
+        
+        /* Cart Preview */
+        .cart-preview { background: white; border-radius: 14px; padding: 1rem; margin-top: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .cart-preview h3 { margin-bottom: 0.75rem; }
+        .cart-item { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--light-secondary); }
+        .cart-total { display: flex; justify-content: space-between; padding-top: 0.75rem; font-weight: 700; font-size: 1.25rem; }
+        
+        /* Order Button */
+        .order-btn { position: fixed; bottom: 70px; left: 0; right: 0; padding: 1rem; background: white; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); }
+        .order-btn button { width: 100%; padding: 1rem; background: var(--success); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; }
+        
+        /* Modal */
+        .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: flex-end; z-index: 200; }
         .modal.active { display: flex; }
-        .modal-content { background: white; width: 90%; border-radius: 16px; padding: 1.5rem; }
-        .modal-header { display: flex; justify-content: space-between; margin-bottom: 1rem; }
-        .modal-title { font-weight: 700; font-size: 1.25rem; }
-        .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b; }
-        .modal-price { text-align: center; font-size: 2rem; font-weight: 700; color: #c9242e; margin: 1rem 0; }
-        .qty-control { display: flex; align-items: center; justify-content: center; gap: 1rem; }
-        .qty-btn { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #e2e8f0; background: white; font-size: 1.5rem; cursor: pointer; }
-        .qty-value { font-size: 2rem; font-weight: 700; min-width: 50px; text-align: center; }
-        .modal-total { text-align: center; font-size: 1.25rem; margin: 1rem 0; padding: 1rem; background: #f1f5f9; border-radius: 12px; }
-        .modal-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
-        .modal-btn { flex: 1; padding: 1rem; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; }
-        .modal-btn.primary { background: #2563eb; color: white; }
-        .modal-btn.success { background: #10b981; color: white; }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: white; display: flex; border-top: 1px solid #e2e8f0; padding: 0.5rem; }
-        .nav-item { flex: 1; text-align: center; padding: 0.75rem; cursor: pointer; color: #64748b; font-size: 0.8rem; }
-        .nav-item.active { color: #2563eb; }
-        .nav-icon { display: block; font-size: 1.5rem; margin-bottom: 0.25rem; }
-        .empty { text-align: center; padding: 2rem; color: #64748b; }
-    .mobile-nav { display: none; }
-@media (max-width: 768px) {
-  .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: #0f172a; padding: 0.5rem; justify-content: space-around; z-index: 1000; }
-  .mobile-nav a { display: flex; flex-direction: column; align-items: center; padding: 0.5rem; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.7rem; }
-  .mobile-nav a.active { color: white; }
-  .mobile-nav span:first-child { font-size: 1.5rem; }
-  .mobile-nav .nav-logout { color: #ef4444; }
-  body { padding-bottom: 70px; }
-}
-</style>
+        .modal-content { background: white; width: 100%; border-radius: 24px 24px 0 0; padding: 1.5rem; max-height: 80vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .modal-header h3 { font-size: 1.25rem; }
+        .modal-close { width: 36px; height: 36px; border-radius: 50%; background: var(--light); border: none; font-size: 1.25rem; cursor: pointer; }
+        
+        .customer-item { display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid var(--light-secondary); cursor: pointer; }
+        .customer-item:hover { background: var(--light); }
+        .customer-icon { width: 44px; height: 44px; background: #dbeafe; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; }
+        .customer-info h4 { font-size: 0.95rem; }
+        .customer-info p { font-size: 0.8rem; color: var(--text-light); }
+        
+        .mobile-nav { display: none; }
+        @media (max-width: 768px) {
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); padding: 0.5rem; justify-content: space-around; z-index: 1000; }
+            .mobile-nav a { display: flex; flex-direction: column; align-items: center; padding: 0.5rem; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.7rem; }
+            .mobile-nav a.active { color: white; }
+            .order-btn { bottom: 70px; }
+        }
+    </style>
 </head>
 <body>
     <header class="header">
-        <div><span class="logo">AY</span> Saha</div>
-        <button class="logout-btn" onclick="logout()">Cikis</button>
+        <a href="dashboard.html">←</a>
+        <h1>📱 Saha Satışı</h1>
     </header>
     
-    <div class="tabs">
-        <div class="tab active" id="tab1" onclick="switchTab('musteriler')">Musteri</div>
-        <div class="tab" id="tab2" onclick="switchTab('urunler')">Urun</div>
-        <div class="tab" id="tab3" onclick="switchTab('siparisler')">Siparis</div>
+    <main class="main">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Bugün Ziyaret</div>
+                <div class="stat-value">12</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Bugün Satış</div>
+                <div class="stat-value tl">₺ 4.850</div>
+            </div>
+        </div>
+        
+        <div class="customer-select" onclick="openCustomerModal()">
+            <h3>👤 Müşteri Seçin</h3>
+            <p id="selectedCustomer">Henüz müşteri seçilmedi</p>
+        </div>
+        
+        <h2 class="section-title">📦 Ürünler</h2>
+        <div class="products-list">
+            <div class="product-row" onclick="addProduct('Klavye', 450, '⌨️')">
+                <div class="product-icon">⌨️</div>
+                <div class="product-info">
+                    <h4>Klavye</h4>
+                    <p>Kablosuz</p>
+                </div>
+                <div class="product-price tl">₺ 450</div>
+            </div>
+            <div class="product-row" onclick="addProduct('Mouse', 280, '🖱️')">
+                <div class="product-icon">🖱️</div>
+                <div class="product-info">
+                    <h4>Mouse</h4>
+                    <p>Wireless</p>
+                </div>
+                <div class="product-price tl">₺ 280</div>
+            </div>
+            <div class="product-row" onclick="addProduct('Kulaklık', 350, '🎧')">
+                <div class="product-icon">🎧</div>
+                <div class="product-info">
+                    <h4>Kulaklık</h4>
+                    <p>Bluetooth</p>
+                </div>
+                <div class="product-price tl">₺ 350</div>
+            </div>
+            <div class="product-row" onclick="addProduct('Webcam', 590, '📷')">
+                <div class="product-icon">📷</div>
+                <div class="product-info">
+                    <h4>Webcam</h4>
+                    <p>Full HD</p>
+                </div>
+                <div class="product-price tl">₺ 590</div>
+            </div>
+            <div class="product-row" onclick="addProduct('USB Hub', 250, '🔗')">
+                <div class="product-icon">🔗</div>
+                <div class="product-info">
+                    <h4>USB Hub</h4>
+                    <p>4lü Port</p>
+                </div>
+                <div class="product-price tl">₺ 250</div>
+            </div>
+        </div>
+        
+        <div class="cart-preview" id="cartPreview" style="display:none;">
+            <h3>🛒 Sipariş Özeti</h3>
+            <div id="cartItems"></div>
+            <div class="cart-total">
+                <span>Toplam</span>
+                <span class="tl" id="cartTotal">₺ 0</span>
+            </div>
+        </div>
+    </main>
+    
+    <div class="order-btn">
+        <button onclick="createOrder()">📤 Sipariş Ver</button>
     </div>
     
-    <div id="musteriler" class="content"></div>
-    <div id="urunler" class="content" style="display:none;"></div>
-    <div id="siparisler" class="content" style="display:none;"></div>
-    
-    <div class="modal" id="productModal">
+    <!-- Customer Modal -->
+    <div class="modal" id="customerModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title" id="modalProductName">Urun</div>
-                <button class="modal-close" onclick="closeModal()">x</button>
+                <h3>👥 Müşteri Seç</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
             </div>
-            <div class="modal-price" id="modalProductPrice">₺ 0</div>
-            <div class="qty-control">
-                <button class="qty-btn" onclick="changeQty(-1)">-</button>
-                <div class="qty-value" id="modalQty">1</div>
-                <button class="qty-btn" onclick="changeQty(1)">+</button>
+            <div class="customer-item" onclick="selectCustomer('Ahmet Yılmaz', '0532 123 4567')">
+                <div class="customer-icon"><i class="fas fa-user"></i></div>
+                <div class="customer-info">
+                    <h4>Ahmet Yılmaz</h4>
+                    <p>0532 123 4567 • Selçuklu, Konya</p>
+                </div>
             </div>
-            <div class="modal-total">
-                <span>Toplam: </span>
-                <strong id="modalTotal">₺ 0</strong>
+            <div class="customer-item" onclick="selectCustomer('Mehmet Kaya', '0533 234 5678')">
+                <div class="customer-icon"><i class="fas fa-user"></i></div>
+                <div class="customer-info">
+                    <h4>Mehmet Kaya</h4>
+                    <p>0533 234 5678 • Meram, Konya</p>
+                </div>
             </div>
-            <div class="modal-actions">
-                <button class="modal-btn primary" onclick="addToOrder()">Sepete Ekle</button>
-                <button class="modal-btn success" onclick="directSale()">Anlik Satis</button>
+            <div class="customer-item" onclick="selectCustomer('Ali Demir', '0544 345 6789')">
+                <div class="customer-icon"><i class="fas fa-user"></i></div>
+                <div class="customer-info">
+                    <h4>Ali Demir</h4>
+                    <p>0544 345 6789 • Çumra, Konya</p>
+                </div>
             </div>
+            <button class="btn btn-secondary" onclick="closeModal()" style="width:100%;padding:1rem;margin-top:1rem;background:var(--light);border:none;border-radius:12px;font-weight:600;">İptal</button>
         </div>
     </div>
     
-    <nav class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('musteriler')"><span class="nav-icon">👥</span>Musteri</div>
-        <div class="nav-item" onclick="switchTab('urunler')"><span class="nav-icon">📦</span>Urun</div>
-        <div class="nav-item" onclick="switchTab('siparisler')"><span class="nav-icon">📋</span>Siparis</div>
+    <nav class="mobile-nav">
+        <a href="dashboard.html"><span>🏠</span><span>Panel</span></a>
+        <a href="satis.html"><span>🏷️</span><span>Satış</span></a>
+        <a href="saha.html" class="active"><span>📱</span><span>Saha</span></a>
+        <a href="rapor.html"><span>📊</span><span>Rapor</span></a>
+        <a href="ayarlar.html"><span>⚙️</span><span>Ayarlar</span></a>
     </nav>
     
     <script>
+        const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
+        if (!currentUser) window.location.href = 'login.html';
+        
         let selectedCustomer = null;
-        let selectedProduct = null;
-        let productPrice = 0;
-        let qty = 1;
+        let cart = [];
         
-        const customers = [
-            { name: 'ABC Ticaret', phone: '0532 123 4567', debt: 2500 },
-            { name: 'XYZ Market', phone: '0533 234 5678', debt: 1800 },
-            { name: 'Def Gida', phone: '0542 345 6789', debt: 0 }
-        ];
+        function openCustomerModal() { document.getElementById('customerModal').classList.add('active'); }
+        function closeModal() { document.getElementById('customerModal').classList.remove('active'); }
         
-        const products = [
-            { name: 'Klavye', price: 450, stock: 25 },
-            { name: 'Mouse', price: 280, stock: 30 },
-            { name: 'Monitor', price: 2100, stock: 12 },
-            { name: 'SSD 500GB', price: 890, stock: 18 },
-            { name: 'Kulaklik', price: 350, stock: 22 },
-            { name: 'USB Kablo', price: 80, stock: 50 }
-        ];
+        function selectCustomer(name, phone) {
+            selectedCustomer = { name, phone };
+            document.getElementById('selectedCustomer').textContent = name + ' • ' + phone;
+            closeModal();
+        }
         
-        if (!localStorage.getItem('aykasoft_currentUser')) window.location.href = 'login.html';
+        function addProduct(name, price, icon) {
+            const existing = cart.find(p => p.name === name);
+            if (existing) existing.qty++;
+            else cart.push({ name, price, icon, qty: 1 });
+            renderCart();
+        }
+        
+        function renderCart() {
+            const preview = document.getElementById('cartPreview');
+            if (cart.length === 0) { preview.style.display = 'none'; return; }
+            preview.style.display = 'block';
+            document.getElementById('cartItems').innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <span>${item.icon} ${item.name} x${item.qty}</span>
+                    <span class="tl">₺ ${(item.price * item.qty).toLocaleString()}</span>
+                </div>
+            `).join('');
+            document.getElementById('cartTotal').textContent = '₺ ' + cart.reduce((s, i) => s + i.price * i.qty, 0).toLocaleString();
+        }
+        
+        function createOrder() {
+            if (!selectedCustomer) { alert('Lütfen müşteri seçin!'); return; }
+            if (cart.length === 0) { alert('Sepetiniz boş!'); return; }
+            
+            const orders = JSON.parse(localStorage.getItem('aykasoft_orders_' + currentUser.id)) || [];
+            orders.push({
+                id: 'ORD' + Date.now(),
+                date: new Date().toLocaleDateString('tr-TR'),
+                customer: selectedCustomer,
+                items: cart,
+                total: cart.reduce((s, i) => s + i.price * i.qty, 0),
+                status: 'Bekliyor'
+            });
+            localStorage.setItem('aykasoft_orders_' + currentUser.id, JSON.stringify(orders));
+            
+            alert('✅ Sipariş oluşturuldu!');
+            cart = [];
+            renderCart();
+            selectedCustomer = null;
+            document.getElementById('selectedCustomer').textContent = 'Henüz müşteri seçilmedi';
+        }
         
         function logout() {
             localStorage.removeItem('aykasoft_currentUser');
             window.location.href = 'login.html';
         }
-        
-        function switchTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.querySelectorAll('#musteriler, #urunler, #siparisler').forEach(c => c.style.display = 'none');
-            
-            if (tab === 'musteriler') {
-                document.getElementById('tab1').classList.add('active');
-                document.querySelector('.nav-item:nth-child(1)').classList.add('active');
-                document.getElementById('musteriler').style.display = 'block';
-                loadCustomers();
-            } else if (tab === 'urunler') {
-                document.getElementById('tab2').classList.add('active');
-                document.querySelector('.nav-item:nth-child(2)').classList.add('active');
-                document.getElementById('urunler').style.display = 'block';
-                loadProducts();
-            } else {
-                document.getElementById('tab3').classList.add('active');
-                document.querySelector('.nav-item:nth-child(3)').classList.add('active');
-                document.getElementById('siparisler').style.display = 'block';
-                loadOrders();
-            }
-        }
-        
-        function loadCustomers() {
-            const html = customers.map(c => `
-                <div class="card ${selectedCustomer === c.name ? 'selected' : ''}" onclick="selectCustomer('${c.name}')">
-                    <div>
-                        <div class="name">${c.name}</div>
-                        <div class="info">${c.phone}</div>
-                    </div>
-                    <div style="text-align:right;">
-                        ${c.debt > 0 ? `<div class="debt">₺ ${c.debt.toLocaleString()}</div><div style="font-size:0.75rem;color:#64748b;">Borc</div>` : '<div style="color:#10b981;">Borcsuz</div>'}
-                    </div>
-                </div>
-            `).join('');
-            document.getElementById('musteriler').innerHTML = html;
-        }
-        
-        function selectCustomer(name) {
-            selectedCustomer = name;
-            loadCustomers();
-            switchTab('urunler');
-        }
-        
-        function loadProducts() {
-            const html = products.map(p => `
-                <div class="clear" onclick="openModal('${p.name}', ${p.price})">
-                    <div class="icon">📦</div>
-                    <div class="detail">
-                        <div class="name">${p.name}</div>
-                        <div class="info">Stok: ${p.stock}</div>
-                    </div>
-                    <div class="price">₺ ${p.price.toLocaleString()}</div>
-                </div>
-            `).join('');
-            document.getElementById('urunler').innerHTML = html;
-        }
-        
-        function openModal(name, price) {
-            selectedProduct = name;
-            productPrice = price;
-            qty = 1;
-            document.getElementById('modalProductName').textContent = name;
-            document.getElementById('modalProductPrice').textContent = '₺ ' + price.toLocaleString();
-            document.getElementById('modalQty').textContent = qty;
-            document.getElementById('modalTotal').textContent = '₺ ' + (price * qty).toLocaleString();
-            document.getElementById('productModal').classList.add('active');
-        }
-        
-        function closeModal() {
-            document.getElementById('productModal').classList.remove('active');
-        }
-        
-        function changeQty(delta) {
-            qty = Math.max(1, qty + delta);
-            document.getElementById('modalQty').textContent = qty;
-            document.getElementById('modalTotal').textContent = '₺ ' + (productPrice * qty).toLocaleString();
-        }
-        
-        function addToOrder() {
-            if (!selectedCustomer) { alert('Once musteri secin!'); return; }
-            
-            const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
-            if (currentUser) {
-                const orders = JSON.parse(localStorage.getItem('aykasoft_orders_' + currentUser.id)) || [];
-                orders.push({
-                    id: 'SPS' + Date.now(),
-                    date: new Date().toLocaleDateString('tr-TR'),
-                    customer: selectedCustomer,
-                    product: selectedProduct,
-                    price: productPrice,
-                    qty: qty,
-                    total: productPrice * qty,
-                    status: 'Beklemede'
-                });
-                localStorage.setItem('aykasoft_orders_' + currentUser.id, JSON.stringify(orders));
-            }
-            
-            alert('Sepete eklendi!');
-            closeModal();
-            switchTab('siparisler');
-        }
-        
-        function directSale() {
-            if (!selectedCustomer) { alert('Once musteri secin!'); return; }
-            
-            const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
-            if (currentUser) {
-                const sales = JSON.parse(localStorage.getItem('aykasoft_sales_' + currentUser.id)) || [];
-                sales.push({
-                    id: 'SJS' + Date.now(),
-                    date: new Date().toLocaleDateString('tr-TR'),
-                    customer: selectedCustomer,
-                    product: selectedProduct,
-                    barcode: 'SAHA',
-                    price: productPrice,
-                    qty: qty,
-                    total: productPrice * qty,
-                    type: 'cari',
-                    status: 'Tamamlandi'
-                });
-                localStorage.setItem('aykasoft_sales_' + currentUser.id, JSON.stringify(sales));
-            }
-            
-            alert('Satis tamamlandi!');
-            closeModal();
-        }
-        
-        function loadOrders() {
-            const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
-            const orders = currentUser ? JSON.parse(localStorage.getItem('aykasoft_orders_' + currentUser.id)) || [] : [];
-            
-            if (orders.length === 0) {
-                document.getElementById('siparisler').innerHTML = '<div class="empty">📋 Siparisiniz yok</div>';
-                return;
-            }
-            
-            const html = orders.map(o => `
-                <div class="order-card">
-                    <div class="order-header">
-                        <div>
-                            <div class="name">${o.product}</div>
-                            <div class="info">${o.qty} adet - ${o.customer}</div>
-                        </div>
-                        <div class="total">₺ ${o.total.toLocaleString()}</div>
-                    </div>
-                    <div class="order-footer">
-                        <div style="font-size:0.8rem;color:#64748b;">${o.date}</div>
-                        <button class="btn" onclick="completeOrder('${o.id}')">Tamamla</button>
-                    </div>
-                </div>
-            `).join('');
-            document.getElementById('siparisler').innerHTML = html;
-        }
-        
-        function completeOrder(orderId) {
-            const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
-            if (!currentUser) return;
-            
-            let orders = JSON.parse(localStorage.getItem('aykasoft_orders_' + currentUser.id)) || [];
-            const order = orders.find(o => o.id === orderId);
-            if (!order) return;
-            
-            const sales = JSON.parse(localStorage.getItem('aykasoft_sales_' + currentUser.id)) || [];
-            sales.push({
-                id: order.id,
-                date: order.date,
-                customer: order.customer,
-                product: order.product,
-                barcode: 'SAHA',
-                price: order.price,
-                qty: order.qty,
-                total: order.total,
-                type: 'cari',
-                status: 'Tamamlandi'
-            });
-            localStorage.setItem('aykasoft_sales_' + currentUser.id, JSON.stringify(sales));
-            
-            orders = orders.filter(o => o.id !== orderId);
-            localStorage.setItem('aykasoft_orders_' + currentUser.id, JSON.stringify(orders));
-            
-            alert('Siparis tamamlandi!');
-            loadOrders();
-        }
-        
-        loadCustomers();
     </script>
-    
-    <!-- Mobil Alt Menü -->
-    <nav class="mobile-nav">
-      <a href="dashboard.html"><span>🏠</span><span>Panel</span></a>
-      <a href="satis.html"><span>🏷️</span><span>Satış</span></a>
-      <a href="saha.html" class="active"><span>📱</span><span>Saha</span></a>
-      <a href="ayarlar.html"><span>⚙️</span><span>Ayarlar</span></a>
-        <a href="rapor.html"><span>📊</span><span>Rapor</span></a>
-      <a href="#" onclick="logout()" class="nav-logout"><span>🚪</span><span>Çıkış</span></a>
-    </nav>
 </body>
 </html>

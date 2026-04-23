@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cari Takip - AYKASOFT</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --primary: #2563eb; --dark: #0f172a; --light: #f8fafc; --light-secondary: #e2e8f0; --text: #334155; --text-light: #64748b; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --tl: #c9242e; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
+        
+        .header { background: var(--dark); color: white; padding: 1rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
+        .header a { color: white; text-decoration: none; font-size: 1.25rem; }
+        .header h1 { flex: 1; font-size: 1.1rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
+        
+        .main { padding: 1rem; padding-bottom: 80px; }
+        
+        .search-box { background: white; padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1rem; display: flex; gap: 0.5rem; }
+        .search-box input { flex: 1; border: none; font-size: 1rem; outline: none; }
+        .search-box button { background: none; border: none; font-size: 1.25rem; cursor: pointer; }
+        
+        .section-title { font-size: 1rem; margin-bottom: 0.75rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
+        
+        .cari-list { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .cari-item { display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid var(--light-secondary); cursor: pointer; }
+        .cari-item:last-child { border-bottom: none; }
+        .cari-item:hover { background: var(--light); }
+        .cari-avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 1.25rem; }
+        .cari-info { flex: 1; }
+        .cari-info h4 { font-size: 0.95rem; font-weight: 600; }
+        .cari-info p { font-size: 0.8rem; color: var(--text-light); }
+        .cari-balance { font-weight: 700; font-size: 0.95rem; }
+        
+        .add-btn { position: fixed; bottom: 70px; right: 1rem; width: 56px; height: 56px; border-radius: 50%; background: var(--primary); color: white; border: none; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); }
+        
+        .mobile-nav { display: none; }
+        @media (max-width: 768px) {
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); padding: 0.5rem; justify-content: space-around; z-index: 1000; }
+            .mobile-nav a { display: flex; flex-direction: column; align-items: center; padding: 0.5rem; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.7rem; }
+            .mobile-nav a.active { color: white; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="dashboard.html">←</a>
+        <h1>👥 Cari Takip</h1>
+    </header>
+    
+    <main class="main">
+        <div class="search-box">
+            <button>🔍</button>
+            <input type="text" placeholder="Cari ara...">
+        </div>
+        
+        <h2 class="section-title">👤 Müşteriler</h2>
+        <div class="cari-list">
+            <div class="cari-item">
+                <div class="cari-avatar" style="background:#dbeafe;color:#2563eb;">A</div>
+                <div class="cari-info">
+                    <h4>Ahmet Yılmaz</h4>
+                    <p>0532 123 4567 • Konya</p>
+                </div>
+                <div class="cari-balance tl" style="color:var(--warning);">₺ 12.500</div>
+            </div>
+            <div class="cari-item">
+                <div class="cari-avatar" style="background:#dbeafe;color:#2563eb;">M</div>
+                <div class="cari-info">
+                    <h4>Mehmet Kaya</h4>
+                    <p>0533 234 5678 • Konya</p>
+                </div>
+                <div class="cari-balance tl" style="color:var(--warning);">₺ 8.900</div>
+            </div>
+            <div class="cari-item">
+                <div class="cari-avatar" style="background:#dbeafe;color:#2563eb;">A</div>
+                <div class="cari-info">
+                    <h4>Ali Demir</h4>
+                    <p>0544 345 6789 • Ankara</p>
+                </div>
+                <div class="cari-balance tl" style="color:var(--warning);">₺ 15.400</div>
+            </div>
+        </div>
+        
+        <h2 class="section-title" style="margin-top:1rem;">🏪 Tedarikçiler</h2>
+        <div class="cari-list">
+            <div class="cari-item">
+                <div class="cari-avatar" style="background:#fce7f3;color:#ec4899;">A</div>
+                <div class="cari-info">
+                    <h4>ABC Ltd. Şti</h4>
+                    <p>Ankara • Elektronik</p>
+                </div>
+                <div class="cari-balance tl" style="color:var(--danger);">₺ 8.500</div>
+            </div>
+            <div class="cari-item">
+                <div class="cari-avatar" style="background:#fce7f3;color:#ec4899;">X</div>
+                <div class="cari-info">
+                    <h4>XYZ A.Ş</h4>
+                    <p>İstanbul • Bilgisayar</p>
+                </div>
+                <div class="cari-balance tl" style="color:var(--danger);">₺ 12.300</div>
+            </div>
+        </div>
+    </main>
+    
+    <button class="add-btn" onclick="alert('Yeni cari ekleme modalı açılıyor...')">+</button>
+    
+    <nav class="mobile-nav">
+        <a href="dashboard.html"><span>🏠</span><span>Panel</span></a>
+        <a href="satis.html"><span>🏷️</span><span>Satış</span></a>
+        <a href="saha.html"><span>📱</span><span>Saha</span></a>
+        <a href="rapor.html"><span>📊</span><span>Rapor</span></a>
+        <a href="ayarlar.html"><span>⚙️</span><span>Ayarlar</span></a>
+    </nav>
+</body>
+</html>

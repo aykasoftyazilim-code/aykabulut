@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AYKASOFT - Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>AYKASOFT - Yönetim Paneli</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
             --primary: #2563eb;
@@ -23,344 +24,95 @@
             --danger: #ef4444;
             --tl: #c9242e;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--light);
-            color: var(--text);
-            min-height: 100vh;
-        }
-
+        body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
         h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; font-weight: 700; }
-
+        
         /* Header */
-        .header {
-            background: var(--dark);
-            color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 1rem;
-        }
-
-        .logo-text {
-            font-family: 'Outfit';
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
+        .header { background: var(--dark); color: white; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        .logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+        .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; }
+        .logo-text { font-size: 1.25rem; font-weight: 700; }
         .logo-text span { color: var(--primary-light); }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-name {
-            text-align: right;
-        }
-
-        .user-name div:first-child {
-            font-weight: 600;
-        }
-
-        .user-name div:last-child {
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-        }
-
-        .logout-btn {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        /* Main Content */
-        .main {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .welcome {
-            margin-bottom: 2rem;
-        }
-
-        .welcome h1 {
-            font-size: 1.75rem;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .welcome p {
-            color: var(--text-light);
-        }
-
-        /* Quick Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 16px;
-            padding: 1.5rem;
-            border: 1px solid var(--light-secondary);
-        }
-
-        .stat-card.success { border-left: 4px solid var(--success); }
-        .stat-card.warning { border-left: 4px solid var(--warning); }
-        .stat-card.danger { border-left: 4px solid var(--danger); }
-        .stat-card.info { border-left: 4px solid var(--primary); }
-
-        .stat-label {
-            font-size: 0.875rem;
-            color: var(--text-light);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-family: 'Outfit';
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        /* Module Cards */
-        .modules-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-        }
-
-        .module-card {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid var(--light-secondary);
-            text-decoration: none;
-            transition: all 0.3s;
-            display: block;
-        }
-
-        .module-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            border-color: var(--primary);
-        }
-
-        .module-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            margin-bottom: 1rem;
-        }
-
-        .module-title {
-            font-size: 1.25rem;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .module-desc {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        .module-arrow {
-            margin-top: 1rem;
-            color: var(--primary);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* Recent Activity */
-        .activity-section {
-            margin-top: 2rem;
-        }
-
-        .activity-card {
-            background: white;
-            border-radius: 16px;
-            border: 1px solid var(--light-secondary);
-            overflow: hidden;
-        }
-
-        .activity-header {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--light-secondary);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .activity-title {
-            font-size: 1.1rem;
-            color: var(--dark);
-        }
-
-        .activity-list {
-            list-style: none;
-        }
-
-        .activity-item {
-            padding: 1rem 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            border-bottom: 1px solid var(--light-secondary);
-        }
-
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-        }
-
-        .activity-icon.sale { background: rgba(16, 185, 129, 0.1); }
-        .activity-icon.payment { background: rgba(37, 99, 235, 0.1); }
-        .activity-icon.customer { background: rgba(245, 158, 11, 0.1); }
-
-        .activity-info {
-            flex: 1;
-        }
-
-        .activity-info strong {
-            color: var(--dark);
-        }
-
-        .activity-info span {
-            color: var(--text-light);
-            font-size: 0.85rem;
-        }
-
-        .activity-time {
-            color: var(--text-light);
-            font-size: 0.8rem;
-        }
-
-        @media (max-width: 1024px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .modules-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
+        .header-right { display: flex; align-items: center; gap: 1rem; }
+        .user-info { text-align: right; }
+        .user-name { font-weight: 600; }
+        .user-role { font-size: 0.75rem; opacity: 0.7; }
+        .user-avatar { width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .logout-btn { background: rgba(255,255,255,0.1); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 500; }
+        .logout-btn:hover { background: rgba(255,255,255,0.2); }
+        
+        /* Main */
+        .main { max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
+        .welcome { margin-bottom: 1.5rem; }
+        .welcome h1 { font-size: 1.75rem; color: var(--dark); margin-bottom: 0.25rem; }
+        .welcome p { color: var(--text-light); }
+        
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card { background: white; border-radius: 16px; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .stat-card .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 0.75rem; }
+        .stat-card .stat-label { font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.25rem; }
+        .stat-card .stat-value { font-size: 1.5rem; font-weight: 700; }
+        .stat-card.info .stat-icon { background: #dbeafe; color: var(--primary); }
+        .stat-card.success .stat-icon { background: #d1fae5; color: var(--success); }
+        .stat-card.warning .stat-icon { background: #fef3c7; color: var(--warning); }
+        .stat-card.danger .stat-icon { background: #fee2e2; color: var(--danger); }
+        
+        /* Modules */
+        .section-title { font-size: 1.1rem; margin-bottom: 1rem; color: var(--dark); }
+        .modules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+        .module-card { background: white; border-radius: 16px; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: 0.2s; }
+        .module-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .module-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+        .module-card:nth-child(1) .module-icon { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .module-card:nth-child(2) .module-icon { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; }
+        .module-card:nth-child(3) .module-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; }
+        .module-card:nth-child(4) .module-icon { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+        .module-card:nth-child(5) .module-icon { background: linear-gradient(135deg, #06b6d4, #0891b2); color: white; }
+        .module-card:nth-child(6) .module-icon { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+        .module-info h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+        .module-info p { font-size: 0.85rem; color: var(--text-light); }
+        .module-arrow { margin-left: auto; font-size: 1.25rem; color: var(--text-light); }
+        
+        /* Quick Actions */
+        .quick-actions { display: flex; gap: 1rem; margin-bottom: 2rem; }
+        .quick-btn { flex: 1; padding: 1rem; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none; }
+        .quick-btn.primary { background: var(--primary); color: white; }
+        .quick-btn.secondary { background: white; color: var(--text); border: 1px solid var(--light-secondary); }
+        
+        /* Activity */
+        .activity-card { background: white; border-radius: 16px; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .activity-card h3 { margin-bottom: 1rem; font-size: 1rem; }
+        .activity-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--light-secondary); }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--light); display: flex; align-items: center; justify-content: center; }
+        .activity-info { flex: 1; }
+        .activity-info h4 { font-size: 0.9rem; font-weight: 600; }
+        .activity-info p { font-size: 0.8rem; color: var(--text-light); }
+        .activity-amount { font-weight: 700; }
+        
+        /* Mobile Nav */
+        .mobile-nav { display: none; }
         @media (max-width: 768px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .modules-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
             .header { padding: 0.75rem 1rem; }
-            .user-name { display: none; }
-            .logo-text { display: none; }
+            .logo-text, .user-info, .logout-btn { display: none; }
             .user-avatar { width: 36px; height: 36px; font-size: 0.85rem; }
-            .logout-btn { padding: 0.5rem; font-size: 0; width: 36px; height: 36px; border-radius: 50%; }
-            .logout-btn::after { content: '🚪'; }
             .main { padding: 1rem; padding-bottom: 80px; }
-            .welcome h1 { font-size: 1.25rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
             .stat-card { padding: 1rem; }
             .stat-value { font-size: 1.25rem; }
-            .module-card { padding: 1.25rem; }
-            .module-icon { width: 45px; height: 45px; font-size: 1.25rem; }
-            .module-title { font-size: 1rem; }
-            .module-desc { font-size: 0.8rem; display: none; }
+            .modules-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+            .module-card { flex-direction: column; text-align: center; padding: 1.25rem; }
             .module-arrow { display: none; }
-            
-            /* Mobil Bottom Nav */
-            .mobile-nav {
-                display: flex;
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: var(--dark);
-                padding: 0.5rem;
-                justify-content: space-around;
-                z-index: 1000;
-                box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
-            }
-            .mobile-nav a {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding: 0.5rem;
-                color: rgba(255,255,255,0.6);
-                text-decoration: none;
-                font-size: 0.7rem;
-                gap: 0.25rem;
-            }
+            .quick-actions { flex-direction: column; }
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); padding: 0.5rem; justify-content: space-around; z-index: 1000; box-shadow: 0 -4px 20px rgba(0,0,0,0.15); }
+            .mobile-nav a { display: flex; flex-direction: column; align-items: center; padding: 0.5rem; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.7rem; gap: 0.25rem; }
             .mobile-nav a.active { color: white; }
+            .mobile-nav a:hover { color: white; }
             .mobile-nav span:first-child { font-size: 1.5rem; }
-            .mobile-nav .nav-logout { color: #ef4444; }
         }
-        
-        .mobile-nav { display: none; }
     </style>
 </head>
 <body>
@@ -371,10 +123,10 @@
                 <div class="logo-text">AYKA<span>SOFT</span></div>
             </a>
         </div>
-        <div class="user-info">
-            <div class="user-name">
-                <div id="userName">Demo Kullanıcı</div>
-                <div id="userCompany">Demo Firma</div>
+        <div class="header-right">
+            <div class="user-info">
+                <div class="user-name" id="userName">Demo Kullanıcı</div>
+                <div class="user-role" id="userRole">Yönetici</div>
             </div>
             <div class="user-avatar" id="userInitials">DK</div>
             <button class="logout-btn" onclick="logout()">Çıkış</button>
@@ -384,155 +136,161 @@
     <main class="main">
         <div class="welcome">
             <h1>Hoş Geldiniz, <span id="welcomeName">Demo Kullanıcı</span> 👋</h1>
-            <p>AYKASOFT paneline hoş geldiniz.</p>
+            <p>Bugün harika bir gün! Satışlarınızı takip edin.</p>
         </div>
 
-        <!-- Quick Stats -->
+        <!-- Stats -->
         <div class="stats-grid">
             <div class="stat-card info">
+                <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
                 <div class="stat-label">Bugün Satış</div>
                 <div class="stat-value">₺ 4.190</div>
             </div>
             <div class="stat-card success">
+                <div class="stat-icon"><i class="fas fa-wallet"></i></div>
                 <div class="stat-label">Aylık Gelir</div>
                 <div class="stat-value">₺ 189.500</div>
             </div>
             <div class="stat-card warning">
+                <div class="stat-icon"><i class="fas fa-user-check"></i></div>
                 <div class="stat-label">Cari Alacak</div>
                 <div class="stat-value">₺ 68.250</div>
             </div>
             <div class="stat-card danger">
+                <div class="stat-icon"><i class="fas fa-user-clock"></i></div>
                 <div class="stat-label">Cari Borç</div>
                 <div class="stat-value">₺ 42.800</div>
             </div>
         </div>
 
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="satis.html" class="quick-btn primary"><i class="fas fa-cash-register"></i> Yeni Satış</a>
+            <a href="saha.html" class="quick-btn secondary"><i class="fas fa-store"></i> Saha Satışı</a>
+        </div>
+
         <!-- Modules -->
-        <h2 style="margin-bottom: 1rem; color: var(--dark);">Modüller</h2>
+        <h2 class="section-title">Modüller</h2>
         <div class="modules-grid">
             <a href="muhasebe.html" class="module-card">
-                <div class="module-icon">💰</div>
-                <h3 class="module-title">Ön Muhasebe</h3>
-                <p class="module-desc">Kasa, banka ve cari hesap yönetimi. Tüm finansal işlemlerinizi takip edin.</p>
-                <div class="module-arrow">Git →</div>
+                <div class="module-icon"><i class="fas fa-calculator"></i></div>
+                <div class="module-info">
+                    <h3>Ön Muhasebe</h3>
+                    <p>Cari, kasa, banka</p>
+                </div>
+                <div class="module-arrow">›</div>
             </a>
-
             <a href="satis.html" class="module-card">
-                <div class="module-icon">🏷️</div>
-                <h3 class="module-title">Barkodlu Satış</h3>
-                <p class="module-desc">Hızlı POS ekranı ile barkod okutarak anlık satış yapın.</p>
-                <div class="module-arrow">Git →</div>
+                <div class="module-icon"><i class="fas fa-barcode"></i></div>
+                <div class="module-info">
+                    <h3>Barkodlu Satış</h3>
+                    <p>POS & yazarkasa</p>
+                </div>
+                <div class="module-arrow">›</div>
             </a>
-
             <a href="saha.html" class="module-card">
-                <div class="module-icon">📱</div>
-                <h3 class="module-title">Saha Satış</h3>
-                <p class="module-desc">Plasiyerleriniz için mobil satış uygulaması. Sahada müşteri ziyareti yapın.</p>
-                <div class="module-arrow">Git →</div>
+                <div class="module-icon"><i class="fas fa-truck"></i></div>
+                <div class="module-info">
+                    <h3>Saha Satışı</h3>
+                    <p>Teknisyen satışları</p>
+                </div>
+                <div class="module-arrow">›</div>
             </a>
-
             <a href="rapor.html" class="module-card">
-                <div class="module-icon" style="background: var(--light-secondary);">📦</div>
-                <h3 class="module-title">Stok Yönetimi</h3>
-                <p class="module-desc">Stok takibi ve ürün yönetimi. Yakında!</p>
-                <div class="module-arrow">Git →</div>
-            </div>
-
-            <a href="rapor.html" class="module-card">
-                <div class="module-icon" style="background: var(--light-secondary);">👥</div>
-                <h3 class="module-title">Cari Yönetimi</h3>
-                <p class="module-desc">Müşteri ve tedarikçi takibi. Yakında!</p>
-                <div class="module-arrow">Git →</div>
-            </div>
-
-            <a href="rapor.html" class="module-card">
-                <div class="module-icon" <div class="module-icon">📊</div>
-                <h3 class="module-title">Raporlar</h3>
-                <p class="module-desc">Detaylı satış raporları ve analizler.</p>
-                <div class="module-arrow">Git →</div>
-            </div>
+                <div class="module-icon"><i class="fas fa-chart-bar"></i></div>
+                <div class="module-info">
+                    <h3>Raporlar</h3>
+                    <p>Detaylı analizler</p>
+                </div>
+                <div class="module-arrow">›</div>
+            </a>
+            <a href="cari.html" class="module-card">
+                <div class="module-icon"><i class="fas fa-users"></i></div>
+                <div class="module-info">
+                    <h3>Cari Takip</h3>
+                    <p>Müşteri yönetimi</p>
+                </div>
+                <div class="module-arrow">›</div>
+            </a>
+            <a href="stok.html" class="module-card">
+                <div class="module-icon"><i class="fas fa-boxes"></i></div>
+                <div class="module-info">
+                    <h3>Stok Yönetimi</h3>
+                    <p>Ürün & depo</p>
+                </div>
+                <div class="module-arrow">›</div>
+            </a>
+            <a href="rapor.html#gelir" class="module-card">
+                <div class="module-icon"><i class="fas fa-file-invoice"></i></div>
+                <div class="module-info">
+                    <h3>Fiş & Fatura</h3>
+                    <p>E-Fatura kes</p>
+                </div>
+                <div class="module-arrow">›</div>
+            </a>
+            <a href="ayarlar.html" class="module-card">
+                <div class="module-icon"><i class="fas fa-cogs"></i></div>
+                <div class="module-info">
+                    <h3>Ayarlar</h3>
+                    <p>Sistem ayarları</p>
+                </div>
+                <div class="module-arrow">›</div>
+            </a>
         </div>
 
         <!-- Recent Activity -->
-        <div class="activity-section">
-            <div class="activity-card">
-                <div class="activity-header">
-                    <h3 class="activity-title">Son İşlemler</h3>
+        <h2 class="section-title">Son İşlemler</h2>
+        <div class="activity-card">
+            <div class="activity-item">
+                <div class="activity-icon" style="background: #d1fae5; color: #10b981;"><i class="fas fa-check"></i></div>
+                <div class="activity-info">
+                    <h4>Satış Tamamlandı</h4>
+                    <p>Bugün, 14:32 • Nakit</p>
                 </div>
-                <ul class="activity-list">
-                    <li class="activity-item">
-                        <div class="activity-icon sale">💰</div>
-                        <div class="activity-info">
-                            <strong>Nakit Satış</strong>
-                            <span>POS ekranından</span>
-                        </div>
-                        <div class="activity-time">₺ 2.450<br>15 dk önce</div>
-                    </li>
-                    <li class="activity-item">
-                        <div class="activity-icon payment">👤</div>
-                        <div class="activity-info">
-                            <strong>Cari Tahsilat</strong>
-                            <span>Mehmet Kaya</span>
-                        </div>
-                        <div class="activity-time">₺ 5.000<br>1 saat önce</div>
-                    </li>
-                    <li class="activity-item">
-                        <div class="activity-icon customer">🏪</div>
-                        <div class="activity-info">
-                            <strong>Yeni Müşteri</strong>
-                            <span>Ali Ticaret eklendi</span>
-                        </div>
-                        <div class="activity-time">2 saat önce</div>
-                    </li>
-                </ul>
+                <div class="activity-amount tl">₺ 890</div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon" style="background: #dbeafe; color: #2563eb;"><i class="fas fa-credit-card"></i></div>
+                <div class="activity-info">
+                    <h4>Kart Tahsilat</h4>
+                    <p>Bugün, 12:15 • Taksit</p>
+                </div>
+                <div class="activity-amount tl">₺ 2.450</div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon" style="background: #fef3c7; color: #f59e0b;"><i class="fas fa-user-plus"></i></div>
+                <div class="activity-info">
+                    <h4>Yeni Cari</h4>
+                    <p>Bugün, 10:45 • Ahmet Y.</p>
+                </div>
+                <div class="activity-amount">+1</div>
             </div>
         </div>
     </main>
 
+    <!-- Mobile Nav -->
+    <nav class="mobile-nav">
+        <a href="dashboard.html" class="active"><span>🏠</span><span>Panel</span></a>
+        <a href="satis.html"><span>🏷️</span><span>Satış</span></a>
+        <a href="saha.html"><span>📱</span><span>Saha</span></a>
+        <a href="rapor.html"><span>📊</span><span>Rapor</span></a>
+        <a href="ayarlar.html"><span>⚙️</span><span>Ayarlar</span></a>
+    </nav>
+
     <script>
-        // Check login
         const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
+        if (!currentUser) { window.location.href = 'login.html'; }
         
-        if (!currentUser) {
-            window.location.href = 'login.html';
-        }
-
-        // Update UI
-        document.getElementById('userName').textContent = currentUser.name || 'Kullanıcı';
-        document.getElementById('userCompany').textContent = currentUser.company || 'Firma';
-        document.getElementById('welcomeName').textContent = currentUser.name || 'Kullanıcı';
+        document.getElementById('userName').textContent = currentUser.name || 'Demo Kullanıcı';
+        document.getElementById('welcomeName').textContent = currentUser.name || 'Demo Kullanıcı';
+        document.getElementById('userInitials').textContent = (currentUser.name || 'K').split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
         
-        const initials = (currentUser.name || 'K').split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-        document.getElementById('userInitials').textContent = initials;
-
         function logout() {
-            localStorage.removeItem('aykasoft_currentUser');
-            window.location.href = 'login.html';
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('aykasoft_currentUser');
+                window.location.href = 'login.html';
+            }
         }
     </script>
-    
-    <!-- Mobil Alt Menü -->
-    <nav class="mobile-nav">
-        <a href="dashboard.html" class="active">
-            <span>🏠</span>
-            <span>Panel</span>
-        </a>
-        <a href="satis.html">
-            <span>🏷️</span>
-            <span>Satış</span>
-        </a>
-        <a href="saha.html">
-            <span>📱</span>
-            <span>Saha</span>
-        </a>
-        <a href="rapor.html">
-            <span>📊</span>
-            <span>Rapor</span>
-        </a>
-        <a href="#" onclick="logout()" class="nav-logout">
-            <span>🚪</span>
-            <span>Çıkış</span>
-        </a>
-    </nav>
 </body>
 </html>
