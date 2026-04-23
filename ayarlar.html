@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AYKASOFT - Ayarlar</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --dark: #0f172a;
+            --dark-secondary: #1e293b;
+            --light: #f8fafc;
+            --light-secondary: #e2e8f0;
+            --white: #ffffff;
+            --text: #334155;
+            --text-light: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --tl: #c9242e;
+        }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--light);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        h1, h2, h3 { font-weight: 700; }
+        
+        .header {
+            background: var(--dark);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header a { color: white; text-decoration: none; font-size: 1.5rem; }
+        .header h1 { font-size: 1.25rem; flex: 1; }
+        
+        .container { max-width: 600px; margin: 0 auto; padding: 1rem; padding-bottom: 80px; }
+        
+        .section {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .section-title {
+            padding: 1rem 1.25rem;
+            background: var(--light);
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .setting-item {
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--light-secondary);
+            cursor: pointer;
+        }
+        .setting-item:last-child { border-bottom: none; }
+        .setting-item:hover { background: var(--light); }
+        
+        .setting-left { display: flex; align-items: center; gap: 1rem; }
+        .setting-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), #06b6d4);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .setting-info h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+        .setting-info p { font-size: 0.8rem; color: var(--text-light); }
+        
+        .setting-right { color: var(--text-light); font-size: 1.25rem; }
+        
+        .toggle {
+            width: 50px;
+            height: 28px;
+            background: var(--light-secondary);
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .toggle.active { background: var(--success); }
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .toggle.active::after { left: 24px; }
+        
+        .value-display {
+            background: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .danger-zone { border: 2px solid var(--danger); }
+        .danger-zone .section-title { background: #fef2f2; color: var(--danger); }
+        .danger-item { color: var(--danger); }
+        
+        .app-info {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+        .app-info .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), #06b6d4);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            margin: 0 auto 1rem;
+        }
+        .app-info h2 { color: var(--dark); margin-bottom: 0.5rem; }
+        .app-info p { font-size: 0.85rem; }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 1rem;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 1.5rem;
+        }
+        .modal h3 { margin-bottom: 1rem; font-size: 1.25rem; }
+        .modal input, .modal select {
+            width: 100%;
+            padding: 0.875rem;
+            border: 1px solid var(--light-secondary);
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        .modal-btns { display: flex; gap: 0.5rem; }
+        .modal-btn {
+            flex: 1;
+            padding: 0.875rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .modal-btn.primary { background: var(--primary); color: white; }
+        .modal-btn.secondary { background: var(--light); color: var(--text); }
+        
+        /* Mobil */
+        .mobile-nav { display: none; }
+        @media (max-width: 768px) {
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); padding: 0.5rem; justify-content: space-around; z-index: 1000; }
+            .mobile-nav a { display: flex; flex-direction: column; align-items: center; padding: 0.5rem; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.7rem; }
+            .mobile-nav a.active { color: white; }
+            .mobile-nav span:first-child { font-size: 1.5rem; }
+            .container { padding-bottom: 80px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="dashboard.html">←</a>
+        <h1>⚙️ Ayarlar</h1>
+    </header>
+    
+    <div class="container">
+        <!-- Firma Bilgileri -->
+        <div class="section">
+            <div class="section-title">Firma Bilgileri</div>
+            <div class="setting-item" onclick="openModal('firma')">
+                <div class="setting-left">
+                    <div class="setting-icon">🏪</div>
+                    <div class="setting-info">
+                        <h3>Firma Adı</h3>
+                        <p id="companyName">Demo Firma</p>
+                    </div>
+                </div>
+                <div class="setting-right">›</div>
+            </div>
+            <div class="setting-item" onclick="openModal('vergi')">
+                <div class="setting-left">
+                    <div class="setting-icon">🧾</div>
+                    <div class="setting-info">
+                        <h3>Vergi Bilgileri</h3>
+                        <p>Vergi dairesi, numarası</p>
+                    </div>
+                </div>
+                <div class="setting-right">›</div>
+            </div>
+            <div class="setting-item" onclick="openModal('adres')">
+                <div class="setting-left">
+                    <div class="setting-icon">📍</div>
+                    <div class="setting-info">
+                        <h3>Adres</h3>
+                        <p>Firma adresi</p>
+                    </div>
+                </div>
+                <div class="setting-right">›</div>
+            </div>
+        </div>
+        
+        <!-- Kasa ve Banka -->
+        <div class="section">
+            <div class="section-title">Kasa ve Banka</div>
+            <div class="setting-item" onclick="openModal('kasa')">
+                <div class="setting-left">
+                    <div class="setting-icon">💰</div>
+                    <div class="setting-info">
+                        <h3>Varsayılan Kasa</h3>
+                        <p>Satışlarda kullanılacak kasa</p>
+                    </div>
+                </div>
+                <div class="value-display" id="defaultKasa">Nakit</div>
+            </div>
+            <div class="setting-item" onclick="openModal('banka')">
+                <div class="setting-left">
+                    <div class="setting-icon">🏦</div>
+                    <div class="setting-info">
+                        <h3>Varsayılan Banka</h3>
+                        <p>POS ödemeleri için</p>
+                    </div>
+                </div>
+                <div class="value-display" id="defaultBanka">Garanti BB</div>
+            </div>
+        </div>
+        
+        <!-- Yazdırma -->
+        <div class="section">
+            <div class="section-title">Yazdırma</div>
+            <div class="setting-item">
+                <div class="setting-left">
+                    <div class="setting-icon">🖨️</div>
+                    <div class="setting-info">
+                        <h3>Fiş Yazdır</h3>
+                        <p>Satış sonrası otomatik yazdır</p>
+                    </div>
+                </div>
+                <div class="toggle" id="toggleYazdir" onclick="toggleSetting('toggleYazdir')"></div>
+            </div>
+            <div class="setting-item">
+                <div class="setting-left">
+                    <div class="setting-icon">📄</div>
+                    <div class="setting-info">
+                        <h3>Yazı Tipi Boyutu</h3>
+                        <p>Fiş yazı boyutu</p>
+                    </div>
+                </div>
+                <div class="value-display" id="yaziBoyutu">Normal</div>
+            </div>
+        </div>
+        
+        <!-- Bildirimler -->
+        <div class="section">
+            <div class="section-title">Bildirimler</div>
+            <div class="setting-item">
+                <div class="setting-left">
+                    <div class="setting-icon">🔔</div>
+                    <div class="setting-info">
+                        <h3>Sesli Uyarı</h3>
+                        <p>Satış tamamlandığında ses</p>
+                    </div>
+                </div>
+                <div class="toggle active" id="toggleSes" onclick="toggleSetting('toggleSes')"></div>
+            </div>
+            <div class="setting-item">
+                <div class="setting-left">
+                    <div class="setting-icon">📊</div>
+                    <div class="setting-info">
+                        <h3>Günlük Rapor</h3>
+                        <p>Mail ile günlük özet</p>
+                    </div>
+                </div>
+                <div class="toggle" id="toggleRapor" onclick="toggleSetting('toggleRapor')"></div>
+            </div>
+        </div>
+        
+        <!-- Stok Yönetimi -->
+        <div class="section">
+            <div class="section-title">Stok Yönetimi</div>
+            <div class="setting-item">
+                <div class="setting-left">
+                    <div class="setting-icon">⚠️</div>
+                    <div class="setting-info">
+                        <h3>Stok Uyarısı</h3>
+                        <p>Stok kritik seviyeye düşünce</p>
+                    </div>
+                </div>
+                <div class="toggle active" id="toggleStok" onclick="toggleSetting('toggleStok')"></div>
+            </div>
+            <div class="setting-item">
+                <div class="setting-left">
+                    <div class="setting-icon">🔢</div>
+                    <div class="setting-info">
+                        <h3>Kritik Stok Seviyesi</h3>
+                        <p>Uyarı verilecek miktar</p>
+                    </div>
+                </div>
+                <div class="value-display" id="kritikStok">10</div>
+            </div>
+        </div>
+        
+        <!-- Güvenlik -->
+        <div class="section">
+            <div class="section-title">Güvenlik</div>
+            <div class="setting-item" onclick="openModal('sifre')">
+                <div class="setting-left">
+                    <div class="setting-icon">🔑</div>
+                    <div class="setting-info">
+                        <h3>Şifre Değiştir</h3>
+                        <p>Hesap şifrenizi güncelleyin</p>
+                    </div>
+                </div>
+                <div class="setting-right">›</div>
+            </div>
+            <div class="setting-item">
+                <div class="setting-left">
+                    <div class="setting-icon">👆</div>
+                    <div class="setting-info">
+                        <h3>Parmak İzi</h3>
+                        <p>Giriş için parmak izi kullan</p>
+                    </div>
+                </div>
+                <div class="toggle" id="toggleParmak" onclick="toggleSetting('toggleParmak')"></div>
+            </div>
+        </div>
+        
+        <!-- İşletme Bilgileri -->
+        <div class="section">
+            <div class="section-title">İşletme Bilgileri</div>
+            <div class="setting-item" onclick="openModal('telefon')">
+                <div class="setting-left">
+                    <div class="setting-icon">📱</div>
+                    <div class="setting-info">
+                        <h3>Telefon</h3>
+                        <p id="userPhone">0532 123 4567</p>
+                    </div>
+                </div>
+                <div class="setting-right">›</div>
+            </div>
+            <div class="setting-item" onclick="openModal('eposta')">
+                <div class="setting-left">
+                    <div class="setting-icon">✉️</div>
+                    <div class="setting-info">
+                        <h3>E-posta</h3>
+                        <p id="userEmail">demo@aykasoft.com</p>
+                    </div>
+                </div>
+                <div class="setting-right">›</div>
+            </div>
+        </div>
+        
+        <!-- Tehlikeli Bölge -->
+        <div class="section danger-zone">
+            <div class="section-title">Tehlikeli Bölge</div>
+            <div class="setting-item danger-item" onclick="confirmClear()">
+                <div class="setting-left">
+                    <div class="setting-icon" style="background: var(--danger);">🗑️</div>
+                    <div class="setting-info">
+                        <h3>Verileri Temizle</h3>
+                        <p>Tüm satış ve stok verilerini sil</p>
+                    </div>
+                </div>
+                <div class="setting-right">›</div>
+            </div>
+            <div class="setting-item danger-item" onclick="confirmDelete()">
+                <div class="setting-left">
+                    <div class="setting-icon" style="background: var(--danger);">❌</div>
+                    <div class="setting-info">
+                        <h3>Hesabı Sil</h3>
+                        <p>Hesabınızı kalıcı olarak silin</p>
+                    </div>
+                </div>
+                <div class="setting-right">›</div>
+            </div>
+        </div>
+        
+        <!-- Uygulama Bilgisi -->
+        <div class="app-info">
+            <div class="logo">AY</div>
+            <h2>AYKASOFT</h2>
+            <p>Versiyon 1.0.0</p>
+            <p style="margin-top: 0.5rem;">Tüm hakları saklıdır.</p>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal" id="settingModal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Düzenle</h3>
+            <input type="text" id="modalInput" placeholder="Değer girin">
+            <select id="modalSelect" style="display: none;"></select>
+            <div class="modal-btns">
+                <button class="modal-btn secondary" onclick="closeModal()">İptal</button>
+                <button class="modal-btn primary" onclick="saveSetting()">Kaydet</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobil Alt Menü -->
+    <nav class="mobile-nav">
+        <a href="dashboard.html"><span>🏠</span><span>Panel</span></a>
+        <a href="satis.html"><span>🏷️</span><span>Satış</span></a>
+        <a href="saha.html"><span>📱</span><span>Saha</span></a>
+        <a href="ayarlar.html" class="active"><span>⚙️</span><span>Ayarlar</span></a>
+        <a href="#" onclick="logout()" style="color: #ef4444;"><span>🚪</span><span>Çıkış</span></a>
+    </nav>
+    
+    <script>
+        let currentSetting = '';
+        const currentUser = JSON.parse(localStorage.getItem('aykasoft_currentUser'));
+        if (!currentUser) window.location.href = 'login.html';
+        
+        // Load settings from localStorage
+        const settings = JSON.parse(localStorage.getItem('aykasoft_settings_' + currentUser.id)) || {
+            companyName: 'Demo Firma',
+            defaultKasa: 'Nakit',
+            defaultBanka: 'Garanti BB',
+            yaziBoyutu: 'Normal',
+            toggleYazdir: false,
+            toggleSes: true,
+            toggleRapor: false,
+            toggleStok: true,
+            kritikStok: 10,
+            toggleParmak: false,
+            userPhone: '0532 123 4567',
+            userEmail: currentUser.email || 'demo@aykasoft.com'
+        };
+        
+        // Apply settings to UI
+        document.getElementById('companyName').textContent = settings.companyName;
+        document.getElementById('defaultKasa').textContent = settings.defaultKasa;
+        document.getElementById('defaultBanka').textContent = settings.defaultBanka;
+        document.getElementById('yaziBoyutu').textContent = settings.yaziBoyutu;
+        document.getElementById('userPhone').textContent = settings.userPhone;
+        document.getElementById('userEmail').textContent = settings.userEmail;
+        document.getElementById('kritikStok').textContent = settings.kritikStok;
+        
+        if (settings.toggleYazdir) document.getElementById('toggleYazdir').classList.add('active');
+        if (settings.toggleSes) document.getElementById('toggleSes').classList.add('active');
+        if (settings.toggleRapor) document.getElementById('toggleRapor').classList.add('active');
+        if (settings.toggleStok) document.getElementById('toggleStok').classList.add('active');
+        if (settings.toggleParmak) document.getElementById('toggleParmak').classList.add('active');
+        
+        function toggleSetting(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('active');
+            settings[id] = el.classList.contains('active');
+            localStorage.setItem('aykasoft_settings_' + currentUser.id, JSON.stringify(settings));
+        }
+        
+        function openModal(type) {
+            currentSetting = type;
+            const modal = document.getElementById('settingModal');
+            const input = document.getElementById('modalInput');
+            const select = document.getElementById('modalSelect');
+            
+            input.style.display = 'block';
+            select.style.display = 'none';
+            
+            switch(type) {
+                case 'firma':
+                    document.getElementById('modalTitle').textContent = 'Firma Adı';
+                    input.value = settings.companyName;
+                    input.placeholder = 'Firma adınız';
+                    break;
+                case 'vergi':
+                    document.getElementById('modalTitle').textContent = 'Vergi Bilgileri';
+                    input.value = settings.vergi || '';
+                    input.placeholder = 'Vergi dairesi ve numarası';
+                    break;
+                case 'adres':
+                    document.getElementById('modalTitle').textContent = 'Adres';
+                    input.value = settings.adres || '';
+                    input.placeholder = 'Firma adresi';
+                    break;
+                case 'kasa':
+                    document.getElementById('modalTitle').textContent = 'Varsayılan Kasa';
+                    input.style.display = 'none';
+                    select.style.display = 'block';
+                    select.innerHTML = '<option>Nakit</option><option>Pos</option><option>Cari</option>';
+                    select.value = settings.defaultKasa;
+                    break;
+                case 'banka':
+                    document.getElementById('modalTitle').textContent = 'Varsayılan Banka';
+                    input.style.display = 'none';
+                    select.style.display = 'block';
+                    select.innerHTML = '<option>Garanti BB</option><option>Akbank</option><option>İş Bankası</option><option>Yapı Kredi</option><option>Ziraat</option>';
+                    select.value = settings.defaultBanka;
+                    break;
+                case 'sifre':
+                    document.getElementById('modalTitle').textContent = 'Yeni Şifre';
+                    input.type = 'password';
+                    input.value = '';
+                    input.placeholder = 'Yeni şifreniz';
+                    break;
+                case 'telefon':
+                    document.getElementById('modalTitle').textContent = 'Telefon';
+                    input.value = settings.userPhone;
+                    input.placeholder = 'Telefon numaranız';
+                    break;
+                case 'eposta':
+                    document.getElementById('modalTitle').textContent = 'E-posta';
+                    input.value = settings.userEmail;
+                    input.placeholder = 'E-posta adresiniz';
+                    break;
+            }
+            modal.classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('settingModal').classList.remove('active');
+        }
+        
+        function saveSetting() {
+            const input = document.getElementById('modalInput');
+            const select = document.getElementById('modalSelect');
+            const value = select.style.display !== 'none' ? select.value : input.value;
+            
+            switch(currentSetting) {
+                case 'firma': settings.companyName = value; break;
+                case 'vergi': settings.vergi = value; break;
+                case 'adres': settings.adres = value; break;
+                case 'kasa': settings.defaultKasa = value; break;
+                case 'banka': settings.defaultBanka = value; break;
+                case 'sifre': alert('Şifre değiştirildi!'); break;
+                case 'telefon': settings.userPhone = value; break;
+                case 'eposta': settings.userEmail = value; break;
+            }
+            
+            localStorage.setItem('aykasoft_settings_' + currentUser.id, JSON.stringify(settings));
+            location.reload();
+        }
+        
+        function confirmClear() {
+            if (confirm('Tüm satış verilerini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!')) {
+                localStorage.removeItem('aykasoft_sales_' + currentUser.id);
+                localStorage.removeItem('aykasoft_orders_' + currentUser.id);
+                localStorage.removeItem('aykasoft_cart_' + currentUser.id);
+                alert('Veriler temizlendi!');
+            }
+        }
+        
+        function confirmDelete() {
+            if (confirm('Hesabınızı silmek istediğinizden emin misiniz? Tüm verileriniz kalıcı olarak silinecek!')) {
+                localStorage.removeItem('aykasoft_currentUser');
+                window.location.href = 'login.html';
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('aykasoft_currentUser');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
